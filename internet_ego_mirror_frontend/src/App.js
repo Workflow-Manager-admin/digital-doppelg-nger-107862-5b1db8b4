@@ -621,10 +621,10 @@ function ResultPieChart({ correct, total }) {
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         style={{
-          boxShadow: "0 2px 18px #23ce6a38, 0 4px 38px #ff4ecd19",
-          background: "rgba(246,237,253,0.10)",
+          background: "none",
           borderRadius: "50%",
           display: "block",
+          boxShadow: "none"
         }}
       >
         {/* Background ring */}
@@ -655,7 +655,7 @@ function ResultPieChart({ correct, total }) {
                 style={{
                   filter:
                     hover === seg.idx
-                      ? `drop-shadow(0 0 8px ${seg.color}88)`
+                      ? `drop-shadow(0 0 12px ${seg.color}cc)`
                       : "",
                   cursor: "pointer",
                   transition: "filter 0.18s cubic-bezier(.42,.62,.52,.91)",
@@ -666,7 +666,7 @@ function ResultPieChart({ correct, total }) {
             )
         )}
       </svg>
-      {/* Center info donut label */}
+      {/* Center info donut label – Now purely floating, no bg/box, vivid bold */}
       <div
         style={{
           position: "absolute",
@@ -684,30 +684,34 @@ function ResultPieChart({ correct, total }) {
       >
         <div
           style={{
-            background: "rgba(255,255,255,0.91)",
-            borderRadius: "53%",
-            padding: "0.46em 1.18em",
+            background: "none",
+            borderRadius: 0,
+            padding: "0.23em 0.27em",
             fontWeight: 900,
-            fontSize: "1.57em",
-            color: "#6C63FF",
-            boxShadow: "0 2px 14px #36c6e71d",
+            fontSize: "1.66em",
+            color: "#fed502",
+            boxShadow: "none",
+            textShadow: "0 2px 14px #23ce6b, 0 2px 10px #ff4ecd95, 0 0px 24px #6c63ff67",
             transition: "background 0.23s",
+            lineHeight: 1,
           }}
         >
           {percent}%
         </div>
         <div
           style={{
-            fontSize: "0.85em",
-            fontWeight: 700,
+            fontSize: "0.99em",
+            fontWeight: 800,
             color:
               hover === 0
-                ? "#178b46"
+                ? "#23ce6b"
                 : hover === 1
-                  ? "#d23b47"
-                  : "#3e3257",
+                  ? "#FF6584"
+                  : "#fff",
             marginTop: "3.5px",
-            minHeight: "1.4em"
+            minHeight: "1.4em",
+            background: "none",
+            textShadow: "0 2.5px 10px #23ce6b77, 0 4.5px 18px #ff4ecd94, 0 0px 36px #6c63ff49"
           }}
           aria-live="polite"
         >
@@ -933,13 +937,13 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
         fontSize: "clamp(1.02em,2.5vw,1.23em)",
         color: "#fed502",
         fontWeight: 900,
-        borderRadius: "2.8em",
-        padding: "1em 1.67em",
+        borderRadius: 0,
+        padding: "0.63em 0.81em",
         margin: "2.7em auto 1.3em auto",
         maxWidth: "700px",
         boxShadow: "none",
-        textShadow: "0 2px 10px #ff4ecd66, 0 0 10px #fff",
-        filter: "brightness(1.09)",
+        textShadow: "0 2.7px 13px #23ce6baa, 0 1.5px 9px #ff4ecd66, 0 0 14px #fff",
+        filter: "brightness(1.19)",
         textAlign: "center",
         pointerEvents: "auto",
         letterSpacing: "0.01em"
