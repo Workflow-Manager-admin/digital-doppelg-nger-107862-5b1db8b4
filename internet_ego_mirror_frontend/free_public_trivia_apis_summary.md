@@ -58,6 +58,7 @@ This document summarizes support for non-general knowledge/quirky/specialized qu
 
 - **jService (www.jservice.io):**  
   Large Jeopardy! question database; has some quirky topics/categories (US-centric). No API key.
+  - **TV/Show-Specific Note:** Sometimes there are show-specific (e.g., "Friends") clues in their database, but there is no official "Friends" category and no guarantee of regular coverage. You would have to search/filter question text for "Friends" or specific characters.
 
 - **TriviaAPI (triviaapi.com):**
   Previously offered category options, but as of 2024, not very stable or rich in themed content.
@@ -79,6 +80,8 @@ This document summarizes support for non-general knowledge/quirky/specialized qu
 
 - For broad entertainment (music, movies, TV, sports, some pop culture):  
   Use **Open Trivia DB** or **The Trivia API**. Both are free, no API key, REST access, but **no highly granular show/artist-specific quizzes**.
+- For _show-specific_ like "Friends":  
+  Free public APIs do **not** provide a dedicated "Friends" TV show category. However, you may sometimes get "Friends"-related questions via the "Entertainment: Television" (Open Trivia DB), "Film & TV" (The Trivia API), or by searching textual clues in **jService**.
 - For tech/programming/dev:  
   Use **QuizAPI.io** (requires a free API key).
 - For _quirky categories or rare TV/music trivia_:  
@@ -106,9 +109,35 @@ All others can be used without an API key.
 
 ---
 
+# ⚡️ "Friends" TV Show Trivia API Support
+
+**There are currently _no free public trivia APIs_ that offer a dedicated category or assured, regular supply of "Friends" TV show multiple-choice questions.**
+
+- **Open Trivia DB:** No "Friends" category. You _might_ occasionally receive a Friends-related question when pulling from "Entertainment: Television", but it's rare, not guaranteed, and not filterable by show.
+- **The Trivia API:** No show-specific or "Friends" category. "Film & TV" may include general TV trivia, but not guaranteed for "Friends".
+- **QuizAPI.io:** No entertainment/TV categories; focused on tech topics only (requires API key anyway).
+- **jService:** Sometimes has "Friends" clues in its Jeopardy! questions, but not a dedicated category. You must search the question field for "Friends", and coverage is neither plentiful nor consistent.
+
+**API Key Summary:**
+- All relevant, entertainment-focused APIs (Open Trivia DB, The Trivia API, jService) do _not_ require API keys, and no sign-up is needed.
+- QuizAPI.io requires a key, but is not relevant for "Friends" trivia.
+
+**User Procedure for API key:**
+- If using QuizAPI.io (not applicable for "Friends" TV trivia anyway), sign up with email and get key from dashboard.
+- For all others: You can fetch trivia immediately without any key or signup.
+
+---
+
+## **Summary for "Friends" Show Multiple-Choice Trivia Integration**
+
+- _No_ free/public API currently provides a dedicated, filterable source of "Friends" TV show multi-choice questions.
+- Your best practical approach is to use "Entertainment: Television" category from [Open Trivia DB](https://opentdb.com/api_config.php) or "Film & TV" from [The Trivia API](https://the-trivia-api.com/) and accept some questions may reference "Friends" incidentally.
+- If you want _guaranteed Friends-specific_ coverage, you will need to curate/scrape your own dataset or look for paid/licensed databases.
+
+---
+
 **References:**  
 - [Open Trivia DB documentation](https://opentdb.com/api_config.php)  
 - [The Trivia API Docs](https://the-trivia-api.com/)  
 - [QuizAPI.io Docs](https://quizapi.io/docs/1.0/overview)  
 - [jService API](https://jservice.io/)  
-
