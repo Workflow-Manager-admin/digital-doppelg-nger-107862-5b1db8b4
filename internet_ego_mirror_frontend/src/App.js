@@ -218,7 +218,8 @@ function App() {
   // For shareable scores only (not persona anymore)
   function getShareText() {
     const { correctCount, total } = computeScore(answers, questions);
-    return `🏆 My Sports Knowledge Quiz Score: ${correctCount}/${total} (${total === 0 ? 0 : Math.round(correctCount / total * 100)}%)\n\nTake the Internet Ego Mirror Sports Quiz yourself! https://opentdb.com/api_config.php`;
+    // Outdated tagline removed
+    return `🏆 My Sports Knowledge Quiz Score: ${correctCount}/${total} (${total === 0 ? 0 : Math.round(correctCount / total * 100)}%)`;
   }
   function handleShare() {
     if (!navigator?.clipboard) return;
