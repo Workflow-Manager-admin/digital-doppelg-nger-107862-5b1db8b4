@@ -1,0 +1,4 @@
+{
+    "command": "npm install && npx tsc --noEmit && npm test -- --ci",
+    "working_directory": "/home/kavia/workspace/code-generation/digital-doppelg-nger-107862-5b1db8b4/internet_ego_mirror_frontend"
+}

@@ -1,0 +1,4 @@
+{
+    "command": "PORT=<port> HOST=<host> BROWSER=none npm start",
+    "working_directory": "/home/kavia/workspace/code-generation/digital-doppelg-nger-107862-5b1db8b4/internet_ego_mirror_frontend"
+}
