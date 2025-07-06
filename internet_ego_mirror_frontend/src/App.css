@@ -81,55 +81,64 @@
 /* ====== CRACKER (FIREWORK, EXPLOSION) BLAST EFFECT ===== */
 .cracker-blast-container {
   pointer-events: none;
-  position: absolute;
-  z-index: 1000;
-  left: 0; top: 0;
-  width: 100vw; height: 100vh;
+  position: fixed;
+  z-index: 5; /* now sits just above bg but behind all interactive elements */
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
 }
 .cracker-blast {
   position: absolute;
-  width: 340px !important;
-  height: 340px !important;
-  transform: translate(-50%,-50%);
+  width: 100vw !important;
+  height: 100vh !important;
+  left: 0;
+  top: 0;
   pointer-events: none;
-  z-index: 1200;
+  z-index: 5;
   opacity: 1;
 }
+
 .cracker-explosion {
   position: absolute;
-  width: 340px !important;
-  height: 340px !important;
-  left: 50%; top: 50%;
-  transform: translate(-50%,-50%) scale(0.54);
+  /* Deliberately spill beyond view for giant effect */
+  width: 110vw !important;
+  height: 110vh !important;
+  left: 50%;
+  top: 49%;
+  transform: translate(-50%, -50%) scale(0.96);
   opacity: 1;
-  animation: firework-blast 0.85s cubic-bezier(.36,.72,.41,1.02);
+  animation: firework-blast-big 1.19s cubic-bezier(.23,.82,.21,1);
   will-change: transform, opacity;
+  pointer-events: none;
 }
-@keyframes firework-blast {
+
+@keyframes firework-blast-big {
   0% {
-    opacity: 0.9;
-    transform: translate(-50%,-50%) scale(0.25) rotate(0deg);
-    filter: brightness(2.5) blur(0.3px);
+    opacity: 0.82;
+    transform: translate(-50%, -50%) scale(0.22) rotate(0deg);
+    filter: brightness(2.6) blur(0.6px);
   }
-  40% {
+  26% {
     opacity: 1;
-    filter: brightness(2.85) blur(1.2px);
-    transform: translate(-50%,-50%) scale(1.6) rotate(36deg);
+    filter: brightness(3.3) blur(2.5px) saturate(3.1);
+    transform: translate(-50%, -50%) scale(1.85) rotate(50deg);
   }
-  62% {
+  43% {
     opacity: 1;
-    filter: brightness(2.3);
-    transform: translate(-50%,-50%) scale(1.14) rotate(97deg);
+    filter: brightness(2.25);
+    transform: translate(-50%, -50%) scale(1.19) rotate(137deg);
   }
-  80% {
+  65% {
+    opacity: 0.73;
     filter: brightness(1.18);
-    opacity: 0.67;
-    transform: translate(-50%,-50%) scale(0.82) rotate(170deg);
+    transform: translate(-50%, -50%) scale(0.86) rotate(210deg);
   }
   100% {
-    filter: brightness(.25);
+    filter: brightness(.13);
     opacity: 0;
-    transform: translate(-50%,-50%) scale(0.7) rotate(320deg);
+    transform: translate(-50%, -50%) scale(0.59) rotate(400deg);
   }
 }
 

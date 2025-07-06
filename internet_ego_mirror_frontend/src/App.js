@@ -41,72 +41,113 @@ function decodeHtml(input) {
 }
 
 function CrackerBlast({ x, y, onDone }) {
-  // Fireworks: make firework SVG and dots much larger for a lively/layer-filling effect!
+  // Firework effect: massive background SVG and vivid, big strokes/dots so always seen & celebratory
   React.useEffect(() => {
-    const timeout = setTimeout(() => onDone && onDone(), 840);
+    const timeout = setTimeout(() => onDone && onDone(), 1200);
     return () => clearTimeout(timeout);
   }, [onDone]);
+
+  // Fill the background, burst out from x,y as best-guess for visual anchor.
+  // Center explosion, randomize color order, scatter rays for variety.
+  // Our SVG will be as big as the viewport; ray origin is centered.
+  const width = Math.max(window.innerWidth, 1400);
+  const height = Math.max(window.innerHeight, 900);
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  // Colors - more vivid (lots of bright, light-additive shades)
+  const RAY_COLORS = [
+    "#FFDE00", "#FF6584", "#36C6E7", "#23CE6B", "#FF4ECD", "#FEC800", "#FED502", "#ffffff",
+    "#00FFA2", "#ffbf00", "#19e0ff", "#fc1cff", "#FFFBE8"
+  ];
+  const DOT_COLORS = [
+    "#FFFAE3", "#FF4ECD", "#FED502", "#36C6E7", "#23CE6B", "#FF6584", "#fffbe8",
+    "#FEC800", "#6C63FF", "#00FFA2", "#FFB000", "#fc1cff", "#FFF", "#e0ffef", "#ffd500", "#FF6584"
+  ];
+
   return (
     <div
       className="cracker-blast"
-      style={{
-        left: `${x}px`,
-        top: `${y}px`,
-        pointerEvents: "none"
-      }}
       aria-hidden="true"
     >
       <span className="cracker-explosion">
-        <svg width="340" height="340" viewBox="0 0 340 340">
+        <svg
+          width={width}
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+          style={{
+            display: "block"
+          }}
+        >
           <g>
-            {/* Massive firework rays */}
-            {[...Array(24)].map((_, i) => {
-              const angle = (i * 15);
-              const length = 120 + 62 * (i % 2);
-              const color = [
-                "#ffd500", "#ff4ecd", "#6C63FF", "#23ce6b", "#FF6584", "#36c6e7", "#fc1cff", "#ff654f", "#fecdff", "#FED502",
-                "#fffbe8", "#ff4ecd", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184", "#6c63ff", "#ffbf00",
-                "#23ce6b", "#6C63FF", "#ff4ecd", "#ffbf00"
-              ][i % 24];
+            {/* Massive vivid rays, evenly radiating, covers width/height */}
+            {[...Array(28)].map((_, i) => {
+              const angle = ((i * (360 / 28)) + ((i % 3) * 7)) % 360;
+              // Alternate burst radii for visual variety, spread over much bigger area.
+              const rayLen = (0.41 + 0.37 * (i % 2)) * Math.max(width, height);
+              const color = RAY_COLORS[i % RAY_COLORS.length];
               return (
                 <line
                   key={i}
-                  x1="170"
-                  y1="170"
-                  x2={170 + length * Math.cos(angle * Math.PI / 180)}
-                  y2={170 + length * Math.sin(angle * Math.PI / 180)}
+                  x1={centerX}
+                  y1={centerY}
+                  x2={centerX + rayLen * Math.cos(angle * Math.PI / 180)}
+                  y2={centerY + rayLen * Math.sin(angle * Math.PI / 180)}
                   stroke={color}
-                  strokeWidth="16.5"
+                  strokeWidth={Math.max(38, width / 31)}
                   strokeLinecap="round"
                   opacity="0.94"
+                  style={{
+                    filter: `drop-shadow(0 0 32px ${color}) brightness(1.44)`,
+                    mixBlendMode: i % 3 === 0 ? "screen" : "lighter"
+                  }}
                 />
               );
             })}
-            {/* Much bigger and more plentiful explosion dots */}
-            {[...Array(20)].map((_, i) => {
-              const angle = i * (360 / 20) + 21;
-              const dist = Math.random() * 82 + 100;
-              const size = Math.random() * 22.5 + 9;
-              const color = [
-                "#fffbe8", "#ff6584", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184",
-                "#ff4ecd", "#19e0ff", "#ffbf00", "#23ce6b", "#fed502", "#6c63ff", "#ffbf00", "#ff4ecd", "#36c6e7", "#6C63FF", "#fc1cff", "#23ce6b"
-              ][i % 20];
+            {/* Fat, blurred vivid dots at many radii */}
+            {[...Array(28)].map((_, i) => {
+              // More 'depth': larger # of layers, larger spread
+              const angle = i * (360 / 28) + Math.random() * 17;
+              const dist = 260 + Math.random() * 0.48 * Math.min(width, height);
+              const size = 38 + Math.random() * ((i%2===0) ? 76 : 130);
+              const color = DOT_COLORS[i % DOT_COLORS.length];
               return (
-                <circle
+                <ellipse
                   key={`dot${i}`}
-                  cx={170 + dist * Math.cos(angle * Math.PI / 180)}
-                  cy={170 + dist * Math.sin(angle * Math.PI / 180)}
-                  r={size}
+                  cx={centerX + dist * Math.cos(angle * Math.PI / 180)}
+                  cy={centerY + dist * Math.sin(angle * Math.PI / 180)}
+                  rx={size}
+                  ry={size * (0.74 + Math.random() * 0.45)}
                   fill={color}
-                  fillOpacity="0.82"
-                  filter="blur(0.79px)"
+                  fillOpacity="0.79"
+                  style={{
+                    filter: `blur(${14 + Math.random()*9}px) drop-shadow(0 0 48px ${color}) brightness(1.22)`
+                  }}
                 />
               );
             })}
+            {/* Giant soft glow at center */}
             <ellipse
-              cx="170" cy="170" rx="62" ry="54"
-              fill="#fffbe8" fillOpacity="0.45"
-              filter="blur(10px)"
+              cx={centerX}
+              cy={centerY}
+              rx={width / 8.5}
+              ry={height / 8.6}
+              fill="#fffbe8"
+              fillOpacity="0.16"
+              style={{
+                filter: "blur(38px)"
+              }}
+            />
+            <ellipse
+              cx={centerX}
+              cy={centerY}
+              rx={width / 4.5}
+              ry={height / 4.9}
+              fill="#fcf9e5"
+              fillOpacity="0.08"
+              style={{
+                filter: "blur(64px)"
+              }}
             />
           </g>
         </svg>
