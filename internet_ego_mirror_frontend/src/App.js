@@ -6,7 +6,10 @@ import NumberFact from "./NumberFact";
 import WordOfTheMatch from "./WordOfTheMatch";
 import JokeWidget from "./JokeWidget";
 
-// Compute quiz score summary
+/**
+ * Computes quiz score summary.
+ * Returns object { correctCount, total }
+ */
 function computeScore(answers, questions) {
   let correctCount = 0, total = 0;
   if (answers && questions && questions.length === answers.length && questions.length > 0) {
@@ -16,8 +19,7 @@ function computeScore(answers, questions) {
       if (
         typeof ansIdx !== "undefined" &&
         currQ &&
-        currQ.answers &&
-        currQ.correct_answer &&
+        currQ.answers && currQ.correct_answer &&
         currQ.answers[ansIdx].text === currQ.correct_answer
       ) {
         return cnt + 1;
@@ -784,6 +786,7 @@ function CrackerBlast({ x, y, onDone }) {
 
 // PUBLIC_INTERFACE
 function App() {
+  // --- State for quiz flow ---
   const [step, setStep] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -906,13 +909,17 @@ function App() {
   // with quiz UI at the highest stacking context. Widgets never block/replace primary flow!
   return (
     <div className="iemo-app float-ui-app">
+      {/* Always rendered background */}
       <SportsBackground />
+
       {/* Firework cracker effect overlay - appears above everything else */}
       <div className="cracker-blast-container" aria-hidden="true" style={{ pointerEvents: "none" }}>
         {crackerBlasts.map(({ x, y, id }) =>
           <CrackerBlast key={id} x={x} y={y} onDone={() => handleCrackerBlastDone(id)} />
         )}
       </div>
+
+      {/* === CORE QUIZ CONTENT IS ALWAYS TOP-PRIORITY === */}
 
       {/* WELCOME SCREEN */}
       {step === 0 && (
@@ -929,7 +936,7 @@ function App() {
             loading={loading}
             fetchError={fetchError}
           />
-          {/* Supporting widgets cannot block quiz. Defensive fragment present */}
+          {/* Supporting widgets NEVER block quiz UI */}
           <div aria-label="Support widgets area" style={{
             margin: "1.7em auto 0 auto", maxWidth: 760, display: "flex", flexDirection: "column", gap: "1.21em"
           }}>
@@ -951,6 +958,9 @@ function App() {
           floatUI
         />
       )}
+
+      {/* ==== ALL WIDGETS BELOW THE MAIN CONTEXT; CAN'T BLOCK UI ==== */}
+      {/* (No global-below widgets for this layout beyond what's present above) */}
 
       {/* Footer branding/support statement */}
       <div className="iemo-footer" style={{
