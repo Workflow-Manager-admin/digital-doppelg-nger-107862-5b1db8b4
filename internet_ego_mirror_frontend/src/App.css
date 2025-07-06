@@ -1,43 +1,82 @@
 /* == Theme Variables == */
 :root {
   --iemo-bg: #fcfdff;
-  --iemo-card-bg: #fff;
-  --iemo-border: #efefef;
-  --iemo-shadow: 0 4px 24px rgba(108,99,255,0.07);
-  --iemo-title: #1d2233;
-  --iemo-text: #21232c;
-  --iemo-muted: #848695;
+  --iemo-card-bg: #ffeaff;
+  --iemo-border: #da55f6;
+  --iemo-shadow: 0 4px 32px 0 #8236d85e;
+  --iemo-title: #2e195c;
+  --iemo-text: #251c30;
+  --iemo-muted: #7c6ead;
   --iemo-primary: #6C63FF;
   --iemo-secondary: #FF6584;
   --iemo-accent: #23CE6B;
-  --iemo-radius: 20px;
+  --iemo-radius: 26px;
+  --iemo-rainbow: linear-gradient(90deg, #ff4ecd, #6C63FF, #23ce6b, #FF6584 85%);
+}
+
+/* == RAINBOW & VIBRANT EFFECTS == */
+.rainbow-header {
+  background: linear-gradient(90deg,#ff4ecd,#6C63FF 33%, #23ce6b 75%, #f7f700 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: -.02em;
+  filter: drop-shadow(0 7px 22px #23ce6b14);
+}
+.rampage-gradient {
+  background: linear-gradient(95deg,#fc1cff,#6c63ff,#23ce6b,#ffd600 98%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 900;
+  text-shadow: 0 1px 10px #4327c964;
+}
+.rainbow-label {
+  background: var(--iemo-rainbow);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.rainbow-bg {
+  background: linear-gradient(104deg,#fcefef 18%,#ffd0ff 70%,#d5fcf6 99%);
+  border-radius: 24px;
+}
+
+/* COLOUR BLITZ ANIMATION FOR CARD */
+.blitz-card {
+  background: linear-gradient(120deg, #ffeaff 15%, #e0f1fe 74%, #fcf7bd 100%);
+  box-shadow: 0 16px 56px #ff54ed37,0 1px 24px #23ce6b29 !important;
+  border: 2.6px solid #e0c0f9;
 }
 
 /* == LAYOUT == */
 .iemo-app {
   background: var(--iemo-bg);
   min-height: 100vh;
-  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', 'Comic Sans MS', fantasy, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
 .iemo-card {
-  margin-top: 6vh;
+  margin-top: 5vh;
   background: var(--iemo-card-bg);
   box-shadow: var(--iemo-shadow);
   border-radius: var(--iemo-radius);
-  border: 1.5px solid var(--iemo-border);
+  border: 2.7px solid var(--iemo-border);
   min-width: 320px;
-  max-width: 420px;
-  width: 90vw;
+  max-width: 450px;
+  width: 96vw;
   padding: 2.1rem 2.2rem 1.5rem 2.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 340px;
-  animation: fadeup 0.6s cubic-bezier(.62,.3,.63,.87);
+  animation: fadeup 0.5s cubic-bezier(.67,.24,.55,.89);
+  transition: background 0.35s;
 }
 
 /* == HEADER == */

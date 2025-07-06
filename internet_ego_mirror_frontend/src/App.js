@@ -1,143 +1,134 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
-// Themed color constants
-const COLORS = {
-  accent: "#23CE6B",
-  primary: "#6C63FF",
-  secondary: "#FF6584",
-};
+/**
+ * This version uses the Open Trivia DB API to fetch new quiz questions
+ * every session (https://opentdb.com/api_config.php).
+ * - No API key is required (Open Trivia DB is fully free/public).
+ * - API tips: category=any (random) & difficulty=randomized for more variety.
+ * - Questions and answers are styled in SUPER colorful, playful, and modern palettes.
+ */
 
-// --- QUIZ DATA (8 quirky internet-themed questions) ---
-const QUESTIONS = [
+// Themed color constants – we go even more vibrant and bold now!
+const PALETTE = [
+  "#ff4ecd", "#6c63ff", "#23ce6b", "#ffbf00", "#19e0ff", "#ff654f", "#fc1cff", "#FED502", "#36c6e7", "#FF6584"
+];
+const BG_GRAD = "linear-gradient(135deg, #fed502 0%, #ff4ecd 40%, #6c63ff 100%)";
+const CARD_GRAD = "linear-gradient(135deg, #fff1de 10%, #dfebff 60%, #f4e0fa 100%)";
+
+// Persona map for fun/quirky results (by majority answer type assigned to personality tags below)
+const PERSONA_TYPES = [
   {
-    question: "What's your go-to reaction when a meme goes viral?",
-    answers: [
-      { text: "Make your own remix!", type: "Trendsetter" },
-      { text: "Share it until it’s old news", type: "Amplifier" },
-      { text: "Comment ‘seen it’ first", type: "Purist" },
-      { text: "Quietly enjoy and move on", type: "Lurker" },
-    ],
+    key: "bookworm", color: "#36c6e7", emoji: "📚",
+    name: "Multiverse Bookworm",
+    desc: "You thirst for knowledge and can out-riddle any SphinxBot online. Forums or comment threads? You devour them all.",
+    resume: "Trivia Gladiator • Curious Visionary",
+    aura: "#36c6e7", social: "Quora, Wikipedia rabbit holes"
   },
   {
-    question: "Your profile bio most likely includes:",
-    answers: [
-      { text: "Just emojis. Lots of them. 🔥🦄💫", type: "Amplifier" },
-      { text: "\"Professional cat meme curator.\"", type: "Trendsetter" },
-      { text: "A cryptic inside joke", type: "Purist" },
-      { text: "Nothing. Why bother?", type: "Lurker" },
-    ],
+    key: "rebel", color: "#ff4ecd", emoji: "🤘",
+    name: "Pixel Rebel",
+    desc: "You challenge conventions, spot plot holes, and win flame wars. Chaos and creativity in equal measure.",
+    resume: "Meme Instigator • Alt Poster",
+    aura: "#ff4ecd", social: "Weird X threads, Discord chaos-servers"
   },
   {
-    question: "First thing you check online in the morning?",
-    answers: [
-      { text: "Social notifications", type: "Amplifier" },
-      { text: "Trending hashtags", type: "Trendsetter" },
-      { text: "Your old bookmarks", type: "Purist" },
-      { text: "Lurk in comment sections", type: "Lurker" },
-    ],
+    key: "clown", color: "#ffbf00", emoji: "🤡",
+    name: "Clown Prince/ss of Memes",
+    desc: "You live for likes, laughs, and the dopamine rush of every viral gif. Meme legend everywhere you go.",
+    resume: "Senior Meme Dealer • Hype Machine",
+    aura: "#ffbf00", social: "Instagram reels, TikTok, meme subreddits"
   },
   {
-    question: "Someone starts internet drama in your feed. You:",
-    answers: [
-      { text: "Post a peacekeeping meme", type: "Trendsetter" },
-      { text: "Drop a subtle GIF and watch", type: "Lurker" },
-      { text: "Add popcorn emoji and buckle up", type: "Amplifier" },
-      { text: "Correct their grammar", type: "Purist" },
-    ],
-  },
-  {
-    question: "Pick your virtual pet:",
-    answers: [
-      { text: "The rare Shiba Inu NFT", type: "Trendsetter" },
-      { text: "Classic Nyan Cat", type: "Amplifier" },
-      { text: "A mysterious ASCII frog", type: "Purist" },
-      { text: "None, imaginary is fine", type: "Lurker" },
-    ],
-  },
-  {
-    question: "Old internet relic you secretly miss?",
-    answers: [
-      { text: "MSN Messenger vibes", type: "Purist" },
-      { text: "Rage comics everywhere", type: "Amplifier" },
-      { text: "Tumblr dash drama", type: "Lurker" },
-      { text: "Vine, bring it back!", type: "Trendsetter" },
-    ],
-  },
-  {
-    question: "What’s your reply when someone’s wrong online?",
-    answers: [
-      { text: "Let it pass, not worth it", type: "Lurker" },
-      { text: "Send a meme as correction", type: "Amplifier" },
-      { text: "Give a sarcastic fact", type: "Purist" },
-      { text: "Quote-tweet with flair", type: "Trendsetter" },
-    ],
-  },
-  {
-    question: "Your dream social platform would be:",
-    answers: [
-      { text: "Exclusive, invite-only, mysterious", type: "Purist" },
-      { text: "Full of viral energy", type: "Amplifier" },
-      { text: "Creative chaos and trends", type: "Trendsetter" },
-      { text: "Just reading, no posting", type: "Lurker" },
-    ],
-  },
+    key: "ghost", color: "#848cff", emoji: "👻",
+    name: "Incognito Ghost",
+    desc: "You lurk, you observe, and your opinions are silent daggers. The ultimate, mysterious observer.",
+    resume: "Comments Ninja • Drama Ghost",
+    aura: "#848cff", social: "Reddit, Twitter dark mode"
+  }
 ];
 
-// --- PERSONA RESULT DATA ---
-const PERSONAS = {
-  Trendsetter: {
-    name: "The Viral Visionary",
-    description: "You’re always one step ahead! The internet tries to catch up with trends you set in motion. Hashtag wizard and originator of the next big meme.",
-    resume: "Aspiring Meme CEO • Trend Launch Specialist",
-    aura: COLORS.primary,
-    social: "Launch your threads on X or TikTok—your ideas go viral!",
-    emoji: "🚀",
-  },
-  Amplifier: {
-    name: "The Meme Megaphone",
-    description: "You give every post its fifteen minutes of fame—sharing, liking, and hyping up everything that’s buzzing. A true digital cheerleader.",
-    resume: "Retweet Virtuoso • Certified Meme Dealer",
-    aura: COLORS.secondary,
-    social: "You were born to run a viral Instagram page!",
-    emoji: "📣",
-  },
-  Purist: {
-    name: "The Retro Netizen",
-    description: "You love the relics, inside jokes, and secret codes of earlier web days. Old-school, cryptic, and always authentic.",
-    resume: "Vintage Web Archaeologist • Lore Keeper",
-    aura: "#888888",
-    social: "Hang out on obscure forums or vintage Discord bots!",
-    emoji: "💾",
-  },
-  Lurker: {
-    name: "The Shadow Browser",
-    description: "Never posting, always present. You know the deep cuts but prefer to watch the world meme itself into madness. The quiet observer.",
-    resume: "Comment Section Ghost • Drama Detective",
-    aura: COLORS.accent,
-    social: "Lurk on Reddit and Hacker News—pro only!",
-    emoji: "👀",
-  },
-};
+function getPersonalityType(answers) {
+  // Pick majority persona by tag assigned to each answer (see below during parse)
+  if (!answers || !answers.length) return PERSONA_TYPES[0];
+  const tally = {};
+  answers.forEach(t => { tally[t] = (tally[t] || 0) + 1; });
+  let max = -1, key = "bookworm";
+  for (const k in tally) if (tally[k] > max) { max = tally[k]; key = k; }
+  return PERSONA_TYPES.find(p => p.key === key) || PERSONA_TYPES[0];
+}
 
-// --- COMPONENTS ---
+// Trivia questions convert to this UX schema
+function parseTrivia(qset) {
+  // Assign shuffled personas to answers for randomness/fun
+  return qset.map(q => {
+    const tags = ["bookworm", "rebel", "clown", "ghost"];
+    const allAnswers = [q.correct_answer, ...q.incorrect_answers].map((a, idx) => ({
+      text: decodeHtml(a),
+      persona: tags[idx % tags.length]
+    }));
+    // Shuffle:
+    for (let i = allAnswers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allAnswers[i], allAnswers[j]] = [allAnswers[j], allAnswers[i]];
+    }
+    return {
+      question: decodeHtml(q.question),
+      answers: allAnswers
+    };
+  });
+}
+
+function decodeHtml(html) {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+}
 
 // PUBLIC_INTERFACE
 function App() {
-  const [step, setStep] = useState(0); // step 0: Welcome. 1...N: questions. step > N: results
+  const [step, setStep] = useState(0); // 0: Welcome, 1...N: quiz, N+1: Results
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [fetchError, setFetchError] = useState("");
   const [answers, setAnswers] = useState([]);
-  // for share card animation
   const [copied, setCopied] = useState(false);
+
+  // Fetch new questions on start
+  async function fetchQuestions() {
+    setLoading(true);
+    setFetchError("");
+    setQuestions([]);
+    setAnswers([]);
+    // Random difficulty, random category, always 8 Qs
+    const DIFFICULTY = ["easy", "medium", "hard"][Math.floor(Math.random()*3)];
+    let url = `https://opentdb.com/api.php?amount=8&type=multiple&encode=url3986`;
+    if (Math.random() < 0.7) url += `&difficulty=${DIFFICULTY}`;
+    try {
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (!data.results || !data.results.length) {
+        setFetchError("Could not load questions from the server. Please try again.");
+        setLoading(false);
+        return;
+      }
+      setQuestions(parseTrivia(data.results));
+    } catch (e) {
+      setFetchError("Failed to load. Please check your connection.");
+    }
+    setLoading(false);
+  }
 
   // PUBLIC_INTERFACE
   function handleStart() {
-    setStep(1);
+    fetchQuestions();
+    setStep(1); // Main quiz begins after fetchQuestions (async)
   }
 
   // PUBLIC_INTERFACE
   function handleAnswer(answerIdx) {
-    setAnswers((prev) => [...prev, answerIdx]);
-    setStep((s) => s + 1);
+    setAnswers(prev => [...prev, answerIdx]);
+    setStep(s => s + 1);
   }
 
   // PUBLIC_INTERFACE
@@ -145,32 +136,31 @@ function App() {
     setStep(0);
     setAnswers([]);
     setCopied(false);
+    setQuestions([]);
+    setFetchError("");
+    setLoading(false);
   }
 
-  // Calculate result: tally most frequent type among chosen answers
-  function getResultKey() {
-    if (answers.length !== QUESTIONS.length) return null;
-    const resultTally = {};
-    answers.forEach((ansIdx, i) => {
-      const type = QUESTIONS[i].answers[ansIdx].type;
-      resultTally[type] = (resultTally[type] || 0) + 1;
-    });
-    // find max frequency
-    return Object.entries(resultTally).reduce((maxKey, cur) =>
-      !maxKey || cur[1] > resultTally[maxKey] ? cur[0] : maxKey,
-    null);
+  // Personas—majority tag picked
+  let persona = null, personaType = null;
+  if (answers.length === questions.length && questions.length > 0) {
+    const tags = answers.map((idx, i) => questions[i].answers[idx].persona);
+    personaType = getPersonalityType(tags);
+    persona = {
+      name: personaType.name,
+      description: personaType.desc,
+      resume: personaType.resume,
+      aura: personaType.aura,
+      emoji: personaType.emoji,
+      social: personaType.social
+    };
   }
 
-  const resultKey = answers.length === QUESTIONS.length ? getResultKey() : null;
-  const persona = resultKey ? PERSONAS[resultKey] : null;
-
-  // Shareable card text generation
+  // Copy/share text
   function getShareText() {
     if (!persona) return "";
-    return `🌐 My Internet Ego: ${persona.name}! 🌈\n\n${persona.description}\n\nFake Résumé: ${persona.resume}\nAura Color: ${persona.aura}\nSocial suggestion: ${persona.social}\n\nWhat’s your internet alter ego? ➡️ Try the Internet Ego Mirror!`;
+    return `🌈 My Internet Ego: ${persona.name}!  🤩\n\n${persona.description}\n\nRésumé: ${persona.resume}\nAura Color: ${persona.aura}\nSocial suggestion: ${persona.social}\n\nQuiz made with Open Trivia DB 🟣\nTry the Internet Ego Mirror!`;
   }
-
-  // Handle share: copy result to clipboard
   function handleShare() {
     if (!navigator?.clipboard) return;
     navigator.clipboard.writeText(getShareText());
@@ -178,32 +168,53 @@ function App() {
     setTimeout(() => setCopied(false), 1700);
   }
 
-  // --- Theming for modern, playful, minimal style
-  React.useEffect(() => {
-    // Minimal accent for the quiz app
+  // Vibrant gradient background per step
+  useEffect(() => {
     document.body.style.background =
-      step === 0
-        ? "var(--bg-primary)"
-        : step > QUESTIONS.length
-        ? "#fcfdff"
-        : "#fcfdff";
-    document.body.style.transition = "background .3s";
-  }, [step]);
+      step === 0 ? BG_GRAD :
+      step > (questions.length || 0) ? CARD_GRAD : BG_GRAD;
+    document.body.style.transition = "background .4s";
+  }, [step, questions.length]);
 
-  // MAIN FLOW
   return (
     <div className="iemo-app">
-      <div className="iemo-card">
+      <div className="iemo-card blitz-card">
         {step === 0 && <WelcomeScreen onStart={handleStart} />}
-        {step > 0 && step <= QUESTIONS.length && (
+        {loading && (
+          <div style={{
+            color: "#ff4ecd",
+            fontWeight: 600,
+            fontSize: "1.18em",
+            minHeight: "12em",
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"
+          }}>
+            <span className="rainbow-spinner"></span>
+            <div style={{ marginTop: "2em" }}>Loading new quiz...</div>
+          </div>
+        )}
+        {fetchError && (
+          <div style={{
+            color: "#ff654f",
+            fontWeight: 700,
+            background: "#fff2f2",
+            borderRadius: "12px",
+            padding: "1em",
+            textAlign: "center"
+          }}>
+            {fetchError}
+            <button className="iemo-btn iemo-btn-restart" onClick={handleRestart} style={{marginTop: "2em"}}>Retry</button>
+          </div>
+        )}
+        {(step > 0 && step <= (questions.length || 0) && !loading && !fetchError) && (
           <QuestionScreen
-            questionIdx={step - 1}
-            total={QUESTIONS.length}
+            questionIdx={step-1}
+            total={questions.length}
+            question={questions[step-1]}
             onAnswer={handleAnswer}
-            selected={answers[step - 1]}
+            selected={answers[step-1]}
           />
         )}
-        {step > QUESTIONS.length && persona && (
+        {(step > (questions.length || 0) && persona != null && !loading && !fetchError) && (
           <ResultScreen
             persona={persona}
             shareText={getShareText()}
@@ -213,13 +224,23 @@ function App() {
           />
         )}
       </div>
-      <div className="iemo-footer">
+      <div className="iemo-footer" style={{
+        width: "100vw",
+        justifyContent: "center",
+        fontWeight: 900,
+        fontSize: "1.03em",
+        background: "linear-gradient(90deg,#ff4ecd,#6C63FF,#23ce6b,#ffc621,#FF6584)",
+        backgroundClip: "text",
+        WebkitBackgroundClip: "text",
+        color: "transparent",
+        textShadow: "0 2px 6px #d0cdf1, 0 0px 32px #23ce6aa9"
+      }}>
         <span className="iemo-footer-brand">
-          <span style={{ color: COLORS.primary }}>Internet</span>{" "}
-          <span style={{ color: COLORS.accent }}>Ego</span>{" "}
-          <span style={{ color: COLORS.secondary }}>Mirror</span>
+          <span style={{ color: "#6C63FF" }}>Internet</span>{" "}
+          <span style={{ color: "#23ce6b" }}>Ego</span>{" "}
+          <span style={{ color: "#FF6584" }}>Mirror</span>
         </span>
-        <span className="iemo-footer-mini">| © 2024</span>
+        <span className="iemo-footer-mini">| © 2024 | Uses <a href="https://opentdb.com/api_config.php" target="_blank" rel="noopener noreferrer" style={{ color: "#ffbf00", fontWeight: 700, textDecoration: "underline" }}>Open Trivia DB</a></span>
       </div>
     </div>
   );
@@ -229,43 +250,69 @@ function App() {
 function WelcomeScreen({ onStart }) {
   return (
     <>
-      <h1 className="iemo-title">
-        <span role="img" aria-label="mirror">
-          🪞
-        </span>{" "}
-        Internet Ego Mirror
+      <h1 className="iemo-title rainbow-header" style={{fontWeight:900}}>
+        <span role="img" aria-label="mirror">🪞</span>{" "}
+        <span>Internet Ego Mirror</span>
       </h1>
-      <p className="iemo-desc">
-        Discover your digital alter ego through 8 playful, quirky internet questions! Find out who you *really* are online, then share your persona.
+      <p className="iemo-desc" style={{fontSize:"1.16rem", background: "rgba(255,108,216,0.10)", borderRadius:"14px", padding:"1em", boxShadow:"0 4px 24px #ff4ecd21", color: "#611991"}}>
+        Discover your digital alter ego with surprise internet trivia! Every time you start, you get eight colorful, wild questions drawn live from the <a href="https://opentdb.com/" rel="noopener noreferrer" style={{color:'#6C63FF', fontWeight:600}}>Open Trivia DB</a>.<br/>
+        No login, no key needed. <b>Click START for a new set!</b>
       </p>
-      <button className="iemo-btn iemo-btn-accent" onClick={onStart}>
-        Start Quiz
+      <button className="iemo-btn iemo-btn-accent" onClick={onStart} style={{
+        background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584)",
+        fontSize: "1.38em", boxShadow: "0 2px 18px #ff4ecd2a,0 1.5px 12px #23ce6a36"
+      }}>
+        🎉 Start Quiz 🎉
       </button>
     </>
   );
 }
 
 // --- QUESTION SCREEN ---
-function QuestionScreen({ questionIdx, total, onAnswer, selected }) {
-  const q = QUESTIONS[questionIdx];
+function QuestionScreen({ questionIdx, total, question, onAnswer, selected }) {
+  if (!question) return null;
   return (
     <>
-      <div className="iemo-steps">
-        Question {questionIdx + 1} of {total}
+      <div className="iemo-steps rainbow-label">
+        <span style={{
+          background: PALETTE[questionIdx % PALETTE.length],
+          color: "#fff",
+          padding: "2px 14px",
+          borderRadius: "18px",
+          marginRight: "9px",
+          fontWeight: 700
+        }}>Q{questionIdx + 1}</span>
+        <span>of {total}</span>
       </div>
-      <h2 className="iemo-q">{q.question}</h2>
-      <div className="iemo-answers">
-        {q.answers.map((a, idx) => (
+      <h2 className="iemo-q rampage-gradient">{question.question}</h2>
+      <div className="iemo-answers rainbow-bg">
+        {question.answers.map((a, idx) => (
           <button
             key={a.text}
-            className={`iemo-answer-card ${selected === idx ? "selected" : ""}`}
+            className={`iemo-answer-card vibe-card ${selected === idx ? "selected" : ""}`}
+            style={{
+              background: selected === idx
+                ? `linear-gradient(80deg,${PALETTE[(questionIdx + idx*2+1)%PALETTE.length]},#fff)`
+                : `linear-gradient(120deg,${PALETTE[(questionIdx + idx)%PALETTE.length]},#f9f8ff 80%)`,
+              borderColor: selected === idx ? PALETTE[questionIdx % PALETTE.length] : "#efefef",
+              color: selected === idx ? "#2e195c" : "#21232c",
+              fontWeight: selected === idx ? 800 : 600,
+              fontSize: "1.13em",
+              letterSpacing: selected===idx?"0.01em":"0.01em",
+              transition: "all .23s"
+            }}
             onClick={() => onAnswer(idx)}
             tabIndex="0"
             aria-pressed={selected === idx}
             aria-label={a.text}
-            disabled={selected === idx}
+            disabled={typeof selected !== "undefined"}
           >
-            {a.text}
+            <b>{a.text}</b>
+            <span className="persona-tag" style={{
+              marginLeft:"10px", fontSize:"0.72em", color:"#fff",
+              background: "#7b04c4", borderRadius:"11px", padding:"2px 10px",
+              opacity:0.7
+            }}>{a.persona}</span>
           </button>
         ))}
       </div>
@@ -275,48 +322,65 @@ function QuestionScreen({ questionIdx, total, onAnswer, selected }) {
 
 // --- RESULTS SCREEN ---
 function ResultScreen({ persona, shareText, copied, onRestart, onShare }) {
+  // blast aura
   return (
-    <div className="iemo-result">
-      <div
-        className="iemo-badge"
-        style={{
-          background: persona.aura,
-          borderColor: persona.aura,
-          color: "#fff",
-        }}
-      >
+    <div className="iemo-result" style={{
+      background: "linear-gradient(120deg,#f6edfd 70%,#d8fce9 100%)",
+      borderRadius: "22px",
+      boxShadow: "0 2px 36px #ffd0ff1f",
+      margin: "-1em -1em 0",
+      padding: "1em"
+    }}>
+      <div className="iemo-badge" style={{
+        background: `radial-gradient(circle at 35% 48%,${persona.aura} 85%,#fff 100%)`,
+        borderColor: persona.aura,
+        color: "#fff",
+        boxShadow: `0 2px 18px ${persona.aura}44`
+      }}>
         {persona.emoji}
       </div>
-      <h2 className="iemo-persona-name">{persona.name}</h2>
+      <h2 className="iemo-persona-name rampage-gradient">{persona.name}</h2>
       <div className="iemo-res-section">
-        <div className="iemo-persona-title">{persona.resume}</div>
+        <div className="iemo-persona-title rainbow-label">{persona.resume}</div>
       </div>
       <div className="iemo-res-section">
-        <span className="iemo-persona-desc">{persona.description}</span>
+        <span className="iemo-persona-desc" style={{
+          background:"#fff8f9", color: "#a334be", padding:"0.7em", borderRadius:"12px"
+        }}>{persona.description}</span>
       </div>
       <div className="iemo-res-section">
         <strong className="iemo-label">Aura Color</strong>
-        <span
-          className="iemo-color-sample"
-          style={{
-            background: persona.aura,
-            borderColor: persona.aura,
-          }}
-        ></span>
+        <span className="iemo-color-sample" style={{
+          background: persona.aura,
+          borderColor: persona.aura,
+          boxShadow: `0 1px 8px ${persona.aura}66`
+        }}></span>
       </div>
       <div className="iemo-res-section">
         <strong className="iemo-label">Social Media Suggestion:</strong>
-        <span className="iemo-social">{persona.social}</span>
+        <span className="iemo-social" style={{ color: persona.aura, fontWeight: 700 }}>{persona.social}</span>
       </div>
-      <div className="iemo-share-section">
-        <button className="iemo-btn iemo-btn-share" onClick={onShare}>
-          {copied ? "Copied!" : "Copy your persona card"}
+      <div className="iemo-share-section" style={{marginBottom: "1.5em"}}>
+        <button
+          className="iemo-btn iemo-btn-share"
+          onClick={onShare}
+          style={{
+            background: "linear-gradient(90deg,#ff4ecd,#36c6e7,#ffbf00 90%)",
+            color: "#fff", fontWeight: 700
+          }}
+        >
+          {copied ? "Copied!" : "🎈 Copy Persona!"}
         </button>
         <button className="iemo-btn iemo-btn-restart" onClick={onRestart}>
-          Try Again
+          🔄 Try Again
         </button>
       </div>
-      <pre className="iemo-share-card">{shareText}</pre>
+      <pre className="iemo-share-card" style={{
+        border: `2px solid ${persona.aura}`,
+        background: "#fff6e6",
+        color: "#9C27B0",
+        fontWeight: 600
+      }}>{shareText}</pre>
     </div>
   );
 }
