@@ -36,7 +36,36 @@
   animation-timing-function: cubic-bezier(.45,.34,.61,1.15);
   animation-iteration-count: infinite;
   animation-direction: alternate;
+  /* Overflow is handled by parent (.iemo-bg-animated); scaling via inline style */
+  /* Responsive overflow safe areas: */
+  /* No hard width/height here for SVGs—set inline for responsivity as .large-sports-float-icon */
 }
+
+/* Ensure that icons scale up and are never clipped/cut on mobile/small screens */
+.large-sports-float-icon {
+  min-width: 72px;
+  min-height: 72px;
+  max-width: 42vw;
+  max-height: 42vh;
+  /* Responsive scaling (redundant with inline style, but makes doubly sure) */
+  aspect-ratio: 1;
+  /* On the smallest screens, ensure we never overflow by using clamp in inline style. */
+}
+
+/* On mobile, slightly shrink but still keep visible and not cut */
+@media (max-width: 540px) {
+  .large-sports-float-icon {
+    min-width: 48px;
+    min-height: 48px;
+    max-width: 60vw;
+    max-height: 28vh;
+    /* Allow slight overlap to avoid cut-off, but reduce sizes */
+    left: unset !important;
+    right: unset !important;
+  }
+}
+
+/* (No changes to animation/keyframes) */
 
 @keyframes floatSportsMove {
   0% {

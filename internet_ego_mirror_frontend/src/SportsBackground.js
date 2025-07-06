@@ -99,32 +99,49 @@ const SPORTS_SVGS = [
   },
 ];
 
-// Helper to randomize floating animation properties
+/**
+ * Returns a random integer between a and b, inclusive
+ */
 function randInt(a, b) {
   return Math.floor(Math.random() * (b - a + 1)) + a;
 }
 
-// Generate N animated sports SVGs, floating with random properties
+// Generates N animated sports SVGs, much larger and more responsive (uses vw/vh for scaling).
 function FloatingSportsSVGs({ count = 8 }) {
   let items = [];
+  // Use CSS clamp for responsive sizes
   for (let i = 0; i < count; ++i) {
-    // Pick a random SVG
     const idx = Math.floor(Math.random() * SPORTS_SVGS.length);
-    // Random position and animation
+
+    // Responsive large size: up to 24vw/25vh, minimum 100px, randomize per icon but always big
+    const baseVw = randInt(16, 23); // Large width in vw
+    const baseVh = randInt(16, 25); // Large height in vh
+    // Center offset so SVG doesn't overflow out-of-bounds, accounting for larger icons
+    const left = randInt(2, 74);  // less up to near edge to avoid cut-off
+    const top = randInt(6, 65);
+
+    // Use width/height via CSS clamp for scaling
     const style = {
-      left: `${randInt(5, 88)}vw`,
-      top: `${randInt(6, 80)}vh`,
-      animationDuration: `${randInt(8, 18)}s`,
-      animationDelay: `${randInt(-6, 7)}s`,
-      filter: "drop-shadow(0 3px 20px #ffbf0066) drop-shadow(0 3px 16px #6c63ff22)",
-      width: 44 + randInt(-2,6),
-      height: 44 + randInt(-2,6),
-      opacity: 0.91
+      left: `clamp(0vw, ${left}vw, 90vw)`,
+      top: `clamp(0vh, ${top}vh, 80vh)`,
+      width: `clamp(100px, ${baseVw}vw, 34vw)`,
+      height: `clamp(100px, ${baseVh}vh, 34vh)`,
+      minWidth: '80px',
+      minHeight: '80px',
+      maxWidth: '40vw',
+      maxHeight: '40vh',
+      opacity: 0.92,
+      zIndex: 2,
+      animationDuration: `${randInt(10, 22)}s`,
+      animationDelay: `${randInt(-5, 9)}s`,
+      filter: "drop-shadow(0 5px 28px #6c63ff33) drop-shadow(0 8px 36px #ffbf0031)",
+      pointerEvents: "none"
     };
+
     items.push(
       <div
-        key={`anim-sports-icon-${i}-${idx}`}
-        className="sports-float-icon"
+        key={`big-anim-sports-icon-${i}-${idx}`}
+        className="sports-float-icon large-sports-float-icon"
         style={style}
         aria-hidden="true"
       >
@@ -137,13 +154,13 @@ function FloatingSportsSVGs({ count = 8 }) {
 
 /**
  * PUBLIC_INTERFACE
- * Renders ONLY lively, colorful, animated sports SVGs (balls/bats/racquets/nets/fields) floating and moving around, as the app background.
- * Removes random background blobs/shapes; focuses on sports themes.
+ * Renders ONLY large, colorful, animated sports SVGs (balls/bats/racquets/nets/fields) floating and moving around, as the app background.
+ * Icons are much larger and responsively scaled for strong visual impact, and don't get cut off.
  */
 function SportsBackground() {
   return (
     <div className="iemo-bg-animated" aria-hidden="true">
-      <FloatingSportsSVGs count={10}/>
+      <FloatingSportsSVGs count={8} />
     </div>
   );
 }
