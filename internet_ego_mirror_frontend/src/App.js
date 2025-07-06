@@ -349,17 +349,21 @@ function App() {
 }
 
 /**
- * Refactored WelcomeScreen – floating text-only, bold, readable, no boxes or glass
+ * Refactored WelcomeScreen – now only big clear SVG symbol, new site name & custom tagline, all animated, with bold animated Start
  */
 function WelcomeScreen({ onStart }) {
-  // New bold sports graphic and site title, replacing all previous text/theme
+  // SVG symbol: large, uniquely clear & spaced - cricket bat, cricket ball, football, tennis racquet, all readable.
+  // Fonts: Highly readable, playful, promo-style; animated "pop" for site name, float-bounce for tagline.
+  // All old text removed (no legacy intro).
+  // 'Start' button: bold, animated, as before.
+
   return (
     <div
       style={{
         position: "relative",
         zIndex: 160,
         width: "100vw",
-        maxWidth: "98vw",
+        maxWidth: "99vw",
         margin: "7vh auto 0 auto",
         textAlign: "center",
         background: "none",
@@ -369,95 +373,78 @@ function WelcomeScreen({ onStart }) {
         pointerEvents: "auto",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
-      {/* Large sports SVG composite symbol */}
+      {/* Unique sports SVG: Bat, Ball, Football, Tennis Racquet, all distinct & crisp */}
       <div
         style={{
           display: "block",
-          margin: "0 auto 1.6em auto",
-          width: "clamp(260px,42vw,520px)",
-          height: "clamp(200px,31vw,330px)",
+          margin: "0 auto 2em auto",
+          width: "clamp(295px,47vw,565px)",
+          height: "clamp(195px,31vw,325px)",
           position: "relative",
-          filter: "drop-shadow(0 7px 42px #23ce6bd0) drop-shadow(0 1px 20px #ffbf0060)"
+          filter: "drop-shadow(0 7px 49px #23ce6bbb) drop-shadow(0 1px 30px #ffbf0090)"
         }}
         aria-hidden="true"
       >
-        <svg width="98%" height="100%" viewBox="0 0 410 265" style={{ maxWidth: "98vw" }}>
-          {/* Vivid composite: Soccer, Tennis, Cricket bat/ball, Basketball, Rugby, Shuttlecock, Volleyball */}
-          {/* Tennis Racket */}
-          <ellipse cx="60" cy="102" rx="40" ry="68" fill="#23ce6b" stroke="#36c6e7" strokeWidth="6"/>
-          <rect x="44" y="159" width="33" height="59" rx="13" fill="#fed502" stroke="#bba101" strokeWidth="3" />
-          {/* Tennis Ball overlapping racket */}
-          <circle cx="130" cy="205" r="20" fill="#fefd46" stroke="#e6d800" strokeWidth="4"/>
-          {/* Cricket Bat */}
-          <rect x="205" y="114" width="17" height="99" rx="6.9" fill="#f9c97d" stroke="#ba8530" strokeWidth="5" transform="rotate(20 214 174)" />
-          {/* Cricket Bat Grip */}
-          <rect x="215" y="102" width="8" height="26" rx="3" fill="#ba2177" transform="rotate(20 219 115)" />
-          {/* Cricket Ball */}
-          <circle cx="186" cy="223" r="19" fill="#ff4ecd" stroke="#ba2177" strokeWidth="4"/>
-          <ellipse cx="186" cy="223" rx="5" ry="17" fill="#fff" opacity="0.13"/>
-          {/* Basketball */}
-          <circle cx="322" cy="88" r="39" fill="#ff654f" stroke="#fe7b24" strokeWidth="6"/>
-          <path d="M283 88h78" stroke="#fff" strokeWidth="2.4"/>
-          <path d="M293 62C308 97 337 122 357 138" stroke="#fff" strokeWidth="2"/>
-          <path d="M351 62C336 97 307 122 287 138" stroke="#fff" strokeWidth="2"/>
-          <path d="M322 49v78" stroke="#fff" strokeWidth="2"/>
-          {/* Rugby Ball */}
-          <ellipse cx="350" cy="204" rx="48" ry="25" fill="#fff" stroke="#ffbf00" strokeWidth="4"/>
-          <rect x="316" y="192" width="66" height="22" rx="9" fill="#23ce6b" />
-          {/* Shuttlecock */}
-          <rect x="239" y="56" width="8" height="42" rx="2.5" fill="#bafcd6" transform="rotate(-11 243 78)"/>
-          <rect x="252" y="62" width="7" height="36" rx="2.3" fill="#b4eafe" transform="rotate(5 255 80)"/>
-          <rect x="245" y="66" width="7" height="29" rx="2" fill="#fff"/>
-          <ellipse cx="249" cy="109" rx="21" ry="12" fill="#dedede"/>
-          <ellipse cx="249" cy="113" rx="15" ry="3.7" fill="#6C63FF" opacity="0.16"/>
-          {/* Volleyball (overlapping rugby) */}
-          <circle cx="387" cy="149" r="19" fill="#36c6e7" stroke="#15a3b4" strokeWidth="3"/>
-          <path d="M368 163Q387 130 406 163" stroke="#fff" strokeWidth="2"/>
-          <path d="M370 143Q387 177 404 143" stroke="#fff" strokeWidth="2"/>
-          {/* Soccer Ball */}
-          <circle cx="108" cy="67" r="36" fill="#fff" stroke="#343434" strokeWidth="5"/>
-          <polygon points="108,45 124,58 124,78 108,90 92,78 92,58" fill="#343434"/>
-          <circle cx="108" cy="63" r="16" fill="#343434"/>
+        <svg width="100%" height="100%" viewBox="0 0 480 245" style={{ maxWidth: "99vw" }}>
+          {/* Cricket Bat (Left, angled) */}
+          <rect x="42" y="97" width="27" height="110" rx="10.2" fill="#f8cf91" stroke="#ba8530" strokeWidth="5" transform="rotate(-18 56 152)" />
+          {/* Bat Grip */}
+          <rect x="57" y="85" width="11" height="30" rx="4" fill="#ba2177" stroke="#fff" strokeWidth="2" transform="rotate(-18 62.5 100)" />
+          {/* Cricket Ball (front of bat) */}
+          <circle cx="61" cy="210" r="19" fill="#ff4ecd" stroke="#ba2177" strokeWidth="4"/>
+          <ellipse cx="61" cy="210" rx="5" ry="14" fill="#fff" opacity="0.13"/>
+          {/* Tennis Racquet (right side, vertical) */}
+          <ellipse cx="405" cy="93" rx="36" ry="62" fill="#31e47c" stroke="#36c6e7" strokeWidth="6"/>
+          <rect x="388" y="146" width="35" height="57" rx="15" fill="#fed502" stroke="#bba101" strokeWidth="3" />
+          {/* Tennis Ball (in front of racquet) */}
+          <circle cx="462" cy="186" r="20" fill="#fefd46" stroke="#e6d800" strokeWidth="4"/>
+          {/* Football (soccer, near center) */}
+          <circle cx="198" cy="93" r="34" fill="#fff" stroke="#343434" strokeWidth="5"/>
+          <polygon points="198,73 211,83 211,103 198,113 185,103 185,83" fill="#343434"/>
+          <circle cx="198" cy="90" r="15" fill="#343434"/>
+          {/* Shadow beneath for clarity */}
+          <ellipse cx="240" cy="240" rx="155" ry="11" fill="#23232311" />
         </svg>
       </div>
-      {/* New site name! */}
+      {/* New site name (large, animated, readable font) */}
       <div
         style={{
-          margin: "0 0 1.8em 0",
-          fontFamily: "'Fredoka','Segoe UI',sans-serif",
+          margin: "0 0 1.27em 0",
+          fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
           fontWeight: 900,
-          fontSize: "clamp(2.4em, 6.8vw, 4.2em)",
+          fontSize: "clamp(2.5em, 7vw, 4.7em)",
           letterSpacing: "-0.01em",
-          background: "linear-gradient(90deg,#ff4ecd,#6C63FF,#23ce6b,#FF6584 100%)",
+          background: "linear-gradient(90deg,#ff4ecd,#36c6e7,#23ce6b,#FF6584 100%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           color: "transparent",
-          lineHeight: 1.08,
-          textShadow: "0 7px 45px #fff, 0 2.6px 33px #23ce6bcc, 0 0px 28px #ff4ecd97"
+          lineHeight: 1.07,
+          textShadow: "0 8px 48px #fff, 0 3.6px 29px #23ce6bcc, 0 0px 28px #ff4ecd99",
+          animation: "pop-welcome-title 1.06s cubic-bezier(.62,-0.23,.54,1.39) both"
         }}
       >
-        The Totally Turf Sports Quiz
-        <span role="img" aria-label="turf" style={{ fontSize: "0.7em", verticalAlign: "middle", marginLeft: "0.23em"}}>🦶🏏⚽️🎾🏀🏸🏐</span>
+        the clueless cup
       </div>
-      {/* Small subtitle for extra humor */}
+      {/* Animated, visually charming tagline */}
       <div
         style={{
           fontWeight: 800,
-          fontSize: "clamp(1.14em,2.7vw,1.55em)",
+          fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
+          fontSize: "clamp(1.11em,2.8vw,1.52em)",
           color: "#fed502",
-          margin: "0 0 2.8em 0",
-          textShadow: "0 5px 24px #23ce6b90, 0 1.5px 11px #fff, 0 2.5px 12px #ff4ecd88",
+          margin: "0 0 2.4em 0",
+          textShadow: "0 7px 20px #23ce6ba0, 0 2.5px 13px #fff, 0 2.5px 18px #ff4ecd99",
           background: "none",
-          filter: "brightness(1.19)",
-          letterSpacing: "0.01em"
+          filter: "brightness(1.23)",
+          letterSpacing: "0.01em",
+          animation: "float-tagline 1.7s cubic-bezier(.63,-0.07,.57,1.18) both"
         }}
       >
-        The silliest battle for athletic internet infamy begins now!
+        For those who bench press trivia, not weights.
       </div>
-      {/* Animated Start button */}
       <div>
         <button
           className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce"
@@ -469,37 +456,78 @@ function WelcomeScreen({ onStart }) {
             color: "#fff",
             border: "none",
             borderRadius: "2.9em",
-            boxShadow: "0 6px 38px #23ce6b88, 0 1.5px 24px #fed50266",
-            textShadow: "0 0px 22px #fff, 0 1.9px 20px #ff4ecdcc",
-            padding: "1.25em 2.8em",
-            margin: "1.2em 0 2.2em 0",
+            boxShadow: "0 7px 41px #23ce6b88, 0 2px 28px #fed50282",
+            textShadow: "0 0px 22px #fff, 0 2.1px 22px #ff4ecdcc",
+            padding: "1.24em 2.7em",
+            margin: "1.1em 0 2.3em 0",
             outline: "none",
             cursor: "pointer",
-            animation: "sports-bounce-glow 1.32s cubic-bezier(.64,.06,.34,1.41) infinite alternate"
+            animation: "sports-bounce-glow 1.18s cubic-bezier(.66,.09,.33,1.35) infinite alternate"
           }}
         >
-          <span role="img" aria-label="start whistle" style={{ fontSize: "1.13em", verticalAlign: "middle", marginRight: "0.41em"}}>🏁</span>
-          Start the Showdown!
-          <span role="img" aria-label="tada" style={{ fontSize: "1.13em", verticalAlign: "middle", marginLeft: "0.41em"}}>🥳</span>
+          <span role="img" aria-label="start whistle" style={{ fontSize: "1.12em", verticalAlign: "middle", marginRight: "0.39em"}}>🏁</span>
+          Start
+          <span role="img" aria-label="tada" style={{ fontSize: "1.12em", verticalAlign: "middle", marginLeft: "0.39em"}}>🎉</span>
         </button>
       </div>
-      {/* Button animation keyframes injected here for isolation */}
+      {/* Isolated keyframes for custom animation */}
       <style>
         {`
-        @keyframes sports-bounce-glow {
-          0%   { transform: translateY(0) scale(1);
-                 filter: drop-shadow(0 0 16px #36c6e765) brightness(1.08);}
-          18%  { transform: translateY(-17px) scale(1.08);
-                 filter: drop-shadow(0 0 33px #fed50273) brightness(1.19);}
-          45%  { transform: translateY(7px) scale(1.03);
-                 filter: drop-shadow(0 0 22px #23ce6bcc) brightness(1.1);}
-          61%  { transform: translateY(-9px) scale(1.13);
-                 filter: drop-shadow(0 0 44px #ff4ecd88) brightness(1.21);}
-          74%  { transform: translateY(5px) scale(1.07);
-                 filter: drop-shadow(0 0 28px #fed50299) brightness(1.13);}
-          100% { transform: translateY(0) scale(1.02);
-                 filter: drop-shadow(0 0 26px #23ce6baa) brightness(1.11);}
-        }
+          @keyframes pop-welcome-title {
+            0% {
+              opacity: 0;
+              transform: scale(0.75) translateY(44px);
+              filter: brightness(2) blur(4px);
+            }
+            77% {
+              opacity: 1;
+              transform: scale(1.16) translateY(-6px);
+              filter: brightness(1.25) blur(0.5px);
+            }
+            86% {
+              opacity: 1;
+              transform: scale(0.94) translateY(4px);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1.04) translateY(0);
+              filter: brightness(1.07) blur(0px);
+            }
+          }
+          @keyframes float-tagline {
+            0% {
+              opacity: 0;
+              transform: translateY(46px) scale(0.84) skewX(-5.2deg);
+              filter: blur(3.6px) brightness(2.4);
+            }
+            62% {
+              opacity: 1;
+              transform: translateY(-7px) scale(1.09) skewX(2deg);
+              filter: blur(0.5px) brightness(1.14);
+            }
+            87% {
+              transform: translateY(4px) scale(0.96);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0) scale(1.02);
+              filter: blur(0) brightness(1.12);
+            }
+          }
+          @keyframes sports-bounce-glow {
+            0%   { transform: translateY(0) scale(1);
+                   filter: drop-shadow(0 0 19px #36c6e765) brightness(1.13);}
+            18%  { transform: translateY(-13px) scale(1.12);
+                   filter: drop-shadow(0 0 39px #fed50289) brightness(1.20);}
+            45%  { transform: translateY(8px) scale(1.04);
+                   filter: drop-shadow(0 0 27px #23ce6bcc) brightness(1.14);}
+            61%  { transform: translateY(-7px) scale(1.09);
+                   filter: drop-shadow(0 0 32px #ff4ecd88) brightness(1.21);}
+            74%  { transform: translateY(6px) scale(1.07);
+                   filter: drop-shadow(0 0 28px #fed502aa) brightness(1.13);}
+            100% { transform: translateY(0) scale(1.01);
+                   filter: drop-shadow(0 0 25px #23ce6baa) brightness(1.14);}
+          }
         `}
       </style>
     </div>
