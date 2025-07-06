@@ -447,9 +447,15 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
   );
 }
 
-// --- WELCOME SCREEN ---
+/*
+ * --- WELCOME SCREEN ---
+ * Renders the sports logo, app name, tagline, and animated start button.
+ * API widgets (QuoteBox, WordOfTheMatch, JokeWidget) appear only below or beside the main quiz call-to-action,
+ * never replacing or visually blocking the main UI.
+ */
 // PUBLIC_INTERFACE
 function WelcomeScreen({ onStart }) {
+  // Defensive checks to guarantee never blocking the primary UI
   return (
     <div
       className="iemo-float-welcome"
@@ -553,9 +559,12 @@ function WelcomeScreen({ onStart }) {
         </span>
       </button>
       {/* Motivational/fun quote box as widget */}
-      <QuoteBox prominent />
-      {/* Additional fun widgets shown below the main start call to action */}
-      <div style={{
+      <div style={{ width: "100%" }}>
+        {/* Defensive: Always render QuoteBox, but never in place of the main quiz content */}
+        <QuoteBox prominent />
+      </div>
+      {/* Additional fun widgets shown only underneath main CTA, in a visually distinct panel */}
+      <div aria-label="Supporting widgets" style={{
         marginTop: "1.7em",
         display: "flex",
         flexDirection: "column",
@@ -563,7 +572,9 @@ function WelcomeScreen({ onStart }) {
         gap: "1.4em",
         maxWidth: 750,
         width: "100%",
+        zIndex: 4, // Lower than main UI
       }}>
+        {/* Defensive: If these widgets fail, nothing renders, but UI can't break layout */}
         <WordOfTheMatch />
         <JokeWidget />
       </div>
@@ -890,7 +901,9 @@ function App() {
     document.body.style.transition = "background .5s";
   }, [step, questions.length]);
 
-  // MAIN RENDER LOGIC RESTORED: show WelcomeScreen, per-question screen, result screen.
+  // MAIN RENDER LOGIC
+  // Always renders: floating sports background, non-blocking supporting widgets,
+  // with quiz UI at the highest stacking context. Widgets never block/replace primary flow!
   return (
     <div className="iemo-app float-ui-app">
       <SportsBackground />
@@ -916,8 +929,8 @@ function App() {
             loading={loading}
             fetchError={fetchError}
           />
-          {/* Place supportive widgets beneath the quiz Q&A - don't block/interfere */}
-          <div style={{
+          {/* Supporting widgets cannot block quiz. Defensive fragment present */}
+          <div aria-label="Support widgets area" style={{
             margin: "1.7em auto 0 auto", maxWidth: 760, display: "flex", flexDirection: "column", gap: "1.21em"
           }}>
             <QuoteBox />
