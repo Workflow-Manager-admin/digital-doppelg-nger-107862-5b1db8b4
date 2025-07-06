@@ -107,26 +107,26 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
 
-  // Fetch new questions on start (computer/gadget tech themed only)
+  // Fetch new questions on start (sports-themed, sometimes cricket, always playful!)
   async function fetchQuestions() {
     setLoading(true);
     setFetchError("");
     setQuestions([]);
     setAnswers([]);
-    // Always tech trivia: Category 18 (Science: Computers) from Open Trivia DB
+
+    // Use Open Trivia DB Sports category (21) so quiz is about sports (sometimes includes cricket)
+    // See: https://opentdb.com/api_config.php
     const DIFFICULTY = ["easy", "medium", "hard"][Math.floor(Math.random() * 3)];
-    const categories = [18]; // 18 is Science: Computers, see https://opentdb.com/api_config.php
-    // In the future, if Open Trivia DB adds a gadgets or related category, add its id to this array.
-    const category = categories[Math.floor(Math.random() * categories.length)];
-    let url =
-      `https://opentdb.com/api.php?amount=8&type=multiple&category=${category}&encode=url3986`;
+    const urlBase = "https://opentdb.com/api.php?amount=8&type=multiple&category=21&encode=url3986";
+    // About 80% of time, we add randomized difficulty for variety
+    let url = urlBase;
     if (Math.random() < 0.8) url += `&difficulty=${DIFFICULTY}`;
     try {
       const resp = await fetch(url);
       const data = await resp.json();
       if (!data.results || !data.results.length) {
         setFetchError(
-          "Could not load technology questions from server. Please try again."
+          "Could not load sports questions from server. Please try again."
         );
         setLoading(false);
         return;
