@@ -28,6 +28,69 @@
   background: linear-gradient(120deg,#fdf39e 0%,#fecdff 35%,#82ffc8 70%,#63a8ff 100%) !important;
   animation: super-bright-bg-burst 18s cubic-bezier(.67,.08,.23,1) infinite alternate;
 }
+/* Ensure the main app container always has the highest stacking context for interactivity */
+.iemo-app,
+.float-ui-app {
+  position: relative;
+  z-index: 200 !important;
+}
+
+/* Ensure quiz Q&A, welcome, and result screens float above widgets and always interactive */
+.iemo-float-welcome,
+.iemo-float-qa-wrap,
+.iemo-result.iemo-float-result-bubble,
+.iemo-float-question-glow,
+.iemo-float-header-glow,
+.iemo-desc.iemo-float-desc-glow {
+  z-index: 212 !important;
+  position: relative;
+}
+
+/* Answer cards/buttons must always be above animated layers */
+.iemo-answer-card,
+.iemo-answer-card.iemo-float-answer-btn {
+  z-index: 215 !important;
+  position: relative;
+}
+
+.iemo-btn,
+.iemo-btn-accent,
+.iemo-btn-share,
+.iemo-btn-restart {
+  z-index: 217 !important;
+  position: relative;
+}
+
+.quote-box {
+  z-index: 220 !important;
+  position: relative;
+}
+
+/* Powered by logo/footer remains above decorative widgets */
+.iemo-footer {
+  z-index: 240 !important;
+  position: relative;
+}
+
+/* JokeWidget, NumberFact, and WordOfTheMatch widgets are visual, not interactive - lowered just below quiz for safety */
+.joke-widget-float-fix,
+.number-fact-float-fix,
+.word-match-float-fix {
+  z-index: 180 !important;
+  position: relative;
+}
+
+/* Fix pointer events so that only the quiz container is clickable */
+.iemo-bg-animated,
+.sparkles-bg,
+.sports-bg-lights-bg,
+.sports-bg-glow1,
+.sports-bg-glow2,
+.sports-bg-stadium-arc,
+.sports-bg-bottom-ellipse,
+.sports-bg-line {
+  pointer-events: none !important;
+}
 @keyframes super-bright-bg-burst {
   0%   { background: linear-gradient(109deg,#fbfdbe 0%,#fecdff 39%,#cbecff 80%,#63a8ff 100%);}
   18%  { background: linear-gradient(122deg,#fffae8 4%,#f5fff5 36%,#beeeff 62%,#fecdff 99%);}

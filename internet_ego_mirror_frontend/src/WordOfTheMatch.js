@@ -72,6 +72,7 @@ function WordOfTheMatch({ sportsWordList = null }) {
 
   return (
     <div
+      className="word-match-float-fix"
       style={{
         margin: "2.6em auto 1.1em auto",
         padding: "1.67em 1.2em 0.91em 2em",
@@ -84,7 +85,8 @@ function WordOfTheMatch({ sportsWordList = null }) {
         fontWeight: 900,
         fontSize: "clamp(1.21em,2vw,1.34em)",
         textAlign: "left",
-        position: "relative"
+        position: "relative",
+        pointerEvents: "none"
       }}
       aria-live="polite"
     >

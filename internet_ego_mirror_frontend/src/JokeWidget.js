@@ -58,6 +58,7 @@ function JokeWidget() {
 
   return (
     <div
+      className="joke-widget-float-fix"
       style={{
         margin: "2.7em auto 1.18em auto",
         background: "linear-gradient(92deg, #ffeaff 65%, #def8e1 110%)",
@@ -73,7 +74,8 @@ function JokeWidget() {
         position: "relative",
         letterSpacing: "0.009em",
         transition: "background 0.14s",
-        minHeight: "3.6em"
+        minHeight: "3.6em",
+        pointerEvents: "none"
       }}
       aria-live="polite"
     >

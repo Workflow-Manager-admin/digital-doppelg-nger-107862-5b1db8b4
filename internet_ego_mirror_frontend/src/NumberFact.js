@@ -38,6 +38,7 @@ function NumberFact({ number, forScore = true }) {
 
   return (
     <div
+      className="number-fact-float-fix"
       style={{
         margin: "2.3em auto 1.08em auto",
         background: "rgba(255, 234, 255, 0.22)",
@@ -50,7 +51,8 @@ function NumberFact({ number, forScore = true }) {
         padding: "1.15em 1.5em 1em 2em",
         fontSize: "clamp(1.01em, 2vw, 1.22em)",
         textAlign: "left",
-        letterSpacing: "0.01em"
+        letterSpacing: "0.01em",
+        pointerEvents: "none"
       }}
       aria-live="polite"
     >
