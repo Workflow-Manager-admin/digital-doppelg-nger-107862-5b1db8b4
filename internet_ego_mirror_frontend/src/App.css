@@ -324,4 +324,138 @@
   }
 }
 
-/* (Keep any other original app styles beneath this point as needed) */
+/* ==== FLOATING QUIZ LAYER/UI PROTECTION - ENSURE ALL ABOVE BACKGROUND ==== */
+.iemo-app, .float-ui-app {
+  position: relative;
+  z-index: 101;
+}
+
+.iemo-float-welcome,
+.iemo-float-qa-wrap,
+.iemo-result.iemo-float-result-bubble {
+  position: relative;
+  z-index: 120;
+  /* Vibrant glassmorphic white bg for readability, border, shadow, and subtle blur */
+  background: rgba(255,255,255,0.88);
+  box-shadow: 0 2px 24px #6c63ffd3, 0 9px 42px #efedfb60, 0 0 0 2px #6c63ff1b;
+  border-radius: 2.1em;
+  backdrop-filter: blur(8px) saturate(125%);
+  -webkit-backdrop-filter: blur(8px) saturate(125%);
+  margin: 1.4em auto 2.2em auto;
+  padding: 2.1em 2.1em 2.1em 2.1em;
+  max-width: clamp(330px, 83vw, 510px);
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  border: 1px solid #e6e0fd;
+}
+
+.iemo-float-welcome {
+  box-shadow: 0 3px 38px #ff4ecd58, 0 8px 42px #23ce6a38, 0 0 0 2px #6c63ff1d;
+}
+.iemo-float-qa-wrap {
+  box-shadow: 0 6px 36px #23ce6b69, 0 2.5px 18px #6C63FF40, 0 0 0 2px #23ce6b1e;
+}
+.iemo-result.iemo-float-result-bubble {
+  box-shadow: 0 6px 36px #ffbf0068, 0 2.5px 18px #6c63ff49, 0 0 0 2px #fed50216;
+}
+
+.iemo-answers.iemo-float-answers-flare,
+.iemo-float-question-step,
+.iemo-float-stepof,
+.iemo-q.iemo-float-question-glow {
+  z-index: 122;
+  position: relative;
+}
+
+.iemo-answer-card.iemo-float-answer-btn {
+  position: relative;
+  z-index: 130;
+  /* Add white glassmorphic background for even more contrast */
+  background: linear-gradient(120deg,rgba(255,255,255,0.98) 40%,rgba(255,255,255,0.8) 100%);
+  box-shadow: 0 2px 18px #6C63FF27, 0 12px 32px #ff4ecd27;
+  border-radius: 1.12em !important;
+  border-width: 2.2px !important;
+  font-weight: 700;
+}
+
+.iemo-answer-card.selected {
+  box-shadow: 0 8px 48px #ff4ecd5b, 0 14px 34px #36c6e786 !important;
+  outline: 2.2px solid #23ce6b99 !important;
+  background: linear-gradient(120deg, #f9eafb 19%, #fffcfc 77%);
+}
+
+.iemo-float-question-glow, .iemo-float-header-glow {
+  color: #2e195c;
+  text-shadow: 0 3px 26px #fff 80%, 0 2px 11px #ff4ecd29, 0 2px 2px #6c63ff18;
+  z-index: 140;
+}
+
+.iemo-desc.iemo-float-desc-glow {
+  background: rgba(255,255,255,0.68) !important;
+  color: #611991 !important;
+  box-shadow: 0 2px 12px #23ce6b18, 0 8px 28px #ff4ecd28;
+  z-index: 119;
+}
+
+/* Result pie card and share buttons */
+.iemo-share-card.iemo-float-glow {
+  background: linear-gradient(120deg,#fffefe 80%,#f8f7ff 100%);
+  border-radius: 1em;
+  z-index: 201;
+  box-shadow: 0 2px 32px #23ce6b21;
+  filter: brightness(1.07);
+  padding: 1em 1.7em;
+}
+
+.iemo-btn, .iemo-btn-accent, .iemo-btn-share, .iemo-btn-restart {
+  position: relative;
+  z-index: 131;
+  /* Add subtle bg, better contrast, and vivid shadow */
+  background: linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584 105%) !important;
+  color: #fff !important;
+  text-shadow: 0 1px 6px #6C63FF28;
+  border-radius: 1.3em !important;
+  border: none;
+  font-weight: 900 !important;
+  box-shadow: 0 2px 14px #36c6e725, 0 6px 24px #ff4ecd19 !important;
+  outline: none;
+}
+.iemo-btn:focus, .iemo-btn-accent:focus, .iemo-btn-share:focus, .iemo-btn-restart:focus {
+  outline: 2.5px solid #6C63FF !important;
+  border-radius: 1.4em !important;
+  box-shadow: 0 0 0 4px #23ce6b38 !important;
+}
+
+.iemo-footer {
+  z-index: 240;
+  position: relative;
+  background: none;
+  pointer-events: auto;
+}
+
+.iemo-footer-brand, .iemo-footer-mini {
+  text-shadow: 0 1.5px 9px #fff, 0 0 16px #23ce6b39;
+}
+
+/* Overlay container for firework blast - topmost layer always */
+.cracker-blast-container {
+  z-index: 9999 !important;
+  pointer-events: none;
+}
+.cracker-blast {
+  z-index: 12001 !important;
+  pointer-events: none;
+}
+
+/* Responsive: extra glassy bg and min width tweaks on mobile */
+@media (max-width: 640px) {
+  .iemo-float-welcome,
+  .iemo-float-qa-wrap,
+  .iemo-result.iemo-float-result-bubble {
+    margin: 0.6em auto 1em auto;
+    padding: 1.1em 0.18em 1.4em 0.18em;
+    max-width: 98vw;
+  }
+}
+
