@@ -79,10 +79,23 @@ function parseTrivia(qset) {
   });
 }
 
-function decodeHtml(html) {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
+/**
+ * Decodes HTML entities and URL-encoded entities (e.g., &quot;, &#039;, %20) in quiz questions/answers.
+ * This ensures trivia text is always human-readable, even when API returns mixed encodings.
+ */
+function decodeHtml(input) {
+  if (!input) return "";
+  // First, handle URL encoding (like %20 etc)
+  let decoded = "";
+  try {
+    decoded = decodeURIComponent(input);
+  } catch (e) {
+    decoded = input; // Fallback if not percent-encoded
+  }
+  // Now handle HTML entities (like &quot;, &#039; etc)
+  const temp = document.createElement("textarea");
+  temp.innerHTML = decoded;
+  return temp.value;
 }
 
 // PUBLIC_INTERFACE
