@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import SportsBackground from "./SportsBackground";
 
 /**
  * This is the Internet Ego Mirror Quiz App – enhanced with vibrant, animated backgrounds,
@@ -247,7 +248,7 @@ function App() {
 
   return (
     <div className="iemo-app float-ui-app">
-      <AnimatedBackgroundBlobs />
+      <SportsBackground />
       {step === 0 && AnimationWrappers.fade(<WelcomeScreen onStart={handleStart} />, 20)}
       {loading && AnimationWrappers.bounce(
         <div style={{
