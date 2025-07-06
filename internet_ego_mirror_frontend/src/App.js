@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import SportsBackground from "./SportsBackground";
+import QuoteBox from "./QuoteBox";
 
 // --- OpenWeatherMap integration ---
 /** OpenWeatherMapWeather: Shows current weather for a given location/stadium.
@@ -870,6 +871,7 @@ function App() {
       {step === 0 &&
         AnimationWrappers.fade(
           <div>
+            <QuoteBox prominent />
             <OpenWeatherMapWeather />
             <NewsAPISportsHeadlines
               apiKey={newsApiKey}
@@ -921,15 +923,18 @@ function App() {
         )}
       {(step > (questions.length || 0) && (questions.length > 0) && !loading && !fetchError) &&
         AnimationWrappers.fade(
-          <ResultScreen
-            answers={answers}
-            questions={questions}
-            onRestart={handleRestart}
-            onShare={handleShare}
-            copied={copied}
-            shareText={getShareText()}
-            floatUI
-          />, 180
+          <div>
+            <QuoteBox prominent />
+            <ResultScreen
+              answers={answers}
+              questions={questions}
+              onRestart={handleRestart}
+              onShare={handleShare}
+              copied={copied}
+              shareText={getShareText()}
+              floatUI
+            />
+          </div>, 180
         )
       }
       {/* Footer removed per request: No legacy attribution text should remain */}
