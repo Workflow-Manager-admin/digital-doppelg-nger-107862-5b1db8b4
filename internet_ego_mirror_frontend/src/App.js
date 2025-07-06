@@ -2,6 +2,349 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import SportsBackground from "./SportsBackground";
 
+// --- OpenWeatherMap integration ---
+/** OpenWeatherMapWeather: Shows current weather for a given location/stadium.
+    Prompts for API key (localStorage), location (city/stadium name), and displays weather with user-friendly acquisition steps.
+*/
+function OpenWeatherMapWeather() {
+  const [apiKey, setApiKeyState] = useState(() => window.localStorage.getItem("owmApiKey") || "");
+  const [showApiInput, setShowApiInput] = useState(!apiKey);
+  const [location, setLocationState] = useState(() => window.localStorage.getItem("owmLocation") || "");
+  const [showLocInput, setShowLocInput] = useState(!location);
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+
+  // PUBLIC_INTERFACE
+  function handleApiKeySave(e) {
+    e.preventDefault();
+    const k = e.target.elements.owmApiKey.value.trim();
+    if (k) {
+      setApiKeyState(k);
+      window.localStorage.setItem("owmApiKey", k);
+      setShowApiInput(false);
+    }
+  }
+  // PUBLIC_INTERFACE
+  function handleLocationSave(e) {
+    e.preventDefault();
+    const val = e.target.elements.owmLocation.value.trim();
+    if (val) {
+      setLocationState(val);
+      window.localStorage.setItem("owmLocation", val);
+      setShowLocInput(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!apiKey || !location) return;
+    setLoading(true);
+    setWeather(null);
+    setErr("");
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${apiKey}&units=metric`
+    )
+      .then(resp => resp.json())
+      .then(data => {
+        if (!data || data.cod !== 200) {
+          throw new Error(
+            data && data.message
+              ? `Weather error: ${data.message}`
+              : "Weather data unavailable"
+          );
+        }
+        setWeather(data);
+      })
+      .catch(e => setErr((e && e.message) || "Error fetching weather."))
+      .finally(() => setLoading(false));
+  }, [apiKey, location]);
+
+  return (
+    <div
+      style={{
+        background: "none",
+        border: "none",
+        boxShadow: "none",
+        margin: "3.2em 0 1.4em 0",
+        textAlign: "center",
+        maxWidth: 730,
+        width: "97vw"
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 900,
+          fontSize: "clamp(1.01em,2.2vw,1.42em)",
+          color: "#36c6e7",
+          letterSpacing: "0.005em",
+          marginBottom: "0.41em",
+          textShadow: "0 1.4px 13px #23ce6baa"
+        }}
+      >
+        🌤️ Stadium/Location Weather (Powered by OpenWeatherMap)
+      </div>
+      {showApiInput && (
+        <form
+          onSubmit={handleApiKeySave}
+          style={{
+            margin: "1.1em auto 0.99em auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          <label
+            htmlFor="owmApiKey"
+            style={{
+              color: "#36c6e7",
+              fontWeight: 700,
+              fontSize: "1.09em",
+              marginBottom: 5
+            }}
+          >
+            Enter your OpenWeatherMap API Key:
+          </label>
+          <input
+            type="text"
+            id="owmApiKey"
+            name="owmApiKey"
+            required
+            placeholder="Paste OpenWeatherMap API key here"
+            style={{
+              fontSize: "1.07em",
+              padding: "0.44em 1.1em",
+              borderRadius: "1.6em",
+              border: "2px solid #23ce6b",
+              outline: "none",
+              marginBottom: "0.7em"
+            }}
+            autoComplete="off"
+          />
+          <button
+            type="submit"
+            style={{
+              background: "linear-gradient(90deg,#36c6e7,#23ce6b,#FF6584 110%)",
+              fontWeight: 800,
+              color: "#fff",
+              fontSize: "1em",
+              border: "none",
+              borderRadius: "1.6em",
+              padding: "0.55em 1.6em",
+              cursor: "pointer",
+              marginBottom: 3,
+              marginTop: ".4em"
+            }}
+          >
+            Save API Key
+          </button>
+          <div
+            style={{
+              color: "#888",
+              fontSize: "0.98em",
+              marginTop: "0.4em"
+            }}
+          >
+            <span style={{ color: "#ff4ecd", fontWeight: 700 }}>How do I get your FREE OpenWeatherMap API key?</span>
+            <br />
+            1. Register free at{" "}
+            <a
+              href="https://home.openweathermap.org/users/sign_up"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#36c6e7", fontWeight: 700 }}
+            >
+              openweathermap.org
+            </a>
+            <br />
+            2. Confirm your email and log in.<br />
+            3. Go to the&nbsp;
+            <a
+              href="https://home.openweathermap.org/api_keys"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#23CE6B", fontWeight: 700 }}
+            >
+              API Keys
+            </a>{" "}
+            section of your dashboard.<br />
+            4. Copy your personal key, paste it above.<br />
+            <span style={{ color: "#23ce6b", fontWeight: 700 }}>Your key is only stored locally in this browser.</span>
+          </div>
+        </form>
+      )}
+      {!showApiInput && (
+        <div>
+          <button
+            onClick={() => setShowApiInput(true)}
+            style={{
+              background: "none",
+              color: "#23ce6b",
+              border: "none",
+              fontWeight: 700,
+              cursor: "pointer",
+              marginBottom: "0.6em",
+              textDecoration: "underline"
+            }}
+            tabIndex={0}
+            aria-label="Edit OpenWeatherMap Key"
+          >
+            Change OpenWeatherMap Key
+          </button>
+        </div>
+      )}
+      {apiKey && !showApiInput && showLocInput && (
+        <form
+          onSubmit={handleLocationSave}
+          style={{
+            margin: "1em auto 1.1em auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          <label
+            htmlFor="owmLocation"
+            style={{
+              color: "#36c6e7",
+              fontWeight: 700,
+              fontSize: "1.1em",
+              marginBottom: 5
+            }}
+          >
+            Enter your stadium or city:
+          </label>
+          <input
+            type="text"
+            id="owmLocation"
+            name="owmLocation"
+            required
+            placeholder="e.g. Wankhede Stadium, Mumbai"
+            style={{
+              fontSize: "1.07em",
+              padding: "0.54em 1.1em",
+              borderRadius: "1.6em",
+              border: "2px solid #36c6e7",
+              outline: "none",
+              marginBottom: "0.7em"
+            }}
+            autoComplete="off"
+          />
+          <button
+            type="submit"
+            style={{
+              background: "linear-gradient(90deg,#36c6e7,#23ce6b,#FF6584 110%)",
+              fontWeight: 800,
+              color: "#fff",
+              fontSize: "1em",
+              border: "none",
+              borderRadius: "1.6em",
+              padding: "0.55em 1.6em",
+              cursor: "pointer",
+              marginBottom: 3,
+              marginTop: ".4em"
+            }}
+          >
+            Save Location
+          </button>
+          <div style={{ color: "#aaa", fontSize: "0.97em", marginTop: "0.45em" }}>
+            <span style={{ color: "#23ce6b", fontWeight: 700 }}>
+              You can use any city or world stadium name.<br />Tip: Try "<b>Lord's, London</b>", "<b>Eden Gardens, Kolkata</b>", or your own city!
+            </span>
+          </div>
+        </form>
+      )}
+      {apiKey && !showApiInput && location && !showLocInput && (
+        <div>
+          <button
+            onClick={() => setShowLocInput(true)}
+            style={{
+              background: "none",
+              color: "#36c6e7",
+              border: "none",
+              fontWeight: 700,
+              cursor: "pointer",
+              marginBottom: "0.6em",
+              textDecoration: "underline"
+            }}
+            tabIndex={0}
+            aria-label="Edit OpenWeatherMap Location"
+          >
+            Change Stadium/Location
+          </button>
+        </div>
+      )}
+      {loading && (
+        <div style={{ margin: "1.5em 0", color: "#19e0ff" }}>Loading weather...</div>
+      )}
+      {err && (
+        <div
+          style={{
+            color: "#FF6584",
+            fontWeight: 800,
+            margin: "1em auto"
+          }}
+        >
+          {err}
+        </div>
+      )}
+      {!loading && !err && weather && (
+        <div
+          style={{
+            margin: "1.11em auto 0 auto",
+            background: "rgba(54,198,231,0.10)",
+            borderLeft: "4px solid #36c6e7",
+            borderRadius: "0.98em",
+            padding: "0.97em 1em 0.97em 1.8em",
+            color: "#1c222e",
+            maxWidth: 520,
+            minWidth: 130,
+            boxShadow: "none",
+            textAlign: "left",
+            display: "inline-block"
+          }}
+        >
+          <span style={{ fontWeight: 950, color: "#23ce6b", fontSize: "1.13em" }}>
+            {weather.name}, {weather.sys && weather.sys.country}
+          </span>{" "}
+          |{" "}
+          <span style={{ fontWeight: 900, color: "#ff4ecd", fontSize: "1.07em" }}>
+            {Math.round(weather.main.temp)}°C
+          </span>{" "}
+          <span style={{ fontWeight: 620, color: "#888", fontSize: "0.92em" }}>
+            (feels like {Math.round(weather.main.feels_like)}°C)
+          </span>
+          <div style={{ marginTop: ".41em", fontWeight: 700 }}>
+            <img
+              src={
+                "https://openweathermap.org/img/wn/" +
+                weather.weather[0].icon +
+                "@2x.png"
+              }
+              alt={weather.weather[0].main + " icon"}
+              style={{ verticalAlign: "middle", width: 36, height: 36 }}
+            />
+            <span style={{ color: "#36c6e7" }}>{weather.weather[0].description.replace(/^./, s => s.toUpperCase())}</span>
+            {weather.wind && (
+              <>
+                {" "}
+                | <span style={{ color: "#FED502" }}>
+                  💨 {Math.round(weather.wind.speed)} m/s Wind
+                </span>
+              </>
+            )}
+            {typeof weather.main.humidity !== "undefined" && (
+              <>
+                {" "}
+                | <span style={{ color: "#6C63FF" }}>💧{weather.main.humidity}% Humidity</span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // NewsAPI headline section component
 function NewsAPISportsHeadlines({ apiKey, onSetApiKey }) {
   const [news, setNews] = useState([]);
@@ -527,6 +870,7 @@ function App() {
       {step === 0 &&
         AnimationWrappers.fade(
           <div>
+            <OpenWeatherMapWeather />
             <NewsAPISportsHeadlines
               apiKey={newsApiKey}
               onSetApiKey={setNewsApiKey}
