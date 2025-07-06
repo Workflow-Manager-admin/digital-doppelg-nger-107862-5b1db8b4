@@ -367,186 +367,240 @@ function WelcomeScreen({ onStart }) {
           height: "clamp(222px,33vw,340px)",
           position: "relative",
           filter:
-            "drop-shadow(0 12px 25px #23ce6b90) drop-shadow(0 10px 42px #36c6e7c3) drop-shadow(0 9px 19px #fed5027c)"
+            "drop-shadow(0 15px 34px #23ce6b99) drop-shadow(0 8px 22px #36c6e7cc) drop-shadow(0 11px 32px #fed50280)"
         }}
         aria-hidden="true"
       >
-        {/* --- Bold, Abstract Sports "S" – Bat+Football+Motion Ring+Energy --- */}
+        {/* --- Professional Sports Shield Badge: Cricket Bat, Ball, Football, Racquet --- */}
         <svg
           viewBox="0 0 340 340"
           width="100%"
           height="100%"
           style={{ display: "block" }}
-          aria-label="Abstract S Sports Symbol"
+          aria-label="Professional Sports Badge"
         >
           <defs>
-            <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="93%">
-              <stop offset="0%" stopColor="#6c63ff" />
-              <stop offset="55%" stopColor="#23ce6b" />
-              <stop offset="100%" stopColor="#36c6e7" />
-            </linearGradient>
-            <linearGradient id="sGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ff4ecd" />
-              <stop offset="33%" stopColor="#6c63ff" />
-              <stop offset="67%" stopColor="#23ce6b" />
-              <stop offset="100%" stopColor="#fed502" />
-            </linearGradient>
-            <radialGradient id="ballGrad" cx="57%" cy="55%" r="0.77">
-              <stop offset="0%" stopColor="#fff" />
-              <stop offset="34%" stopColor="#36c6e7" />
-              <stop offset="100%" stopColor="#1b79c6" />
+            <radialGradient id="sportsShieldBg" cx="50%" cy="42%" r="76%">
+              <stop offset="0%" stopColor="#fafdff" />
+              <stop offset="54%" stopColor="#36c6e7" />
+              <stop offset="81%" stopColor="#6c63ff" />
+              <stop offset="100%" stopColor="#251c30" />
             </radialGradient>
-            <linearGradient id="batGrad" x1="9%" y1="5%" x2="98%" y2="100%">
-              <stop offset="0%" stopColor="#ffe59b" />
-              <stop offset="70%" stopColor="#be873c" />
+            <linearGradient id="frameGrad" x1="18%" y1="11%" x2="98%" y2="82%">
+              <stop offset="0%" stopColor="#fed502" />
+              <stop offset="19%" stopColor="#23ce6b" />
+              <stop offset="77%" stopColor="#ff4ecd" />
+              <stop offset="100%" stopColor="#6c63ff" />
             </linearGradient>
-            <linearGradient id="batGrip" x1="0%" y1="0%" x2="100%" y2="50%">
-              <stop offset="0%" stopColor="#ff4ecd" />
+            <linearGradient id="batBody" x1="0%" y1="0%" x2="100%" y2="80%">
+              <stop offset="0%" stopColor="#ffe59b" />
+              <stop offset="95%" stopColor="#bc8b3b" />
+            </linearGradient>
+            <linearGradient id="batGripNew" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#fc1cff" />
               <stop offset="100%" stopColor="#952769" />
             </linearGradient>
-            <radialGradient id="motionRim" cx="50%" cy="50%" r="100%">
-              <stop offset="0%" stopColor="#fff" stopOpacity="0.33" />
-              <stop offset="72%" stopColor="#ffbf00" stopOpacity="0.27" />
-              <stop offset="100%" stopColor="#fed502" stopOpacity="0.11" />
+            <radialGradient id="ballRed" cx="46%" cy="48%" r="50%">
+              <stop offset="0%" stopColor="#fff5ec" />
+              <stop offset="40%" stopColor="#ff4ecd" />
+              <stop offset="100%" stopColor="#bb2177" />
             </radialGradient>
-            <linearGradient id="sOutline" x1="0%" y1="0%" x2="100%" y2="77%">
-              <stop offset="0%" stopColor="#36c6e7" />
-              <stop offset="35%" stopColor="#ff4ecd" />
-              <stop offset="70%" stopColor="#6C63FF" />
-              <stop offset="100%" stopColor="#fed502" />
+            <linearGradient id="racquetFrame" x1="18%" y1="10%" x2="97%" y2="92%">
+              <stop offset="0%" stopColor="#fff989" />
+              <stop offset="100%" stopColor="#23ce6b" />
             </linearGradient>
+            <linearGradient id="racquetGrip" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#fed502" />
+              <stop offset="100%" stopColor="#bba101" />
+            </linearGradient>
+            <linearGradient id="footballBody" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#fff" />
+              <stop offset="100%" stopColor="#6c63ff" />
+            </linearGradient>
+            <radialGradient id="shieldShadow" cx="50%" cy="76%" r="62%">
+              <stop offset="0%" stopColor="#fff" stopOpacity="0" />
+              <stop offset="100%" stopColor="#2a285880" stopOpacity="0.68" />
+            </radialGradient>
           </defs>
-          {/* Modern shield, very bold */}
+          {/* Bold Shield/Badge - strong gradients, thick outline */}
           <path
-            d="M170,30 Q69,67 52,164 Q37,244 169,309 Q305,245 288,156 Q274,67 170,30"
-            fill="url(#shieldGrad)"
-            stroke="#1b183e"
-            strokeWidth="10"
-            filter="drop-shadow(0 2px 16px #fdedcc46)"
+            d="M170,25 Q52,63 59,169 Q68,258 169,307 Q283,249 281,170 Q285,66 170,25"
+            fill="url(#sportsShieldBg)"
+            stroke="url(#frameGrad)"
+            strokeWidth="13"
+            filter="drop-shadow(0 5px 38px #36c6e7aa)"
           />
-          {/* Energetic, swooshed "S" formed from lined abstract */}
+          {/* Subtle inner highlight */}
           <path
-            d="
-              M 112 133 
-              Q 120 109 161 97 
-              Q 199 87 235 109
-              Q 262 127 231 149
-              Q 190 178 188 190
-              Q 187 200 217 208
-              Q 253 219 249 247
-              Q 244 277 173 273
-              Q 114 269 120 233
-              Q 126 195 165 206
-              "
+            d="M170,40 Q71,72 77,168 Q84,244 169,287 Q264,247 262,170 Q265,72 170,40"
             fill="none"
-            stroke="url(#sGrad)"
-            strokeWidth="25"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.97"
-            filter="drop-shadow(0 3px 32px #ff4ecd78)"
-          />
-          {/* Outline for "S" for pop and depth */}
-          <path
-            d="
-              M 112 133 
-              Q 120 109 161 97 
-              Q 199 87 235 109
-              Q 262 127 231 149
-              Q 190 178 188 190
-              Q 187 200 217 208
-              Q 253 219 249 247
-              Q 244 277 173 273
-              Q 114 269 120 233
-              Q 126 195 165 206
-              "
-            fill="none"
-            stroke="url(#sOutline)"
+            stroke="#fff"
+            strokeOpacity="0.13"
             strokeWidth="8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.80"
-            filter="blur(0.4px)"
           />
-          {/* Cricket bat as lower left of the "S" */}
+          {/* Shield shadow for embossed 3d effect */}
+          <ellipse
+            cx="170"
+            cy="256"
+            rx="91"
+            ry="30"
+            fill="url(#shieldShadow)"
+            opacity="0.32"
+            filter="blur(2.6px)"
+          />
+          {/* CRICKET BAT — left, angled */}
           <g>
             <rect
-              x="86"
-              y="195"
+              x="83"
+              y="115"
               width="16"
-              height="70"
-              rx="7"
-              fill="url(#batGrad)"
-              stroke="#b08037"
-              strokeWidth="3"
-              transform="rotate(-19 95 230)"
-              filter="drop-shadow(0 1px 4px #eeb65266)"
+              height="95"
+              rx="8"
+              fill="url(#batBody)"
+              stroke="#bc8b3b"
+              strokeWidth="2.4"
+              transform="rotate(-22 91 162)"
             />
             {/* Bat grip */}
             <rect
-              x="92"
-              y="182"
-              width="8"
-              height="23"
-              rx="2"
-              fill="url(#batGrip)"
+              x="88"
+              y="107"
+              width="6.7"
+              height="20"
+              rx="2.2"
+              fill="url(#batGripNew)"
               stroke="#fbeeff"
-              strokeWidth="1.1"
-              transform="rotate(-18 96 194)"
-              filter="brightness(1.14)"
+              strokeWidth="1.0"
+              transform="rotate(-23 91 117)"
+            />
+            {/* Bat highlight */}
+            <rect
+              x="87"
+              y="126"
+              width="5"
+              height="66"
+              rx="2.2"
+              fill="#fffbe899"
+              opacity="0.26"
+              transform="rotate(-22 89 162)"
             />
           </g>
-          {/* Football forming the upper right of the "S" */}
+          {/* TENNIS RACQUET — right, upright */}
+          <g>
+            {/* Frame & net */}
+            <ellipse
+              cx="249"
+              cy="122"
+              rx="22"
+              ry="37"
+              fill="#fff"
+              stroke="url(#racquetFrame)"
+              strokeWidth="6.1"
+              filter="drop-shadow(0 2px 18px #23ce6b44)"
+            />
+            {/* Strings */}
+            <g opacity="0.33">
+              {Array.from({length: 6}).map((_,i)=> (
+                <line
+                  key={i}
+                  x1={249-20+8*i}
+                  y1={90}
+                  x2={249-20+8*i}
+                  y2={154}
+                  stroke="#23ce6b"
+                  strokeWidth="1.7"
+                />
+              ))}
+              {Array.from({length: 7}).map((_,i)=>(
+                <line
+                  key={i+"y"}
+                  x1={227}
+                  y1={105+7*i}
+                  x2={271}
+                  y2={105+7*i}
+                  stroke="#23ce6b"
+                  strokeWidth="1.7"
+                />
+              ))}
+            </g>
+            {/* Racquet grip */}
+            <rect
+              x="242"
+              y="159"
+              width="13"
+              height="28"
+              rx="6.2"
+              fill="url(#racquetGrip)"
+              stroke="#bba101"
+              strokeWidth="1"
+            />
+          </g>
+          {/* FOOTBALL (Soccer ball), center foreground */}
           <g>
             <circle
-              cx="245"
-              cy="111"
-              r="24"
-              fill="url(#ballGrad)"
-              stroke="#12568b"
-              strokeWidth="4.5"
-              filter="drop-shadow(0 1.5px 7px #23ce6b99)"
+              cx="170"
+              cy="192"
+              r="37"
+              fill="url(#footballBody)"
+              stroke="#343434"
+              strokeWidth="5.5"
+              filter="drop-shadow(0 2px 16px #36c6e763)"
             />
-            {/* Ball pattern */}
+            {/* Football pentagons/hexagons */}
+            <polygon points="170,170 185,185 170,203 154,185" fill="#343434" opacity="0.53"/>
+            <polygon points="170,180 179,189 170,198 161,189" fill="#343434" opacity="0.23"/>
+            <circle cx="170" cy="190" r="6" fill="#343434" opacity="0.45"/>
+            <ellipse cx="188" cy="208" rx="12" ry="7" fill="#fff" opacity="0.10"/>
+          </g>
+          {/* CRICKET BALL — bottom left, overlapping bat */}
+          <g>
+            <circle
+              cx="120"
+              cy="230"
+              r="16"
+              fill="url(#ballRed)"
+              stroke="#bb2177"
+              strokeWidth="2.8"
+              filter="drop-shadow(0 2px 7px #ff4ecd66)"
+            />
+            {/* Ball seam */}
             <ellipse
-              cx="239"
-              cy="100"
-              rx="10"
-              ry="3.1"
+              cx="120"
+              cy="230"
+              rx="11"
+              ry="3.4"
               fill="#fff"
-              opacity="0.15"
-              filter="blur(1.1px)"
+              opacity="0.16"
+              filter="blur(1.3px)"
             />
+            {/* Shine */}
             <ellipse
-              cx="255"
-              cy="121"
-              rx="8.2"
-              ry="2.6"
-              fill="#e8f7fd"
-              opacity="0.15"
-              filter="blur(1.1px)"
-            />
-            <ellipse
-              cx="246"
-              cy="111"
-              rx="8.5"
-              ry="4"
-              fill="#36c6e7"
-              opacity="0.13"
-              filter="blur(2px)"
+              cx="128"
+              cy="222"
+              rx="7"
+              ry="3"
+              fill="#fff"
+              opacity="0.22"
+              filter="blur(1.2px)"
             />
           </g>
-          {/* Motion ring (circular accent) for energy */}
+          {/* Drop shadow, outline, and extra highlight */}
           <ellipse
             cx="170"
-            cy="170"
-            rx="127"
-            ry="126"
+            cy="140"
+            rx="70"
+            ry="24"
+            fill="#fffbe8"
+            opacity="0.12"
+            filter="blur(6px)"
+          />
+          <path
+            d="M170,25 Q52,63 59,169 Q68,258 169,307 Q283,249 281,170 Q285,66 170,25"
             fill="none"
-            stroke="url(#motionRim)"
-            strokeWidth="13"
-            opacity="0.65"
-            filter="blur(2.4px) drop-shadow(0 0 13px #fed50295)"
+            stroke="#1b183e"
+            strokeWidth="8"
+            opacity="0.48"
+            filter="drop-shadow(0 0 26px #23ce6bbb)"
           />
         </svg>
       </div>
