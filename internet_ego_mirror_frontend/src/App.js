@@ -920,14 +920,39 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
   let playMessage = "";
   if (total > 0) {
     const percent = Math.round((correctCount / total) * 100);
+    // Dynamic sports jokes based on score
     if (percent >= 90) {
-      playMessage = "🏅 You are a walking sports Wikipedia!";
+      const highJokes = [
+        "🏆 You're the MVP! Are you secretly a commentator?",
+        "🏅 Hall of Fame alert! Your sport facts just set a new record.",
+        "🎉 You scored more than a referee's whistle at the World Cup!",
+        "🥇 If sports knowledge were an Olympic event, you'd win gold!"
+      ];
+      playMessage = highJokes[Math.floor(Math.random() * highJokes.length)];
     } else if (percent >= 60) {
-      playMessage = "💪 Solid performance—you’d own the local sports bar quiz!";
+      const midHighJokes = [
+        "💪 Solid performance—you'd own the local sports bar quiz!",
+        "👏 Not bad! Your trivia game is strong, give yourself a victory lap.",
+        "🥈 You'd make the playoffs—just work on those fundamentals!",
+        "😎 Your sports memory is almost as good as instant replay!"
+      ];
+      playMessage = midHighJokes[Math.floor(Math.random() * midHighJokes.length)];
     } else if (percent >= 40) {
-      playMessage = "😄 You watch the highlights, don’t you?";
+      const midLowJokes = [
+        "😄 You watch the highlights, don’t you?",
+        "🤷‍♂️ You might call a timeout to check those answers!",
+        "⚾ Swing and a miss, but hey, there's always next season.",
+        "🏀 Almost a triple-double! Study up for the rematch."
+      ];
+      playMessage = midLowJokes[Math.floor(Math.random() * midLowJokes.length)];
     } else {
-      playMessage = "🤔 Maybe try playing some Fantasy Sports?";
+      const lowJokes = [
+        "🤔 Time to check the rulebook! Maybe quiz the mascot next time.",
+        "🦆 You're more waterboy than wonderkid—study up for the next game!",
+        "⛳️ Missed the green, but at least you kept score!",
+        "🚴 Looks like you just crashed into the trivia barriers. Try again!"
+      ];
+      playMessage = lowJokes[Math.floor(Math.random() * lowJokes.length)];
     }
   }
 
