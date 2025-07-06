@@ -229,46 +229,65 @@ function App() {
     document.body.style.transition = "background .5s";
   }, [step, questions.length]);
 
+  // Animation helpers
+  const AnimationWrappers = {
+    fade: (children, delay = 0) => (
+      <div className="iemo-float-fadein" style={{ animationDelay: `${delay}ms` }}>{children}</div>
+    ),
+    slideUp: (children, delay = 0) => (
+      <div className="iemo-float-slideup" style={{ animationDelay: `${delay}ms` }}>{children}</div>
+    ),
+    bounce: (children, delay = 0) => (
+      <div className="iemo-float-bounce" style={{ animationDelay: `${delay}ms` }}>{children}</div>
+    ),
+    glow: (children, delay = 0) => (
+      <div className="iemo-glow-float" style={{ animationDelay: `${delay}ms` }}>{children}</div>
+    ),
+  };
+
   return (
-    <div className="iemo-app">
+    <div className="iemo-app float-ui-app">
       <AnimatedBackgroundBlobs />
-      <div className="iemo-card blitz-card" style={{zIndex:20, position:"relative"}}>
-        {step === 0 && <WelcomeScreen onStart={handleStart} />}
-        {loading && (
-          <div style={{
-            color: "#ff4ecd",
-            fontWeight: 600,
-            fontSize: "1.18em",
-            minHeight: "12em",
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"
-          }}>
-            <span className="rainbow-spinner"></span>
-            <div style={{ marginTop: "2em" }}>Loading new quiz...</div>
-          </div>
-        )}
-        {fetchError && (
-          <div style={{
-            color: "#ff654f",
-            fontWeight: 700,
-            background: "#fff2f2",
-            borderRadius: "12px",
-            padding: "1em",
-            textAlign: "center"
-          }}>
-            {fetchError}
-            <button className="iemo-btn iemo-btn-restart" onClick={handleRestart} style={{ marginTop: "2em" }}>Retry</button>
-          </div>
-        )}
-        {(step > 0 && step <= (questions.length || 0) && !loading && !fetchError) && (
+      {step === 0 && AnimationWrappers.fade(<WelcomeScreen onStart={handleStart} />, 20)}
+      {loading && AnimationWrappers.bounce(
+        <div style={{
+          color: "#ff4ecd",
+          fontWeight: 600,
+          fontSize: "1.18em",
+          minHeight: "12em",
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"
+        }}>
+          <span className="rainbow-spinner"></span>
+          <div style={{ marginTop: "2em" }}>Loading new quiz...</div>
+        </div>, 30
+      )}
+      {fetchError && AnimationWrappers.bounce(
+        <div style={{
+          color: "#ff654f",
+          fontWeight: 700,
+          background: "#fff2f2",
+          borderRadius: "16px",
+          padding: "1em",
+          textAlign: "center",
+          boxShadow: "0 2px 24px #ff4ecd41"
+        }}>
+          {fetchError}
+          <button className="iemo-btn iemo-btn-restart iemo-floating-btn-bounce" onClick={handleRestart} style={{ marginTop: "2em" }}>Retry</button>
+        </div>, 60
+      )}
+      {(step > 0 && step <= (questions.length || 0) && !loading && !fetchError) &&
+        AnimationWrappers.slideUp(
           <QuestionScreen
             questionIdx={step - 1}
             total={questions.length}
             question={questions[step - 1]}
             onAnswer={handleAnswer}
             selected={answers[step - 1]}
-          />
+            floatUI
+          />, 120
         )}
-        {(step > (questions.length || 0) && (questions.length > 0) && !loading && !fetchError) && (
+      {(step > (questions.length || 0) && (questions.length > 0) && !loading && !fetchError) &&
+        AnimationWrappers.fade(
           <ResultScreen
             answers={answers}
             questions={questions}
@@ -276,9 +295,10 @@ function App() {
             onShare={handleShare}
             copied={copied}
             shareText={getShareText()}
-          />
-        )}
-      </div>
+            floatUI
+          />, 180
+        )
+      }
       <div className="iemo-footer" style={{
         width: "100vw",
         justifyContent: "center",
@@ -301,62 +321,93 @@ function App() {
   );
 }
 
-// --- WELCOME SCREEN ---
+/**
+ * Refactored WelcomeScreen for floating/animated UI, no card.
+ */
 function WelcomeScreen({ onStart }) {
   return (
-    <>
-      <h1 className="iemo-title rainbow-header" style={{ fontWeight: 900 }}>
-        <span role="img" aria-label="mirror">🪞</span>{" "}
+    <div className="iemo-float-welcome">
+      <h1 className="iemo-title rainbow-header iemo-float-header-glow" style={{ fontWeight: 900 }}>
+        <span className="iemo-float-emoji" role="img" aria-label="mirror">🪞</span>{" "}
         <span>Internet Ego Mirror</span>
       </h1>
-      <p className="iemo-desc" style={{
-        fontSize: "1.16rem", background: "rgba(255,108,216,0.10)", borderRadius: "14px", padding: "1em",
-        boxShadow: "0 4px 24px #ff4ecd21", color: "#611991"
+      <p className="iemo-desc iemo-float-desc-glow" style={{
+        fontSize: "1.16rem",
+        background: "rgba(255,108,216,0.10)",
+        borderRadius: "14px",
+        padding: "1em 1.8em",
+        marginBottom: "2em",
+        boxShadow: "0 8px 30px #ff4ecd25, 0 2px 32px #6C63FF17",
+        color: "#611991"
       }}>
-        Discover your digital alter ego with surprise internet trivia! Every time you start, you get eight colorful, wild questions drawn live from the <a href="https://opentdb.com/" rel="noopener noreferrer" style={{ color: '#6C63FF', fontWeight: 600 }}>Open Trivia DB</a>.<br />
+        Discover your digital alter ego with surprise internet trivia! Every time you start, you get eight colorful,
+        wild questions drawn live from the <a href="https://opentdb.com/" rel="noopener noreferrer" style={{ color: '#6C63FF', fontWeight: 600 }}>Open Trivia DB</a>.<br />
         No login, no key needed. <b>Click START for a new set!</b>
       </p>
-      <button className="iemo-btn iemo-btn-accent" onClick={onStart} style={{
-        background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584)",
-        fontSize: "1.38em", boxShadow: "0 2px 18px #ff4ecd2a,0 1.5px 12px #23ce6a36"
-      }}>
+      <button
+        className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce iemo-float-glow"
+        onClick={onStart}
+        style={{
+          background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584)",
+          fontSize: "1.38em",
+          boxShadow: "0 4px 32px #ff4ecd3c, 0 6px 32px #23ce6a3e",
+          marginBottom: "0.5em",
+        }}
+      >
         🎉 Start Quiz 🎉
       </button>
-    </>
+    </div>
   );
 }
 
 // --- QUESTION SCREEN ---
-function QuestionScreen({ questionIdx, total, question, onAnswer, selected }) {
+function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floatUI }) {
   if (!question) return null;
+  // Extra animation delays for floating effect
+  const delayBase = 80 + 40 * (questionIdx % 5);
   return (
-    <>
-      <div className="iemo-steps rainbow-label">
-        <span style={{
-          background: PALETTE[questionIdx % PALETTE.length],
-          color: "#fff",
-          padding: "2px 14px",
-          borderRadius: "18px",
-          marginRight: "9px",
-          fontWeight: 700
-        }}>Q{questionIdx + 1}</span>
-        <span>of {total}</span>
+    <div className={`iemo-float-qa-wrap${floatUI ? " iemo-float-active" : ""}`}>
+      <div className="iemo-float-question-step iemo-float-slidein"
+        style={{ animationDelay: `${delayBase + 80}ms` }}>
+        <span
+          className="iemo-steps rainbow-label iemo-float-bounce-glow"
+          style={{
+            background: PALETTE[questionIdx % PALETTE.length],
+            color: "#fff",
+            padding: "2px 17px",
+            borderRadius: "21px",
+            marginRight: "12px",
+            fontWeight: 800,
+            fontSize: "1.07em",
+            letterSpacing: "0.08em",
+            boxShadow: "0 2px 18px #23ce6c99, 0 0 12px #ff4ecd66"
+          }}>
+          Q{questionIdx + 1}
+        </span>
+        <span className="iemo-float-stepof">of {total}</span>
       </div>
-      <h2 className="iemo-q rampage-gradient">{question.question}</h2>
-      <div className="iemo-answers rainbow-bg">
+      <h2 className="iemo-q rampage-gradient iemo-float-question-glow"
+        style={{ animationDelay: `${delayBase + 185}ms` }}>
+        {question.question}
+      </h2>
+      <div className="iemo-answers iemo-float-answers-flare">
         {question.answers.map((a, idx) => (
           <button
             key={a.text}
-            className={`iemo-answer-card vibe-card ${selected === idx ? "selected" : ""}`}
+            className={`iemo-answer-card iemo-float-answer-btn iemo-fab-glow ${selected === idx ? "selected" : ""}`}
             style={{
+              animationDelay: `${delayBase + 275 + idx * 65}ms`,
               background: selected === idx
                 ? `linear-gradient(80deg,${PALETTE[(questionIdx + idx * 2 + 1) % PALETTE.length]},#fff)`
                 : `linear-gradient(120deg,${PALETTE[(questionIdx + idx) % PALETTE.length]},#f9f8ff 80%)`,
-              borderColor: selected === idx ? PALETTE[questionIdx % PALETTE.length] : "#efefef",
+              borderColor: selected === idx ? PALETTE[(questionIdx + idx) % PALETTE.length] : "#efefef",
               color: selected === idx ? "#2e195c" : "#21232c",
               fontWeight: selected === idx ? 800 : 600,
               fontSize: "1.13em",
               letterSpacing: selected === idx ? "0.01em" : "0.01em",
+              filter: selected === idx
+                ? "drop-shadow(0 0 18px #ff4ecd77) brightness(1.06)"
+                : "drop-shadow(0 2px 16px #6C63FF15)",
               transition: "all .23s"
             }}
             onClick={() => onAnswer(idx)}
@@ -374,7 +425,7 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected }) {
           </button>
         ))}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -576,12 +627,13 @@ const SPORTS_ANIMATIONS = [
   }
 ];
 
-// PUBLIC_INTERFACE
-function ResultScreen({ answers, questions, onRestart, onShare, copied, shareText }) {
+/**
+ * Refactored ResultScreen – floating, highlight animation and glowy feedback.
+ */
+function ResultScreen({ answers, questions, onRestart, onShare, copied, shareText, floatUI }) {
   // Compute stats
   const { correctCount, total } = computeScore(answers, questions);
 
-  // Score-based playful message
   let playMessage = "";
   if (total > 0) {
     const percent = Math.round((correctCount / total) * 100);
@@ -596,40 +648,33 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
     }
   }
 
-  // Pick a random animation (changes each mounting of result page)
+  // Animation
   const [animationIdx] = useState(() => Math.floor(Math.random() * SPORTS_ANIMATIONS.length));
   const Animation = SPORTS_ANIMATIONS[animationIdx];
 
   return (
-    <div className="iemo-result" style={{
-      background: "linear-gradient(120deg,#f6edfd 70%,#d8fce9 100%)",
-      borderRadius: "22px",
-      boxShadow: "0 2px 36px #ffd0ff1f",
-      margin: "-1em -1em 0",
-      padding: "1em"
-    }}>
-      <div style={{display:"flex", flexDirection:"column", alignItems:"center", marginBottom:"1.4em"}}>
-        <Animation />
-      </div>
-      <div className="iemo-res-section" style={{
-        background: "#fff2f4", borderRadius: "13px", padding: "0.76em 0.5em",
-        boxShadow: "0 2px 14px #ff4ecd10", marginTop: "0.8em", fontWeight: 700,
-        fontSize: "1.21em"
+    <div className={`iemo-result iemo-float-result-bubble${floatUI ? " iemo-float-active" : ""}`}>
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "1.4em"
       }}>
+        <span className="iemo-float-result-anim iemo-float-bounceglow">
+          <Animation />
+        </span>
+      </div>
+      <div className="iemo-res-section iemo-float-res-perf-glow">
         You got <b>{correctCount}</b> out of <b>{total}</b> correct!<br />
         <span style={{ color: "#23CE6B" }}>{total === 0 ? 0 : Math.round((correctCount / total) * 100)}% correct</span>
       </div>
       {playMessage && (
-        <div className="iemo-res-section" style={{
-          color: "#FF6584", background: "#fff0ec", margin: "0.75em 0",
-          fontWeight: 900, borderRadius: "12px", fontSize: "1.19em", boxShadow: "0 2px 12px #ffd0ff22"
+        <div className="iemo-res-section iemo-float-res-message" style={{
+          fontWeight: 900, fontSize: "1.19em"
         }}>
           {playMessage}
         </div>
       )}
-      <div className="iemo-share-section" style={{ marginBottom: "1.2em", marginTop:"1em" }}>
+      <div className="iemo-share-section iemo-float-share-btns" style={{ marginBottom: "1.2em", marginTop:"1em" }}>
         <button
-          className="iemo-btn iemo-btn-share"
+          className="iemo-btn iemo-btn-share iemo-floating-btn-bounce iemo-float-glow"
           onClick={onShare}
           style={{
             background: "linear-gradient(90deg,#ff4ecd,#36c6e7,#ffbf00 90%)",
@@ -638,11 +683,11 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
         >
           {copied ? "Copied!" : "📋 Copy My Score"}
         </button>
-        <button className="iemo-btn iemo-btn-restart" onClick={onRestart}>
+        <button className="iemo-btn iemo-btn-restart iemo-floating-btn-bounce" onClick={onRestart}>
           🔄 Try Again
         </button>
       </div>
-      <pre className="iemo-share-card" style={{
+      <pre className="iemo-share-card iemo-float-glow" style={{
         border: `2px solid #23ce6b`,
         background: "#fff6e6",
         color: "#9C27B0",
