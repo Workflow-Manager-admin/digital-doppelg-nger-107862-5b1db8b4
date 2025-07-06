@@ -371,237 +371,171 @@ function WelcomeScreen({ onStart }) {
         }}
         aria-hidden="true"
       >
-        {/* --- Professional Sports Shield Badge: Cricket Bat, Ball, Football, Racquet --- */}
+        {/* --- Olympic Rings with Multi-Sport icons --- */}
         <svg
           viewBox="0 0 340 340"
           width="100%"
           height="100%"
           style={{ display: "block" }}
-          aria-label="Professional Sports Badge"
+          aria-label="Olympic Multi-Sport Emblem"
         >
-          <defs>
-            <radialGradient id="sportsShieldBg" cx="50%" cy="42%" r="76%">
-              <stop offset="0%" stopColor="#fafdff" />
-              <stop offset="54%" stopColor="#36c6e7" />
-              <stop offset="81%" stopColor="#6c63ff" />
-              <stop offset="100%" stopColor="#251c30" />
-            </radialGradient>
-            <linearGradient id="frameGrad" x1="18%" y1="11%" x2="98%" y2="82%">
-              <stop offset="0%" stopColor="#fed502" />
-              <stop offset="19%" stopColor="#23ce6b" />
-              <stop offset="77%" stopColor="#ff4ecd" />
-              <stop offset="100%" stopColor="#6c63ff" />
-            </linearGradient>
-            <linearGradient id="batBody" x1="0%" y1="0%" x2="100%" y2="80%">
-              <stop offset="0%" stopColor="#ffe59b" />
-              <stop offset="95%" stopColor="#bc8b3b" />
-            </linearGradient>
-            <linearGradient id="batGripNew" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#fc1cff" />
-              <stop offset="100%" stopColor="#952769" />
-            </linearGradient>
-            <radialGradient id="ballRed" cx="46%" cy="48%" r="50%">
-              <stop offset="0%" stopColor="#fff5ec" />
-              <stop offset="40%" stopColor="#ff4ecd" />
-              <stop offset="100%" stopColor="#bb2177" />
-            </radialGradient>
-            <linearGradient id="racquetFrame" x1="18%" y1="10%" x2="97%" y2="92%">
-              <stop offset="0%" stopColor="#fff989" />
-              <stop offset="100%" stopColor="#23ce6b" />
-            </linearGradient>
-            <linearGradient id="racquetGrip" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fed502" />
-              <stop offset="100%" stopColor="#bba101" />
-            </linearGradient>
-            <linearGradient id="footballBody" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fff" />
-              <stop offset="100%" stopColor="#6c63ff" />
-            </linearGradient>
-            <radialGradient id="shieldShadow" cx="50%" cy="76%" r="62%">
-              <stop offset="0%" stopColor="#fff" stopOpacity="0" />
-              <stop offset="100%" stopColor="#2a285880" stopOpacity="0.68" />
-            </radialGradient>
-          </defs>
-          {/* Bold Shield/Badge - strong gradients, thick outline */}
-          <path
-            d="M170,25 Q52,63 59,169 Q68,258 169,307 Q283,249 281,170 Q285,66 170,25"
-            fill="url(#sportsShieldBg)"
-            stroke="url(#frameGrad)"
-            strokeWidth="13"
-            filter="drop-shadow(0 5px 38px #36c6e7aa)"
-          />
-          {/* Subtle inner highlight */}
-          <path
-            d="M170,40 Q71,72 77,168 Q84,244 169,287 Q264,247 262,170 Q265,72 170,40"
-            fill="none"
-            stroke="#fff"
-            strokeOpacity="0.13"
-            strokeWidth="8"
-          />
-          {/* Shield shadow for embossed 3d effect */}
-          <ellipse
-            cx="170"
-            cy="256"
-            rx="91"
-            ry="30"
-            fill="url(#shieldShadow)"
-            opacity="0.32"
-            filter="blur(2.6px)"
-          />
-          {/* CRICKET BAT — left, angled */}
+          {/* Olympic Rings */}
+          <g strokeWidth="10" fill="none">
+            {/* Blue Left */}
+            <circle cx="80" cy="115" r="54" stroke="#0366c6" />
+            {/* Black Center Top */}
+            <circle cx="170" cy="115" r="54" stroke="#141418" />
+            {/* Red Right */}
+            <circle cx="260" cy="115" r="54" stroke="#e22927" />
+            {/* Yellow Lower Left */}
+            <circle cx="125" cy="173" r="54" stroke="#fed502" />
+            {/* Green Lower Right */}
+            <circle cx="215" cy="173" r="54" stroke="#27b14a" />
+          </g>
+          {/* Cricket Bat (leaning diagonally through yellow/blue rings) */}
           <g>
             <rect
-              x="83"
-              y="115"
-              width="16"
-              height="95"
-              rx="8"
-              fill="url(#batBody)"
-              stroke="#bc8b3b"
-              strokeWidth="2.4"
-              transform="rotate(-22 91 162)"
+              x="63"
+              y="111"
+              width="14"
+              height="73"
+              rx="7"
+              fill="#f9c97d"
+              stroke="#ba8530"
+              strokeWidth="2"
+              transform="rotate(-23 70 148)"
             />
             {/* Bat grip */}
             <rect
-              x="88"
-              y="107"
-              width="6.7"
-              height="20"
-              rx="2.2"
-              fill="url(#batGripNew)"
-              stroke="#fbeeff"
-              strokeWidth="1.0"
-              transform="rotate(-23 91 117)"
+              x="65"
+              y="95"
+              width="7"
+              height="18"
+              rx="2.5"
+              fill="#bb2177"
+              transform="rotate(-23 68 104)"
             />
             {/* Bat highlight */}
             <rect
-              x="87"
-              y="126"
-              width="5"
-              height="66"
-              rx="2.2"
+              x="67"
+              y="129"
+              width="4.2"
+              height="47"
+              rx="2"
               fill="#fffbe899"
-              opacity="0.26"
-              transform="rotate(-22 89 162)"
+              opacity="0.32"
+              transform="rotate(-23 69 149)"
             />
           </g>
-          {/* TENNIS RACQUET — right, upright */}
+          {/* Tennis racquet through black/green ring */}
           <g>
-            {/* Frame & net */}
+            {/* Frame & strings */}
             <ellipse
-              cx="249"
-              cy="122"
+              cx="235"
+              cy="85"
               rx="22"
-              ry="37"
+              ry="36"
               fill="#fff"
-              stroke="url(#racquetFrame)"
-              strokeWidth="6.1"
-              filter="drop-shadow(0 2px 18px #23ce6b44)"
+              stroke="#2cd769"
+              strokeWidth="6"
+              filter="drop-shadow(0 1px 8px #23ce6b99)"
             />
             {/* Strings */}
-            <g opacity="0.33">
-              {Array.from({length: 6}).map((_,i)=> (
+            <g opacity="0.3">
+              {[0,1,2,3,4].map((i) => (
                 <line
                   key={i}
-                  x1={249-20+8*i}
-                  y1={90}
-                  x2={249-20+8*i}
-                  y2={154}
+                  x1={235-15+7*i}
+                  y1={49}
+                  x2={235-15+7*i}
+                  y2={121}
                   stroke="#23ce6b"
-                  strokeWidth="1.7"
+                  strokeWidth="1.4"
                 />
               ))}
-              {Array.from({length: 7}).map((_,i)=>(
+              {[0,1,2,3,4].map((i) => (
                 <line
-                  key={i+"y"}
-                  x1={227}
-                  y1={105+7*i}
-                  x2={271}
-                  y2={105+7*i}
+                  key={`y${i}`}
+                  x1={213}
+                  y1={64+9*i}
+                  x2={257}
+                  y2={64+9*i}
                   stroke="#23ce6b"
-                  strokeWidth="1.7"
+                  strokeWidth="1.4"
                 />
               ))}
             </g>
             {/* Racquet grip */}
             <rect
-              x="242"
-              y="159"
-              width="13"
-              height="28"
-              rx="6.2"
-              fill="url(#racquetGrip)"
+              x="228"
+              y="119"
+              width="14"
+              height="25"
+              rx="5"
+              fill="#fed502"
               stroke="#bba101"
               strokeWidth="1"
             />
           </g>
-          {/* FOOTBALL (Soccer ball), center foreground */}
+          {/* Football in center (in front of black ring) */}
           <g>
             <circle
               cx="170"
-              cy="192"
-              r="37"
-              fill="url(#footballBody)"
+              cy="170"
+              r="25"
+              fill="#fff"
               stroke="#343434"
-              strokeWidth="5.5"
-              filter="drop-shadow(0 2px 16px #36c6e763)"
+              strokeWidth="5"
+              filter="drop-shadow(0 1px 9px #36c6e799)"
             />
-            {/* Football pentagons/hexagons */}
-            <polygon points="170,170 185,185 170,203 154,185" fill="#343434" opacity="0.53"/>
-            <polygon points="170,180 179,189 170,198 161,189" fill="#343434" opacity="0.23"/>
-            <circle cx="170" cy="190" r="6" fill="#343434" opacity="0.45"/>
-            <ellipse cx="188" cy="208" rx="12" ry="7" fill="#fff" opacity="0.10"/>
+            {/* Football pattern */}
+            <polygon points="170,152 180,165 175,178 165,178 160,165" fill="#343434" opacity="0.62"/>
+            <circle cx="170" cy="167" r="7.2" fill="#343434" opacity="0.45"/>
+            <ellipse cx="183" cy="182" rx="10" ry="4.7" fill="#eee" opacity="0.22"/>
           </g>
-          {/* CRICKET BALL — bottom left, overlapping bat */}
+          {/* Cricket ball over lower yellow ring */}
           <g>
             <circle
-              cx="120"
-              cy="230"
-              r="16"
-              fill="url(#ballRed)"
+              cx="99"
+              cy="200"
+              r="13"
+              fill="#ff4ecd"
               stroke="#bb2177"
-              strokeWidth="2.8"
-              filter="drop-shadow(0 2px 7px #ff4ecd66)"
+              strokeWidth="2.5"
+              filter="drop-shadow(0 0px 7px #ff4ecd99)"
             />
-            {/* Ball seam */}
+            {/* Ball shine/seam */}
             <ellipse
-              cx="120"
-              cy="230"
-              rx="11"
-              ry="3.4"
-              fill="#fff"
-              opacity="0.16"
-              filter="blur(1.3px)"
-            />
-            {/* Shine */}
-            <ellipse
-              cx="128"
-              cy="222"
+              cx="104"
+              cy="193"
               rx="7"
-              ry="3"
+              ry="2.4"
               fill="#fff"
-              opacity="0.22"
-              filter="blur(1.2px)"
+              opacity="0.14"
+              filter="blur(0.7px)"
+            />
+            <ellipse
+              cx="100"
+              cy="207"
+              rx="4.5"
+              ry="1.5"
+              fill="#fff"
+              opacity="0.18"
+              filter="blur(0.7px)"
             />
           </g>
-          {/* Drop shadow, outline, and extra highlight */}
-          <ellipse
-            cx="170"
-            cy="140"
-            rx="70"
-            ry="24"
-            fill="#fffbe8"
-            opacity="0.12"
-            filter="blur(6px)"
-          />
-          <path
-            d="M170,25 Q52,63 59,169 Q68,258 169,307 Q283,249 281,170 Q285,66 170,25"
-            fill="none"
-            stroke="#1b183e"
-            strokeWidth="8"
-            opacity="0.48"
-            filter="drop-shadow(0 0 26px #23ce6bbb)"
-          />
+          {/* (If needed, add a tiny tennis ball on racquet for extra vibrancy) */}
+          <g>
+            <circle
+              cx="260"
+              cy="140"
+              r="7"
+              fill="#fefd46"
+              stroke="#cede00"
+              strokeWidth="1"
+              opacity="0.98"
+            />
+          </g>
         </svg>
       </div>
       {/* Extra-bold, animated site title in RED */}
