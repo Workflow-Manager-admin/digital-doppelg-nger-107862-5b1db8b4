@@ -352,13 +352,14 @@ function App() {
  * Refactored WelcomeScreen – floating text-only, bold, readable, no boxes or glass
  */
 function WelcomeScreen({ onStart }) {
-  // Welcome text: all float, no bg, bold, super-readable vivid
+  // New bold sports graphic and site title, replacing all previous text/theme
   return (
     <div
       style={{
         position: "relative",
         zIndex: 160,
-        maxWidth: "75vw",
+        width: "100vw",
+        maxWidth: "98vw",
         margin: "7vh auto 0 auto",
         textAlign: "center",
         background: "none",
@@ -366,77 +367,141 @@ function WelcomeScreen({ onStart }) {
         borderRadius: 0,
         padding: 0,
         pointerEvents: "auto",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
-      <h1
-        className="rainbow-header"
+      {/* Large sports SVG composite symbol */}
+      <div
         style={{
+          display: "block",
+          margin: "0 auto 1.6em auto",
+          width: "clamp(260px,42vw,520px)",
+          height: "clamp(200px,31vw,330px)",
+          position: "relative",
+          filter: "drop-shadow(0 7px 42px #23ce6bd0) drop-shadow(0 1px 20px #ffbf0060)"
+        }}
+        aria-hidden="true"
+      >
+        <svg width="98%" height="100%" viewBox="0 0 410 265" style={{ maxWidth: "98vw" }}>
+          {/* Vivid composite: Soccer, Tennis, Cricket bat/ball, Basketball, Rugby, Shuttlecock, Volleyball */}
+          {/* Tennis Racket */}
+          <ellipse cx="60" cy="102" rx="40" ry="68" fill="#23ce6b" stroke="#36c6e7" strokeWidth="6"/>
+          <rect x="44" y="159" width="33" height="59" rx="13" fill="#fed502" stroke="#bba101" strokeWidth="3" />
+          {/* Tennis Ball overlapping racket */}
+          <circle cx="130" cy="205" r="20" fill="#fefd46" stroke="#e6d800" strokeWidth="4"/>
+          {/* Cricket Bat */}
+          <rect x="205" y="114" width="17" height="99" rx="6.9" fill="#f9c97d" stroke="#ba8530" strokeWidth="5" transform="rotate(20 214 174)" />
+          {/* Cricket Bat Grip */}
+          <rect x="215" y="102" width="8" height="26" rx="3" fill="#ba2177" transform="rotate(20 219 115)" />
+          {/* Cricket Ball */}
+          <circle cx="186" cy="223" r="19" fill="#ff4ecd" stroke="#ba2177" strokeWidth="4"/>
+          <ellipse cx="186" cy="223" rx="5" ry="17" fill="#fff" opacity="0.13"/>
+          {/* Basketball */}
+          <circle cx="322" cy="88" r="39" fill="#ff654f" stroke="#fe7b24" strokeWidth="6"/>
+          <path d="M283 88h78" stroke="#fff" strokeWidth="2.4"/>
+          <path d="M293 62C308 97 337 122 357 138" stroke="#fff" strokeWidth="2"/>
+          <path d="M351 62C336 97 307 122 287 138" stroke="#fff" strokeWidth="2"/>
+          <path d="M322 49v78" stroke="#fff" strokeWidth="2"/>
+          {/* Rugby Ball */}
+          <ellipse cx="350" cy="204" rx="48" ry="25" fill="#fff" stroke="#ffbf00" strokeWidth="4"/>
+          <rect x="316" y="192" width="66" height="22" rx="9" fill="#23ce6b" />
+          {/* Shuttlecock */}
+          <rect x="239" y="56" width="8" height="42" rx="2.5" fill="#bafcd6" transform="rotate(-11 243 78)"/>
+          <rect x="252" y="62" width="7" height="36" rx="2.3" fill="#b4eafe" transform="rotate(5 255 80)"/>
+          <rect x="245" y="66" width="7" height="29" rx="2" fill="#fff"/>
+          <ellipse cx="249" cy="109" rx="21" ry="12" fill="#dedede"/>
+          <ellipse cx="249" cy="113" rx="15" ry="3.7" fill="#6C63FF" opacity="0.16"/>
+          {/* Volleyball (overlapping rugby) */}
+          <circle cx="387" cy="149" r="19" fill="#36c6e7" stroke="#15a3b4" strokeWidth="3"/>
+          <path d="M368 163Q387 130 406 163" stroke="#fff" strokeWidth="2"/>
+          <path d="M370 143Q387 177 404 143" stroke="#fff" strokeWidth="2"/>
+          {/* Soccer Ball */}
+          <circle cx="108" cy="67" r="36" fill="#fff" stroke="#343434" strokeWidth="5"/>
+          <polygon points="108,45 124,58 124,78 108,90 92,78 92,58" fill="#343434"/>
+          <circle cx="108" cy="63" r="16" fill="#343434"/>
+        </svg>
+      </div>
+      {/* New site name! */}
+      <div
+        style={{
+          margin: "0 0 1.8em 0",
+          fontFamily: "'Fredoka','Segoe UI',sans-serif",
           fontWeight: 900,
-          fontSize: "clamp(2.2em, 6vw, 4.2em)",
-          padding: "0 0 0.2em 0",
-          letterSpacing: "0.01em",
-          textShadow: "0 8px 54px #fff, 0 2px 20px #23ce6bcc, 0 0px 26px #ff4ecd9e",
-          background: "linear-gradient(90deg,#ff4ecd,#6C63FF,#23ce6b,#FF6584 90%)",
+          fontSize: "clamp(2.4em, 6.8vw, 4.2em)",
+          letterSpacing: "-0.01em",
+          background: "linear-gradient(90deg,#ff4ecd,#6C63FF,#23ce6b,#FF6584 100%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
-          color: "transparent"
+          color: "transparent",
+          lineHeight: 1.08,
+          textShadow: "0 7px 45px #fff, 0 2.6px 33px #23ce6bcc, 0 0px 28px #ff4ecd97"
         }}
       >
-        <span role="img" aria-label="mirror" style={{ fontSize: "1.3em", verticalAlign: "middle" }}>🪞</span>{" "}
-        Internet Ego Mirror
-      </h1>
-      <p
+        The Totally Turf Sports Quiz
+        <span role="img" aria-label="turf" style={{ fontSize: "0.7em", verticalAlign: "middle", marginLeft: "0.23em"}}>🦶🏏⚽️🎾🏀🏸🏐</span>
+      </div>
+      {/* Small subtitle for extra humor */}
+      <div
         style={{
-          fontWeight: 900,
-          fontSize: "clamp(1.16em, 2.8vw, 1.59rem)",
-          color: "#fff",
-          lineHeight: 1.26,
-          margin: "0 auto 2.3em auto",
-          textShadow: "0 5px 28px #23ce6b, 0 4.5px 24px #ff4ecd94, 0 1.5px 14px #fff",
+          fontWeight: 800,
+          fontSize: "clamp(1.14em,2.7vw,1.55em)",
+          color: "#fed502",
+          margin: "0 0 2.8em 0",
+          textShadow: "0 5px 24px #23ce6b90, 0 1.5px 11px #fff, 0 2.5px 12px #ff4ecd88",
           background: "none",
-          borderRadius: 0,
-          maxWidth: "800px",
-          filter: "brightness(1.22) saturate(1.35)",
-          display: "inline-block",
+          filter: "brightness(1.19)",
+          letterSpacing: "0.01em"
         }}
       >
-        Discover your digital alter ego with surprise internet trivia!<br />
-        Every time you start, you get eight wild questions drawn live from the{" "}
-        <a href="https://opentdb.com/" rel="noopener noreferrer"
-          style={{
-            color: "#fff",
-            fontWeight: 900,
-            WebkitTextStroke: "1px #23ce6b",
-            filter: "drop-shadow(0 2px 17px #23ce6bb8)"
-          }}
-        >
-          Open Trivia DB
-        </a>
-        .<br />
-        <span style={{ fontSize: "1.05em", color: "#ffbf00", fontWeight: 900 }}>No login, no key needed.</span>
-        <b style={{ color: "#fff", textShadow: "0 0px 12px #6C63FFde, 0 1.9px 12px #fff" }}> Click START for a new set!</b>
-      </p>
+        The silliest battle for athletic internet infamy begins now!
+      </div>
+      {/* Animated Start button */}
       <div>
         <button
           className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce"
           onClick={onStart}
           style={{
-            background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584)",
-            fontSize: "1.72em",
+            background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584 90%)",
+            fontSize: "clamp(2.4em, 5vw, 3.7em)",
             fontWeight: 900,
             color: "#fff",
             border: "none",
-            borderRadius: "2.6em",
-            boxShadow: "none",
-            textShadow: "0 2px 19px #fff",
-            padding: "1em 2.5em",
-            margin: "2.5em 0 1.3em 0",
+            borderRadius: "2.9em",
+            boxShadow: "0 6px 38px #23ce6b88, 0 1.5px 24px #fed50266",
+            textShadow: "0 0px 22px #fff, 0 1.9px 20px #ff4ecdcc",
+            padding: "1.25em 2.8em",
+            margin: "1.2em 0 2.2em 0",
             outline: "none",
+            cursor: "pointer",
+            animation: "sports-bounce-glow 1.32s cubic-bezier(.64,.06,.34,1.41) infinite alternate"
           }}
         >
-          🎉 Start Quiz 🎉
+          <span role="img" aria-label="start whistle" style={{ fontSize: "1.13em", verticalAlign: "middle", marginRight: "0.41em"}}>🏁</span>
+          Start the Showdown!
+          <span role="img" aria-label="tada" style={{ fontSize: "1.13em", verticalAlign: "middle", marginLeft: "0.41em"}}>🥳</span>
         </button>
       </div>
+      {/* Button animation keyframes injected here for isolation */}
+      <style>
+        {`
+        @keyframes sports-bounce-glow {
+          0%   { transform: translateY(0) scale(1);
+                 filter: drop-shadow(0 0 16px #36c6e765) brightness(1.08);}
+          18%  { transform: translateY(-17px) scale(1.08);
+                 filter: drop-shadow(0 0 33px #fed50273) brightness(1.19);}
+          45%  { transform: translateY(7px) scale(1.03);
+                 filter: drop-shadow(0 0 22px #23ce6bcc) brightness(1.1);}
+          61%  { transform: translateY(-9px) scale(1.13);
+                 filter: drop-shadow(0 0 44px #ff4ecd88) brightness(1.21);}
+          74%  { transform: translateY(5px) scale(1.07);
+                 filter: drop-shadow(0 0 28px #fed50299) brightness(1.13);}
+          100% { transform: translateY(0) scale(1.02);
+                 filter: drop-shadow(0 0 26px #23ce6baa) brightness(1.11);}
+        }
+        `}
+      </style>
     </div>
   );
 }
