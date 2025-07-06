@@ -6,6 +6,7 @@ import NumberFact from "./NumberFact";
 import WordOfTheMatch from "./WordOfTheMatch";
 import JokeWidget from "./JokeWidget";
 
+// --- UTILITIES/JUDGEMENT (helper for score computation) ---
 /**
  * Computes quiz score summary.
  * Returns object { correctCount, total }
@@ -36,6 +37,7 @@ function ResultPieChart({ correct, total }) {
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
   const [hover, setHover] = React.useState(null);
   const [animPercent, setAnimPercent] = React.useState(0);
+
   React.useEffect(() => {
     let raf;
     let start;
@@ -299,7 +301,7 @@ function ResultPieChart({ correct, total }) {
 }
 
 // PUBLIC_INTERFACE
-function ResultScreen({ answers, questions, onRestart, onShare, copied, shareText, floatUI }) {
+function ResultScreen({ answers, questions, onRestart, onShare, copied, shareText }) {
   const { correctCount, total } = computeScore(answers, questions);
   let playMessage = "";
   if (total > 0) {
@@ -338,9 +340,8 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
       playMessage = lowJokes[Math.floor(Math.random() * lowJokes.length)];
     }
   }
-  const [animationIdx] = useState(() => Math.floor(Math.random() * 6));
-  const Animation = () => <></>;
 
+  // Main result card info is always shown at the top
   return (
     <div
       style={{
@@ -358,9 +359,6 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
       <div style={{
         display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "2.2em"
       }}>
-        <span style={{ filter: "none" }}>
-          <Animation />
-        </span>
         <ResultPieChart correct={correctCount} total={total} />
       </div>
       <div style={{
@@ -387,9 +385,10 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
           {playMessage}
         </div>
       )}
-      {/* Numbers API Number Fact here */}
+
+      {/* Supporting widgets appear below the main result bubble */}
       <NumberFact number={correctCount} forScore={true} />
-      {/* Word of the Match */}
+      {/* Defensive: show widget but never allow to shadow/hide result */}
       <WordOfTheMatch />
       <JokeWidget />
       <div style={{
@@ -449,15 +448,9 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
   );
 }
 
-/*
- * --- WELCOME SCREEN ---
- * Renders the sports logo, app name, tagline, and animated start button.
- * API widgets (QuoteBox, WordOfTheMatch, JokeWidget) appear only below or beside the main quiz call-to-action,
- * never replacing or visually blocking the main UI.
- */
 // PUBLIC_INTERFACE
 function WelcomeScreen({ onStart }) {
-  // Defensive checks to guarantee never blocking the primary UI
+  // Core logo, app name, tagline always at top
   return (
     <div
       className="iemo-float-welcome"
@@ -475,7 +468,7 @@ function WelcomeScreen({ onStart }) {
         boxShadow: "none",
       }}
     >
-      {/* Site Sports Logo/Icon */}
+      {/* Sports Logo/Icon */}
       <div style={{ margin: "2.7em 0 1.1em 0", filter: "drop-shadow(0 6px 32px #23ce6bbb) drop-shadow(0 0 14px #ff4ecd78)" }}>
         <svg
           width="108"
@@ -511,7 +504,7 @@ function WelcomeScreen({ onStart }) {
           <rect x="47" y="67" rx="7.8" width="14" height="22.5" fill="#FED502" stroke="#fff" strokeWidth="3.2" />
         </svg>
       </div>
-      {/* App/Site Name */}
+      {/* App Name */}
       <div
         style={{
           fontWeight: 900,
@@ -539,7 +532,7 @@ function WelcomeScreen({ onStart }) {
       >
         Discover your digital alter ego through quirky sports & web trivia!
       </div>
-      {/* Animated Start Button */}
+      {/* Big animated Start button */}
       <button
         className="iemo-btn iemo-btn-accent"
         style={{
@@ -560,12 +553,11 @@ function WelcomeScreen({ onStart }) {
           🚀 Start Quiz
         </span>
       </button>
-      {/* Motivational/fun quote box as widget */}
+      {/* Motivational/fun quote */}
       <div style={{ width: "100%" }}>
-        {/* Defensive: Always render QuoteBox, but never in place of the main quiz content */}
         <QuoteBox prominent />
       </div>
-      {/* Additional fun widgets shown only underneath main CTA, in a visually distinct panel */}
+      {/* Fun widgets block, underneath main CTA */}
       <div aria-label="Supporting widgets" style={{
         marginTop: "1.7em",
         display: "flex",
@@ -574,9 +566,8 @@ function WelcomeScreen({ onStart }) {
         gap: "1.4em",
         maxWidth: 750,
         width: "100%",
-        zIndex: 4, // Lower than main UI
+        zIndex: 4,
       }}>
-        {/* Defensive: If these widgets fail, nothing renders, but UI can't break layout */}
         <WordOfTheMatch />
         <JokeWidget />
       </div>
@@ -594,7 +585,6 @@ function WelcomeScreen({ onStart }) {
   );
 }
 
-// --- QUESTION SCREEN ---
 // PUBLIC_INTERFACE
 function QuestionScreen({ questions, step, onAnswer, loading, fetchError }) {
   if (loading) return (
@@ -666,30 +656,24 @@ function QuestionScreen({ questions, step, onAnswer, loading, fetchError }) {
   );
 }
 
-// --- Main App wrapper and all other screens/functions ---
-
+// ---- Fancy fireworks/celebration UI (on answering) ----
 function CrackerBlast({ x, y, onDone }) {
-  // Firework effect: massive background SVG and vivid, big strokes/dots so always seen & celebratory
   React.useEffect(() => {
     const timeout = setTimeout(() => onDone && onDone(), 1200);
     return () => clearTimeout(timeout);
   }, [onDone]);
 
-  // Fill the background, burst out from x,y as best-guess for visual anchor.
-  // Center explosion, randomize color order, scatter rays for variety.
-  // Our SVG will be as big as the viewport; ray origin is centered.
   const width = Math.max(window.innerWidth, 1400);
   const height = Math.max(window.innerHeight, 900);
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // Colors - more vivid (lots of bright, light-additive shades)
   const RAY_COLORS = [
     "#FFDE00", "#FF6584", "#36C6E7", "#23CE6B", "#FF4ECD", "#FEC800", "#FED502", "#ffffff",
     "#00FFA2", "#ffbf00", "#19e0ff", "#fc1cff", "#FFFBE8"
   ];
   const DOT_COLORS = [
-    "#FFFAE3", "#FF4ECD", "#FED502", "#36C6E7", "#23CE6B", "#FF6584", "#fffbe8",
+    "#FFFAE3", "#FF4ECD", "#FED502", "#36C6E7", "#23ce6b", "#FF6584", "#fffbe8",
     "#FEC800", "#6C63FF", "#00FFA2", "#FFB000", "#fc1cff", "#FFF", "#e0ffef", "#ffd500", "#FF6584"
   ];
 
@@ -708,10 +692,8 @@ function CrackerBlast({ x, y, onDone }) {
           }}
         >
           <g>
-            {/* Massive vivid rays, evenly radiating, covers width/height */}
             {[...Array(28)].map((_, i) => {
               const angle = ((i * (360 / 28)) + ((i % 3) * 7)) % 360;
-              // Alternate burst radii for visual variety, spread over much bigger area.
               const rayLen = (0.41 + 0.37 * (i % 2)) * Math.max(width, height);
               const color = RAY_COLORS[i % RAY_COLORS.length];
               return (
@@ -732,12 +714,10 @@ function CrackerBlast({ x, y, onDone }) {
                 />
               );
             })}
-            {/* Fat, blurred vivid dots at many radii */}
             {[...Array(28)].map((_, i) => {
-              // More 'depth': larger # of layers, larger spread
               const angle = i * (360 / 28) + Math.random() * 17;
               const dist = 260 + Math.random() * 0.48 * Math.min(width, height);
-              const size = 38 + Math.random() * ((i%2===0) ? 76 : 130);
+              const size = 38 + Math.random() * ((i % 2 === 0) ? 76 : 130);
               const color = DOT_COLORS[i % DOT_COLORS.length];
               return (
                 <ellipse
@@ -749,12 +729,11 @@ function CrackerBlast({ x, y, onDone }) {
                   fill={color}
                   fillOpacity="0.79"
                   style={{
-                    filter: `blur(${14 + Math.random()*9}px) drop-shadow(0 0 48px ${color}) brightness(1.22)`
+                    filter: `blur(${14 + Math.random() * 9}px) drop-shadow(0 0 48px ${color}) brightness(1.22)`
                   }}
                 />
               );
             })}
-            {/* Giant soft glow at center */}
             <ellipse
               cx={centerX}
               cy={centerY}
@@ -762,9 +741,7 @@ function CrackerBlast({ x, y, onDone }) {
               ry={height / 8.6}
               fill="#fffbe8"
               fillOpacity="0.16"
-              style={{
-                filter: "blur(38px)"
-              }}
+              style={{ filter: "blur(38px)" }}
             />
             <ellipse
               cx={centerX}
@@ -773,9 +750,7 @@ function CrackerBlast({ x, y, onDone }) {
               ry={height / 4.9}
               fill="#fcf9e5"
               fillOpacity="0.08"
-              style={{
-                filter: "blur(64px)"
-              }}
+              style={{ filter: "blur(64px)" }}
             />
           </g>
         </svg>
@@ -784,16 +759,15 @@ function CrackerBlast({ x, y, onDone }) {
   );
 }
 
-// PUBLIC_INTERFACE
+// PUBLIC_INTERFACE - Main App
 function App() {
-  // --- State for quiz flow ---
+  // --- Quiz flow state ---
   const [step, setStep] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
-
   const [crackerBlasts, setCrackerBlasts] = useState([]);
 
   function parseTrivia(qset) {
@@ -904,66 +878,60 @@ function App() {
     document.body.style.transition = "background .5s";
   }, [step, questions.length]);
 
-  // MAIN RENDER LOGIC
-  // Always renders: floating sports background, non-blocking supporting widgets,
-  // with quiz UI at the highest stacking context. Widgets never block/replace primary flow!
+  // === REACT RENDER TREE ===
+  // The main quiz/welcome/result is ALWAYS rendered at top; all API widgets below.
   return (
     <div className="iemo-app float-ui-app">
-      {/* Always rendered background */}
+      {/* Always-on animated background */}
       <SportsBackground />
 
-      {/* Firework cracker effect overlay - appears above everything else */}
+      {/* Cracker effect overlay */}
       <div className="cracker-blast-container" aria-hidden="true" style={{ pointerEvents: "none" }}>
         {crackerBlasts.map(({ x, y, id }) =>
           <CrackerBlast key={id} x={x} y={y} onDone={() => handleCrackerBlastDone(id)} />
         )}
       </div>
 
-      {/* === CORE QUIZ CONTENT IS ALWAYS TOP-PRIORITY === */}
-
-      {/* WELCOME SCREEN */}
-      {step === 0 && (
-        <WelcomeScreen onStart={handleStart} />
-      )}
-
-      {/* QUIZ FLOW: Question screens */}
-      {(step > 0 && step <= (questions.length || 0)) && (
-        <>
-          <QuestionScreen
+      {/* Main Quiz Flow Tree */}
+      <main>
+        {/* Welcome */}
+        {step === 0 && (
+          <WelcomeScreen onStart={handleStart} />
+        )}
+        {/* Quiz flow - one question at a time */}
+        {(step > 0 && step <= (questions.length || 0)) && (
+          <>
+            <QuestionScreen
+              questions={questions}
+              step={step}
+              onAnswer={handleAnswer}
+              loading={loading}
+              fetchError={fetchError}
+            />
+            {/* Supporting widgets - always below main Q/A area, never in place of it */}
+            <section aria-label="Support widgets area" style={{
+              margin: "1.7em auto 0 auto", maxWidth: 760, display: "flex", flexDirection: "column", gap: "1.21em"
+            }}>
+              <QuoteBox />
+              <NumberFact number={step - 1} forScore={false} />
+            </section>
+          </>
+        )}
+        {/* Results */}
+        {(step > (questions.length || 0) && (questions.length > 0) && !loading && !fetchError) && (
+          <ResultScreen
+            answers={answers}
             questions={questions}
-            step={step}
-            onAnswer={handleAnswer}
-            loading={loading}
-            fetchError={fetchError}
+            onRestart={handleRestart}
+            onShare={handleShare}
+            copied={copied}
+            shareText={getShareText()}
           />
-          {/* Supporting widgets NEVER block quiz UI */}
-          <div aria-label="Support widgets area" style={{
-            margin: "1.7em auto 0 auto", maxWidth: 760, display: "flex", flexDirection: "column", gap: "1.21em"
-          }}>
-            <QuoteBox />
-            <NumberFact number={step - 1} forScore={false} />
-          </div>
-        </>
-      )}
+        )}
+      </main>
 
-      {/* RESULT SCREEN */}
-      {(step > (questions.length || 0) && (questions.length > 0) && !loading && !fetchError) && (
-        <ResultScreen
-          answers={answers}
-          questions={questions}
-          onRestart={handleRestart}
-          onShare={handleShare}
-          copied={copied}
-          shareText={getShareText()}
-          floatUI
-        />
-      )}
-
-      {/* ==== ALL WIDGETS BELOW THE MAIN CONTEXT; CAN'T BLOCK UI ==== */}
-      {/* (No global-below widgets for this layout beyond what's present above) */}
-
-      {/* Footer branding/support statement */}
-      <div className="iemo-footer" style={{
+      {/* Global footer: always below main content */}
+      <footer className="iemo-footer" style={{
         margin: "2.7em auto 2em auto",
         color: "#7c6ead", fontWeight: 700, textAlign: "center", fontSize: "1em",
         textShadow: "0 1.3px 7px #36c6e71a"
@@ -971,7 +939,7 @@ function App() {
         <span className="iemo-footer-brand">
           &copy; {new Date().getFullYear()} Internet Ego Mirror &mdash; Playful sports persona quizzes
         </span>
-      </div>
+      </footer>
     </div>
   );
 }
