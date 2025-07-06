@@ -375,7 +375,7 @@ function WelcomeScreen({ onStart }) {
           height="100%"
           viewBox="0 0 340 340"
           style={{ maxWidth: "99vw", display: "block" }}
-          aria-label="Trophy Cup with Detailed Sports Gear"
+          aria-label="Energetic Sports Trophy Badge"
         >
           <defs>
             <linearGradient id="cupGoldA" x1="7%" y1="35%" x2="93%" y2="84%">
@@ -407,7 +407,43 @@ function WelcomeScreen({ onStart }) {
               <stop offset="74%" stopColor="#bc130c"/>
               <stop offset="100%" stopColor="#8e121b"/>
             </radialGradient>
+            <linearGradient id="arenaArc" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0.1" stopColor="#23ce6b"/>
+              <stop offset="0.52" stopColor="#36c6e7"/>
+              <stop offset="1" stopColor="#6C63FF"/>
+            </linearGradient>
+            <linearGradient id="goalLine" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ffbf00"/>
+              <stop offset="100%" stopColor="#FF6584"/>
+            </linearGradient>
+            <linearGradient id="fieldLine" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.75"/>
+              <stop offset="100%" stopColor="#a0e7ff" stopOpacity="0.27"/>
+            </linearGradient>
+            <radialGradient id="stadiumGlow" cx="50%" cy="65%" r="61%">
+              <stop offset="0%" stopColor="#fffbe0" stopOpacity="0.41"/>
+              <stop offset="95%" stopColor="#23ce6b" stopOpacity="0" />
+            </radialGradient>
           </defs>
+          {/* --- STADIUM/ARENA and TRACK/LINES BG (inside cup shape) --- */}
+          {/* Stadium arena ellipse backdrop */}
+          <ellipse cx="170" cy="143" rx="82" ry="34" fill="url(#stadiumGlow)" />
+          {/* Arena outline */}
+          <ellipse cx="170" cy="147" rx="79" ry="27" fill="none" stroke="url(#arenaArc)" strokeWidth="8" opacity="0.33"/>
+          {/* Field lines (track curves) */}
+          <ellipse cx="170" cy="154" rx="60" ry="13" fill="none" stroke="url(#fieldLine)" strokeWidth="4" opacity="0.7"/>
+          <ellipse cx="170" cy="158" rx="38" ry="8.5" fill="none" stroke="url(#fieldLine)" strokeWidth="2" opacity="0.56"/>
+          {/* Bold goal line (bottom band) */}
+          <rect x="92" y="175" width="156" height="8.5" rx="2.4" fill="url(#goalLine)" opacity="0.76"/>
+          {/* Track hash marks left */}
+          {[0,1,2].map(i=>(
+            <rect key={"hashleft"+i} x={99+13*i} y={165-3*i} width="8" height="2.3" rx="1.1" fill="#23ce6b" opacity="0.35"/>
+          ))}
+          {/* Track hash marks right */}
+          {[0,1,2].map(i=>(
+            <rect key={"hashright"+i} x={169+18*i} y={156+4*i} width="8" height="2.3" rx="1.1" fill="#36c6e7" opacity="0.35"/>
+          ))}
+          {/* --- END ARENA/SPORTS FIELD LAYER --- */}
           {/* Trophy handles: extra bold */}
           <path
             d="M57,87 Q-12,141 62,222 Q121,278 160,192"
@@ -478,7 +514,7 @@ function WelcomeScreen({ onStart }) {
             opacity="0.19"
           />
           {/* --- INSIDE: STYLIZED SPORTS GEAR --- */}
-          {/* Cricket bat – wider and angled for visibility */}
+          {/* Cricket bat */}
           <g>
             <rect
               x="84"
@@ -504,14 +540,14 @@ function WelcomeScreen({ onStart }) {
               transform="rotate(-21 98 54)"
             />
           </g>
-          {/* Red cricket ball prominently on the left */}
+          {/* Red cricket ball */}
           <g>
             <circle cx="81" cy="177" r="15.5" fill="url(#ballRed)" stroke="#7e070f" strokeWidth="2.2"/>
             <ellipse cx="81" cy="173" rx="3.2" ry="8.3" fill="#fff" opacity="0.07"/>
             <path d="M67 177 Q81 158 95 177" stroke="#fff" strokeDasharray="2.4,5.2" strokeWidth="1.32" fill="none" />
             <ellipse cx="81" cy="177" rx="11" ry="6.5" fill="#ffe36b" opacity="0.045"/>
           </g>
-          {/* Football (soccer) at bottom inside, overlapping bat */}
+          {/* Football (soccer) */}
           <g>
             <circle cx="116" cy="186" r="22" fill="#fff" stroke="#222" strokeWidth="3"/>
             {/* Black pentagon patch */}
@@ -520,7 +556,7 @@ function WelcomeScreen({ onStart }) {
             <path d="M104 195 Q116 204 128 195" stroke="#444" strokeWidth="1.4" fill="none"/>
             <ellipse cx="116" cy="186" rx="18" ry="10" fill="#ddd" opacity="0.13"/>
           </g>
-          {/* Tennis racquet (right upper, clearly visible string detail) */}
+          {/* Tennis racquet and ball */}
           <g>
             {/* Head */}
             <ellipse cx="230" cy="109" rx="26" ry="44" fill="#36c6e7" stroke="#23ce6b" strokeWidth="4" transform="rotate(17 230 109)" />
@@ -542,12 +578,23 @@ function WelcomeScreen({ onStart }) {
             <line x1={213} y1={101} x2={247} y2={105} stroke="#fffbee" strokeWidth="1.1" opacity="0.35" transform="rotate(17 230 109)" />
             {/* Handle */}
             <rect x="221" y="154" width="16" height="34" rx="5.6" fill="#1ccda6" stroke="#25b981" strokeWidth="2.1" transform="rotate(24 229 171)" />
-          </g>
-          {/* Tennis ball (right lower) */}
-          <g>
+            {/* Tennis ball */}
             <circle cx="259" cy="164" r="15.5" fill="#fefd55" stroke="#b7ae22" strokeWidth="2"/>
             <path d="M248 156 Q269 153 267 172" stroke="#fff" strokeWidth="1.5" fill="none" opacity="0.45"/>
           </g>
+          {/* Extra: Sporty color bands overlay for high-energy */}
+          <ellipse
+            cx="170"
+            cy="142"
+            rx="88"
+            ry="36"
+            fill="none"
+            stroke="url(#arenaArc)"
+            strokeWidth="6.7"
+            opacity="0.55"
+            style={{ filter: "blur(1.4px)" }}
+          />
+          {/* End SVG */}
         </svg>
       </div>
       {/* Extra-bold, animated site title in RED */}
