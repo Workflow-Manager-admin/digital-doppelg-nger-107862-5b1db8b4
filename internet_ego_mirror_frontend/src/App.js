@@ -31,13 +31,21 @@ function computeScore(answers, questions) {
   return { correctCount, total };
 }
 
+/**
+ * ResultPieChart: Pure SVG animated donut chart for result breakdown.
+ * Replaces any dependency like react-minimal-pie-chart. Visual accents adapt to main palette.
+ * @param {number} correct - Count of correct answers.
+ * @param {number} total - Total questions.
+ * @returns {JSX.Element}
+ */
 // PUBLIC_INTERFACE
 function ResultPieChart({ correct, total }) {
-  const incorrect = Math.max(0, total - correct);
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
-  const [hover, setHover] = React.useState(null);
+  const incorrect = Math.max(0, total - correct);
   const [animPercent, setAnimPercent] = React.useState(0);
+  const [hover, setHover] = React.useState(null);
 
+  // Animate percent from 0 to correct percent
   React.useEffect(() => {
     let raf;
     let start;
@@ -45,7 +53,7 @@ function ResultPieChart({ correct, total }) {
     function animate(ts) {
       if (!start) start = ts;
       const elapsed = ts - start;
-      let prog = Math.min(1, elapsed / 900);
+      let prog = Math.min(1, elapsed / 900); // animation duration
       setAnimPercent(Math.round(target * prog));
       if (prog < 1) raf = requestAnimationFrame(animate);
       else setAnimPercent(target);
@@ -55,49 +63,12 @@ function ResultPieChart({ correct, total }) {
     return () => raf && cancelAnimationFrame(raf);
   }, [percent, correct, total]);
 
-  const size = 157;
-  const radius = 64;
-  const center = size / 2;
-  const STROKE = 28;
-  function describeArc(cx, cy, r, pStart, pEnd) {
-    const startAngle = (pStart / 100) * 360;
-    const endAngle = (pEnd / 100) * 360;
-    const polarToCartesian = (cx, cy, r, angleDeg) => {
-      const rad = ((angleDeg - 90) * Math.PI) / 180.0;
-      return {
-        x: cx + r * Math.cos(rad),
-        y: cy + r * Math.sin(rad),
-      };
-    };
-    const start = polarToCartesian(cx, cy, r, endAngle);
-    const end = polarToCartesian(cx, cy, r, startAngle);
-    const largeArc = endAngle - startAngle > 180 ? 1 : 0;
-    return [
-      "M", start.x, start.y,
-      "A", r, r, 0, largeArc, 0, end.x, end.y
-    ].join(" ");
-  }
-  const displayedPercent = Math.max(0, Math.min(100, animPercent));
-  const correctEnd = total === 0 ? 0 : (displayedPercent / 100) * 100;
-  const incorrectStart = correctEnd;
-  const SLICE_CONFIG = [
-    {
-      d: describeArc(center, center, radius, 0, correctEnd),
-      color: "#23CE6B",
-      label: `${percent}% Correct`,
-      desc: `${correct} out of ${total} Correct`,
-      idx: 0,
-      visible: correct > 0 && total > 0 && displayedPercent > 0
-    },
-    {
-      d: describeArc(center, center, radius, incorrectStart, 100),
-      color: "#FF6584",
-      label: `${100 - percent}% Incorrect`,
-      desc: `${incorrect} out of ${total} Incorrect`,
-      idx: 1,
-      visible: incorrect > 0 && total > 0 && displayedPercent === percent
-    },
-  ];
+  // Pie chart size and geometry
+  const size = 157, center = size / 2, radius = 64, stroke = 28;
+  const circleLen = 2 * Math.PI * radius;
+  const correctLen = (animPercent / 100) * circleLen;
+  const incorrectLen = circleLen - correctLen;
+  // To animate: set strokeDasharray and strokeDashoffset
 
   return (
     <div
@@ -123,46 +94,75 @@ function ResultPieChart({ correct, total }) {
           boxShadow: "none"
         }}
       >
-        {/* Background ring */}
+        {/* Background ring, always drawn */}
         <circle
           cx={center}
           cy={center}
           r={radius}
           stroke="#ece4fb"
-          strokeWidth={STROKE}
+          strokeWidth={stroke}
           fill="none"
         />
-        {/* Render each arc segment */}
-        {SLICE_CONFIG.map(
-          (seg) =>
-            seg.visible && (
-              <path
-                key={seg.idx}
-                d={seg.d}
-                stroke={seg.color}
-                strokeWidth={STROKE}
-                fill="none"
-                strokeLinecap="round"
-                tabIndex={0}
-                onMouseOver={() => setHover(seg.idx)}
-                onFocus={() => setHover(seg.idx)}
-                onMouseOut={() => setHover(null)}
-                onBlur={() => setHover(null)}
-                style={{
-                  filter:
-                    hover === seg.idx
-                      ? `drop-shadow(0 0 12px ${seg.color}cc)`
-                      : "",
-                  cursor: "pointer",
-                  transition: "filter 0.18s cubic-bezier(.42,.62,.52,.91)",
-                  outline: hover === seg.idx ? `3px dashed ${seg.color}` : "none",
-                }}
-                aria-label={seg.label}
-              />
-            )
+        {/* Correct answers sector */}
+        {animPercent > 0 && (
+          <circle
+            cx={center}
+            cy={center}
+            r={radius}
+            stroke="#23CE6B"
+            strokeWidth={stroke}
+            fill="none"
+            strokeDasharray={`${correctLen} ${circleLen - correctLen}`}
+            strokeDashoffset={0}
+            strokeLinecap="round"
+            style={{
+              transition: "stroke-dasharray .39s cubic-bezier(.57,.04,.8,1)",
+              filter:
+                hover === 0
+                  ? "drop-shadow(0 0 12px #23ce6bbc)"
+                  : "none",
+              cursor: "pointer",
+              outline: hover === 0 ? "3px dashed #23ce6b" : "none"
+            }}
+            tabIndex={0}
+            onMouseOver={() => setHover(0)}
+            onFocus={() => setHover(0)}
+            onMouseOut={() => setHover(null)}
+            onBlur={() => setHover(null)}
+            aria-label={`${percent}% Correct`}
+          />
+        )}
+        {/* Incorrect answers sector - only after animation completes */}
+        {animPercent === percent && incorrect > 0 && (
+          <circle
+            cx={center}
+            cy={center}
+            r={radius}
+            stroke="#FF6584"
+            strokeWidth={stroke}
+            fill="none"
+            strokeDasharray={`${incorrectLen} ${circleLen - incorrectLen}`}
+            strokeDashoffset={correctLen}
+            strokeLinecap="round"
+            style={{
+              transition: "stroke-dasharray .39s cubic-bezier(.57,.04,.8,1)",
+              filter:
+                hover === 1
+                  ? "drop-shadow(0 0 12px #FF6584cc)"
+                  : "none",
+              cursor: "pointer",
+              outline: hover === 1 ? "3px dashed #FF6584" : "none"
+            }}
+            tabIndex={0}
+            onMouseOver={() => setHover(1)}
+            onFocus={() => setHover(1)}
+            onMouseOut={() => setHover(null)}
+            onBlur={() => setHover(null)}
+            aria-label={`${100 - percent}% Incorrect`}
+          />
         )}
       </svg>
-      {/* Center info donut label – Now purely floating, no bg/box, vivid bold */}
+      {/* Center info donut label */}
       <div
         style={{
           position: "absolute",
@@ -212,9 +212,9 @@ function ResultPieChart({ correct, total }) {
           aria-live="polite"
         >
           {hover === 0
-            ? SLICE_CONFIG[0].desc
+            ? `${correct} out of ${total} Correct`
             : hover === 1
-              ? SLICE_CONFIG[1].desc
+              ? `${incorrect} out of ${total} Incorrect`
               : "Score Accuracy"}
         </div>
       </div>
@@ -241,7 +241,9 @@ function ResultPieChart({ correct, total }) {
             transition: "opacity 0.13s cubic-bezier(.45,.64,.52,.97)",
           }}
         >
-          {SLICE_CONFIG[hover].label}
+          {hover === 0
+            ? `${percent}% Correct`
+            : `${100 - percent}% Incorrect`}
         </div>
       )}
       {/* Accessible legend */}
