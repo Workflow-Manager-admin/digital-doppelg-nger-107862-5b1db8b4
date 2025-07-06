@@ -1,4 +1,3 @@
-/* == Theme Variables == */
 :root {
   --iemo-bg: #fcfdff;
   --iemo-card-bg: #ffeaff;
@@ -207,65 +206,16 @@
   align-items: center;
   width: 100%;
 }
-.iemo-badge {
-  border-radius: 100%;
-  width: 70px;
-  height: 70px;
-  margin-top: -33px;
-  margin-bottom: 1.25rem;
-  border: 3.5px solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.1em;
-  background: var(--iemo-accent);
-  box-shadow: 0 3px 15px rgba(34,206,107,0.04);
-}
-.iemo-persona-name {
-  color: var(--iemo-title);
-  font-size: 1.57em;
-  font-weight: bold;
-  margin: 0.1em 0 3px 0;
-  letter-spacing: -0.01em;
-  text-align: center;
-}
+
 .iemo-res-section {
   margin: 0.45em 0;
   text-align: center;
 }
-.iemo-persona-title {
-  font-size: 1.09em;
-  color: var(--iemo-accent);
-  font-weight: 600;
-  margin-bottom: 0.15em;
-}
-.iemo-persona-desc {
-  color: var(--iemo-muted);
-  font-size: 1.05em;
-}
+
 .iemo-label {
   color: var(--iemo-text);
   text-align: center;
   margin-right: 6px;
-}
-
-.iemo-color-sample {
-  display: inline-block;
-  width: 23px;
-  height: 23px;
-  vertical-align: middle;
-  margin-left: 8px;
-  margin-top: -3px;
-  border: 2px solid;
-  border-radius: 100%;
-  box-shadow: 0 2px 8px rgba(34,206,107,0.04);
-}
-
-.iemo-social {
-  margin-left: 4px;
-  color: var(--iemo-secondary);
-  font-weight: 500;
-  font-size: 1.06em;
 }
 
 .iemo-share-section {
@@ -291,6 +241,17 @@
   box-shadow: 0 2px 12px rgba(36,112,146,0.035);
   width: 100%;
   overflow-x: auto;
+}
+
+/* SVG/animation: support for bouncing ball */
+.bouncing-ball {
+  animation: ballbounce 1.1s infinite cubic-bezier(.74,.07,.53,.99);
+}
+@keyframes ballbounce {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(20px);}
+  60% { transform: translateY(12px);}
+  100%{ transform: translateY(0);}
 }
 
 @media (max-width: 540px) {
