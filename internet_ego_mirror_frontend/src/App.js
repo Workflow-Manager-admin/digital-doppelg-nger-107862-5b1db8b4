@@ -448,16 +448,26 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
   );
 }
 
+/**
+ * WelcomeScreen displays the main welcome view:
+ * - Custom Olympic rings logo with sports equipment (cricket bat, red cricket ball, football, tennis racquet) hanging/intertwined.
+ * - Website name ("The Clueless Cup") in a large, bright, animated font.
+ * - Tagline styled and below site name.
+ * - Only Start button below, no extra widgets or old content.
+ */
 // PUBLIC_INTERFACE
 function WelcomeScreen({ onStart }) {
-  // Core logo, app name, tagline always at top
+  // SVG Olympic rings with sports equipment integrated
+  // Colors: Blue (#0081C8), Yellow (#FFD700), Black (#000), Green (#009F3D), Red (#DF0024)
+  // Arranged left-to-right as in Olympic emblem; equipment visually "hanging" or looped.
+
   return (
     <div
       className="iemo-float-welcome"
       style={{
         zIndex: 210,
         position: "relative",
-        minHeight: "73vh",
+        minHeight: "68vh",
         textAlign: "center",
         margin: "0 auto",
         display: "flex",
@@ -465,122 +475,152 @@ function WelcomeScreen({ onStart }) {
         alignItems: "center",
         justifyContent: "center",
         background: "none",
-        boxShadow: "none",
+        boxShadow: "none"
       }}
     >
-      {/* Sports Logo/Icon */}
-      <div style={{ margin: "2.7em 0 1.1em 0", filter: "drop-shadow(0 6px 32px #23ce6bbb) drop-shadow(0 0 14px #ff4ecd78)" }}>
+      {/* Custom Olympic Rings Logo with Hanging Equipment */}
+      <div style={{ margin: "2.5em 0 1.0em 0", filter: "drop-shadow(0 6px 32px #23ce6baa) drop-shadow(0 0 14px #ff4ecd88)" }}>
         <svg
-          width="108"
-          height="108"
-          viewBox="0 0 108 108"
-          aria-label="Sports Logo"
-          style={{
-            display: "inline-block",
-            verticalAlign: "middle",
-          }}
+          width="230"
+          height="110"
+          viewBox="0 0 230 110"
+          aria-label="Olympic Rings with Sports Equipment"
+          style={{ display: "inline-block", verticalAlign: "middle" }}
         >
-          <ellipse
-            cx="54"
-            cy="54"
-            rx="45"
-            ry="45"
-            fill="#fff"
-            stroke="#6C63FF"
-            strokeWidth="7"
-            opacity="0.96"
-          />
-          <ellipse
-            cx="54"
-            cy="54"
-            rx="37"
-            ry="37"
-            fill="#36c6e7"
-            stroke="#23ce6b"
-            strokeWidth="4.5"
-            opacity="0.92"
-          />
-          <circle cx="54" cy="42.5" r="13.5" fill="#FF6584" stroke="#fff" strokeWidth="5" />
-          <rect x="47" y="67" rx="7.8" width="14" height="22.5" fill="#FED502" stroke="#fff" strokeWidth="3.2" />
+          {/* Olympic rings */}
+          {/* Top row: Blue, Black, Red */}
+          <circle cx="45" cy="48" r="28" stroke="#0081C8" strokeWidth="6" fill="none"/>
+          <circle cx="90" cy="48" r="28" stroke="#000" strokeWidth="6" fill="none"/>
+          <circle cx="135" cy="48" r="28" stroke="#DF0024" strokeWidth="6" fill="none"/>
+          {/* Bottom row: Yellow, Green (slightly below and between) */}
+          <circle cx="67.5" cy="76" r="28" stroke="#FFD700" strokeWidth="6" fill="none"/>
+          <circle cx="112.5" cy="76" r="28" stroke="#009F3D" strokeWidth="6" fill="none"/>
+
+          {/* Cricket Bat (hanging from blue ring - leftmost) */}
+          <rect x="38" y="77" width="8" height="32" rx="3.2" fill="#f9c97d" stroke="#ba8530" strokeWidth="2.1"/>
+          <rect x="38" y="71.5" width="8" height="10" rx="2" fill="#ba2177"/>
+          {/* Rope/line for bat */}
+          <line x1="42" y1="64" x2="42" y2="77" stroke="#8e7cff" strokeWidth="2.2" />
+
+          {/* Red Cricket Ball (hanging from yellow ring) */}
+          <circle cx="67.5" cy="106" r="8" fill="#ea2d33" stroke="#fff" strokeWidth="2.2"/>
+          <ellipse cx="67.5" cy="106" rx="2" ry="8" fill="#fff" opacity="0.17"/>
+          {/* Rope/line for ball */}
+          <line x1="67.5" y1="91" x2="67.5" y2="98" stroke="#999" strokeWidth="2.2" />
+
+          {/* Football (hanging from black ring) */}
+          <circle cx="90" cy="104" r="9" fill="#fff" stroke="#222" strokeWidth="2.2" />
+          {/* Football patches */}
+          <polygon points="90,97.5 93.7,103.3 90,109 86.3,103.3" fill="#1a1a1a"/>
+          <polygon points="90,100.7 92,104.65 88,104.65" fill="#434343"/>
+          {/* Rope for football */}
+          <line x1="90" y1="84" x2="90" y2="94" stroke="#666" strokeWidth="2"/>
+
+          {/* Tennis Racquet (angled, hanging from red ring on right) */}
+          <ellipse cx="135" cy="102" rx="6.8" ry="15.5" fill="#23ce6b" stroke="#36c6e7" strokeWidth="2.2" transform="rotate(-23 135 102)" />
+          {/* Racquet handle */}
+          <rect x="132" y="110" width="6" height="13" rx="2" fill="#fed502" stroke="#bba101" strokeWidth="1" transform="rotate(-23 135 116)"/>
+          {/* Rope for racquet */}
+          <line x1="135" y1="85" x2="135" y2="91" stroke="#DF0024" strokeWidth="2" />
+
+          {/* Slight shadow under equipment for depth */}
+          <ellipse cx="90" cy="117" rx="59" ry="7" fill="#000" opacity="0.14"/>
         </svg>
       </div>
-      {/* App Name */}
+      {/* App Name – "The Clueless Cup", vivid, large, playful & animated font */}
       <div
         style={{
           fontWeight: 900,
-          fontSize: "clamp(2.1em,4.4vw,3.3em)",
-          letterSpacing: "0.019em",
-          background: "var(--iemo-rainbow)",
+          fontSize: "clamp(2.3em,5.3vw,3.8em)",
+          letterSpacing: "0.025em",
+          background: "linear-gradient(92deg, #ff4ecd, #FED502 44%, #23ce6b 70%, #36c6e7 95%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
-          marginBottom: ".33em",
-          textShadow: "0 3.4px 13px #23ce6baa,0 2.7px 17px #ff4ecdbe,0 0px 28px #fffcd7b8"
+          marginBottom: ".19em",
+          textShadow: "0 6px 16px #23ce6b95, 0 2px 20px #ff4ecd6b, 0 0px 34px #fed502aa",
+          animation: "cupTitlePop 2.1s ease-in-out infinite alternate"
         }}
       >
-        Internet Ego Mirror
+        The Clueless Cup
       </div>
+      {/* Keyframes for font animation (injects once, safe for client) */}
+      <style>
+        {`
+        @keyframes cupTitlePop {
+          0% { 
+            letter-spacing: 0.021em;
+            filter: brightness(1.11) saturate(1.24) drop-shadow(0 0px 25px #6c63ff4b);
+            text-shadow: 0 6px 16px #23ce6bc5, 0 2px 20px #ff4ecd76, 0 0px 34px #fed5029e;
+            transform: scale(1.01) rotate(-2deg);
+          }
+          38% {
+            letter-spacing: 0.04em;
+            filter: brightness(1.18) saturate(1.26) drop-shadow(0 14px 22px #36c6e789);
+            transform: scale(1.03) rotate(2deg);
+            text-shadow: 0 6px 20px #ff4ecdcc, 0 8px 20px #fed502cc, 0 0px 29px #FFFCCB;
+          }
+          52% {
+            letter-spacing: 0.013em;
+            filter: brightness(1.2) saturate(1.33) drop-shadow(0 12px 30px #fed50297);
+            transform: scale(0.98) rotate(-2deg);
+          }
+          84% {
+            filter: brightness(1.26) saturate(1.32) drop-shadow(0 5px 22px #36c6e776);
+            letter-spacing: 0.017em;
+            transform: scale(1.015) rotate(2deg);
+          }
+          100% {
+            filter: brightness(1.17) saturate(1.12) drop-shadow(0 2px 12px #23ce6baa);
+            letter-spacing: 0.023em;
+            transform: scale(1) rotate(-1deg);
+            text-shadow: 0 3.4px 13px #23ce6baa,0 2.7px 17px #ff4ecdbe,0 0px 28px #FFFCD7;
+          }
+        }
+        `}
+      </style>
       {/* Tagline */}
       <div
         style={{
-          fontWeight: 800,
-          fontSize: "clamp(1.05em,2vw,1.5em)",
-          color: "#2e195c",
-          margin: "0 0 1.7em 0",
-          textShadow: "0 1px 7px #36c6e721, 0 0px 18px #23ce6b31"
+          fontWeight: 860,
+          fontSize: "clamp(1.18em,2.5vw,1.81em)",
+          color: "#fff",
+          background: "linear-gradient(91deg,#23ce6b,#fed502 39%,#ff6584 81%, #36c6e7 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          margin: "0 0 1.4em 0",
+          textShadow: "0 4px 19px #23ce6baa, 0 1px 7px #ff4ecd8d, 0 0px 18px #fff",
+          filter: "drop-shadow(0 2px 12px #23ce6b3b)",
         }}
       >
-        Discover your digital alter ego through quirky sports & web trivia!
+        For those who bench press trivia, not weights.
       </div>
       {/* Big animated Start button */}
       <button
         className="iemo-btn iemo-btn-accent"
         style={{
           fontWeight: 900,
-          fontSize: "clamp(1.23em,2.4vw,1.67em)",
-          padding: "0.89em 3.3em",
-          marginBottom: "2.1em",
+          fontSize: "clamp(1.35em,2.7vw,1.86em)",
+          padding: "0.89em 3.5em",
+          marginBottom: "2.5em",
           boxShadow: "0 4px 17px #23ce6b47, 0 1px 13px #ff4ecd57",
           border: "none",
           outline: "none",
+          background: "linear-gradient(90deg,#23ce6b 20%,#fed502 53%,#ff6584 90%)",
+          color: "#fff",
+          borderRadius: "3.1em",
+          animation: "pulse-in-quiz-btn 1.3s infinite alternate"
         }}
         onClick={onStart}
         aria-label="Begin the Quiz"
       >
         <span style={{
-          animation: "pulse-in-quiz-btn 1.5s infinite alternate"
+          fontWeight: 890, letterSpacing: "0.02em"
         }}>
-          🚀 Start Quiz
+          🚀 Start
         </span>
       </button>
-      {/* Motivational/fun quote */}
-      <div style={{ width: "100%" }}>
-        <QuoteBox prominent />
-      </div>
-      {/* Fun widgets block, underneath main CTA */}
-      <div aria-label="Supporting widgets" style={{
-        marginTop: "1.7em",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "1.4em",
-        maxWidth: 750,
-        width: "100%",
-        zIndex: 4,
-      }}>
-        <WordOfTheMatch />
-        <JokeWidget />
-      </div>
-      <div style={{
-        fontSize: "1em",
-        marginTop: "2.7em",
-        color: "#6C63FF",
-        fontWeight: 700,
-        opacity: .74,
-        letterSpacing: "0.018em"
-      }}>
-        Playful quiz fun powered by public trivia & knowledge APIs
-      </div>
     </div>
   );
 }
