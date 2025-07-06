@@ -326,24 +326,7 @@ function App() {
           />, 180
         )
       }
-      <div className="iemo-footer" style={{
-        width: "100vw",
-        justifyContent: "center",
-        fontWeight: 900,
-        fontSize: "1.03em",
-        background: "linear-gradient(90deg,#ff4ecd,#6C63FF,#23ce6b,#ffc621,#FF6584)",
-        backgroundClip: "text",
-        WebkitBackgroundClip: "text",
-        color: "transparent",
-        textShadow: "0 2px 6px #d0cdf1, 0 0px 32px #23ce6aa9"
-      }}>
-        <span className="iemo-footer-brand">
-          <span style={{ color: "#6C63FF" }}>Internet</span>{" "}
-          <span style={{ color: "#23ce6b" }}>Ego</span>{" "}
-          <span style={{ color: "#FF6584" }}>Mirror</span>
-        </span>
-        <span className="iemo-footer-mini">| © 2024 | Uses <a href="https://opentdb.com/api_config.php" target="_blank" rel="noopener noreferrer" style={{ color: "#ffbf00", fontWeight: 700, textDecoration: "underline" }}>Open Trivia DB</a></span>
-      </div>
+      {/* Footer removed per request: No legacy attribution text should remain */}
     </div>
   );
 }
