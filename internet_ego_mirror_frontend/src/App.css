@@ -24,8 +24,8 @@
   left: 0; top: 0;
   pointer-events: none;
   overflow: hidden;
-  background: var(--sports-bg-main), var(--sports-bg-secondary) !important;
-  /* Fallback: use plain green-blue if not overridden by inline style */
+  /* Background replaced with animated sports-themes below */
+  background: none !important;
 }
 
 
@@ -68,6 +68,153 @@
     right: unset !important;
   }
 }
+
+/* === SPORTS BACKGROUND ANIMATION LAYERS === */
+/* Below: main stage – animated gradient and overlays */
+.sports-animated-gradient {
+  /* Keyframe: animated x/y angle + fade between field green, stadium blue, sky, lights, etc */
+  background: linear-gradient(120deg, #23ce6b 0%, #36c6e7 70%, #84aaff 100%);
+  animation: sports-bg-gradient-anim 15s ease-in-out infinite alternate;
+}
+@keyframes sports-bg-gradient-anim {
+  0% {
+    background: linear-gradient(117deg,#22d262 0%, #34acd7 63%, #547fff 100%);
+  }
+  12% {
+    background: linear-gradient(125deg,#3ef392 6%, #49c7e7 54%, #639aff 100%);
+  }
+  23% {
+    background: linear-gradient(137deg,#16bb5e 2%, #23ce6b 37%, #6dd1f6 75%, #3563ff 100%);
+  }
+  38% {
+    background: linear-gradient(144deg,#23ce6b 5%, #2fd374 30%, #36c6e7 68%, #6C63FF 100%);
+  }
+  51% {
+    background: linear-gradient(132deg,#23ce6b 0%, #36c6e7 62%, #1b97fc 100%);
+  }
+  67% {
+    background: linear-gradient(121deg,#12b92a 9%, #19e0ff 54%, #23ce6b 75%, #23aaff 100%);
+  }
+  85% {
+    background: linear-gradient(133deg,#33e288 5%, #84ebce 60%, #36c6e7 89%, #6C63FF 100%);
+  }
+  100% {
+    background: linear-gradient(120deg,#23ce6b 0%, #36c6e7 70%, #84aaff 100%);
+  }
+}
+
+/* Moving stadium light overlays (radials/lights) */
+.sports-bg-lights-bg {
+  position: absolute;
+  z-index: 1;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 36% at 76% 20%, #fffbe0db 0%, #ffffff00 74%),
+    radial-gradient(ellipse 50% 27% at 12% 17%, #a0e7ff51 0%, #ffffff00 100%);
+  opacity: 0.44;
+  animation: stadium-lights-move 19s cubic-bezier(.45,.44,.53,.93) infinite alternate;
+  transition: background 0.5s;
+}
+@keyframes stadium-lights-move {
+  0% {
+    background:
+      radial-gradient(ellipse 60% 34% at 66% 12%, #fffbe0be 0%, #ffffff00 74%),
+      radial-gradient(ellipse 44% 23% at 24% 16%, #a0e7ff41 0%, #ffffff00 100%);
+    opacity: 0.40;
+  }
+  60% {
+    background:
+      radial-gradient(ellipse 46% 26% at 19% 12%, #b8ecff61 0%, #eaf9ff11 100%),
+      radial-gradient(ellipse 55% 37% at 85% 21%, #f9fadc61 0%, #fcfcfc00 100%);
+    opacity: 0.48;
+  }
+  100% {
+    background:
+      radial-gradient(ellipse 68% 41% at 82% 31%, #fffdd0cc 0%, #ffffff00 74%),
+      radial-gradient(ellipse 54% 13% at 16% 36%, #c0f8ff51 0%, #ffffff00 100%);
+    opacity: 0.40;
+  }
+}
+
+.sports-bg-glow1, .sports-bg-glow2 {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+}
+.sports-bg-glow1 {
+  z-index: 2;
+  background: radial-gradient(circle 38vw at 70% 60%, #f4faff99 0%, #36c6e71a 65%, #ffffff00 100%);
+  opacity: .20;
+  animation: sports-glow1-move 11s ease-in-out infinite alternate;
+}
+@keyframes sports-glow1-move {
+  0% { background: radial-gradient(circle 39vw at 72% 62%, #f4faffbb 0%, #36c6e71a 69%, #ffffff00 100%);}
+  100% { background: radial-gradient(circle 35vw at 52% 47%, #fffbe999 0%, #36c6e729 76%, #ffffff00 100%);}
+}
+.sports-bg-glow2 {
+  z-index: 2;
+  background: radial-gradient(circle 30vw at 28% 33%, #fff8e2cc 0%, #23ce6b23 67%, #23ce6b00 100%);
+  opacity: .16;
+  animation: sports-glow2-move 13s ease-in-out infinite alternate;
+}
+@keyframes sports-glow2-move {
+  0% { background: radial-gradient(circle 26vw at 28% 33%, #fff8e2dd 0%, #23ce6b27 72%, #23ce6b00 100%);}
+  100% { background: radial-gradient(circle 39vw at 60% 43%, #fffbe991 0%, #36c6e729 83%, #ffffff00 100%);}
+}
+
+/* stadium arc (SVG overlay) */
+.sports-bg-stadium-arc {
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  z-index: 3;
+  opacity: 0.14;
+  transition: opacity 1.1s;
+  animation: stadium-arc-glow-fade 13s ease-in-out infinite alternate;
+}
+@keyframes stadium-arc-glow-fade {
+  0%,100% { opacity: 0.16; }
+  60% { opacity: 0.23; }
+}
+
+/* bottom ellipses (SVG overlay) */
+.sports-bg-bottom-ellipse {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  opacity: 0.16;
+  transition: opacity 1.0s;
+  animation: stadium-arc-bottom-fade 17s ease-in-out infinite alternate;
+}
+@keyframes stadium-arc-bottom-fade {
+  0%,100% { opacity: 0.14;}
+  45% { opacity: 0.22;}
+}
+
+/* animated bg field lines (horizontal) */
+.sports-bg-line {
+  position: absolute;
+  left: 0;
+  width: 100vw;
+  height: 2px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 4px;
+  z-index: 6;
+  opacity: 0.82;
+  animation: sports-lines-glow-move 7s cubic-bezier(.64,.29,.46,1.05) infinite alternate;
+}
+
+@keyframes sports-lines-glow-move {
+  0%,100% { background: rgba(255,255,255,0.10);}
+  40% { background: rgba(200,240,255,0.23);}
+  80% { background: rgba(36,206,247,0.11);}
+}
+
+/* END SPORTS BG ANIMATION LAYER OVERRIDES */
 
 /* (No changes to animation/keyframes) */
 

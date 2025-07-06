@@ -161,39 +161,24 @@ function FloatingSportsSVGs({ count = 8 }) {
  * The gradient is green-to-blue with overlays for a stadium/field aesthetic.
  */
 function SportsBackground() {
-  // Main sports field/sky gradient underlay
-  // Subtle texture: White stadium arc, semi-transparent lines for track/arena effect
+  // Main animated sports field/sky gradient underlay + overlays
+  // Glowing highlight overlays using animated bg layers for a lively atmosphere
   return (
     <div
-      className="iemo-bg-animated"
+      className="iemo-bg-animated sports-animated-gradient"
       aria-hidden="true"
-      style={{
-        // Gradient goes from vibrant green (field) to blue (sky/stadium) bottom-right
-        background:
-          "linear-gradient(120deg, #23ce6b 0%, #36c6e7 70%, #84aaff 100%)",
-        // Add secondary overlay effect: subtle repeating field lines
-        position: "fixed",
-        inset: 0,
-        minWidth: "100vw",
-        minHeight: "100vh",
-        zIndex: 0,
-        // Below floating SVG sports icons
-        pointerEvents: "none",
-        overflow: "hidden"
-      }}
     >
-      {/* Stadium arc - as an SVG overlay (top left corner, faded white) */}
+      {/* Animated moving radial highlights for the "lights in stadium" effect */}
+      <div className="sports-bg-lights-bg"></div>
+      <div className="sports-bg-glow1"></div>
+      <div className="sports-bg-glow2"></div>
+
+      {/* Stadium arc - as an SVG overlay (top left corner, faded white, still fades in/out as light moves) */}
       <svg
         width="640"
         height="340"
         viewBox="0 0 640 340"
-        style={{
-          position: "absolute",
-          top: "-40px",
-          left: "-40px",
-          zIndex: 1,
-          opacity: 0.14,
-        }}
+        className="sports-bg-stadium-arc"
         aria-hidden="true"
       >
         <ellipse
@@ -214,38 +199,23 @@ function SportsBackground() {
         />
       </svg>
 
-      {/* Field/track lines (horizontal) */}
+      {/* Field/track lines (horizontal/animated) */}
       {[1, 2, 3, 4].map((n) => (
         <div
           key={n}
+          className="sports-bg-line"
           style={{
-            position: "absolute",
-            left: 0,
-            width: "100vw",
-            height: "2px",
             top: `${16 + n * 13}vh`,
-            background:
-              n % 2 === 0
-                ? "rgba(255,255,255,0.12)"
-                : "rgba(200,230,255,0.09)",
-            zIndex: 2,
-            borderRadius: "4px",
           }}
         />
       ))}
-      {/* Optional: Add arena/track ring effect at bottom */}
+
+      {/* Arena/track ring (animated fade) */}
       <svg
         width="930"
         height="120"
         viewBox="0 0 930 120"
-        style={{
-          position: "absolute",
-          bottom: "-36px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 2,
-          opacity: 0.16,
-        }}
+        className="sports-bg-bottom-ellipse"
         aria-hidden="true"
       >
         <ellipse
@@ -265,7 +235,7 @@ function SportsBackground() {
           opacity="0.09"
         />
       </svg>
-      {/* Finally, the large animated floating sports icons (on top of gradient) */}
+      {/* Large animated floating sports icons on top of everything */}
       <FloatingSportsSVGs count={8} />
     </div>
   );
