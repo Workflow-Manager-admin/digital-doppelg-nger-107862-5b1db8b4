@@ -4,6 +4,62 @@ import "./App.css";
 // Sports background main color gradient
 // Subtle sports texture using multiple gradients and SVG icons
 
+/**
+ * SparklesLayer
+ * Animated constellations of twinkling star/sparkle SVG icons for background overlay.
+ * They are rendered randomly in the background and animated for a glitter effect.
+ */
+function SparklesLayer({ count = 28 }) {
+  // Generate sparkles on mount for random placement and timing.
+  const sparkles = Array.from({ length: count }).map((_, i) => {
+    // For added vibrance, randomize color, size, animation delay, and slight jitter
+    const sizeClass = Math.random() < 0.13 ? "big" : (Math.random() < 0.38 ? "tiny" : "");
+    const left = Math.random() * 100;
+    const top = Math.random() * 100;
+    const delay = (Math.random() * 4).toFixed(2) - 2.1; // some negative
+    const hue = Math.random() * 40 - 20; // -20 to +20 deg for color glint
+    return (
+      <span
+        className={`sparkle ${sizeClass}`}
+        key={`sparkle${i}`}
+        style={{
+          left: `${left}vw`,
+          top: `${top}vh`,
+          animationDelay: `${delay}s`,
+          filter:
+            `drop-shadow(0 0 10px #fffdd3b1) hue-rotate(${hue}deg) brightness(${1.06 + Math.random()*0.25})`
+        }}
+        aria-hidden="true"
+      >
+        {/* Star/sparkle: 4-point animating star */}
+        <svg className="sparkle-glint" width="100%" height="100%" viewBox="0 0 18 18">
+          <polygon
+            points="9,1 11,7.2 17,9 11,10.8 9,17 7,10.8 1,9 7,7.2"
+            fill="#fffbe9"
+            fillOpacity="0.91"
+            stroke="#ffe184"
+            strokeWidth="0.7"
+            strokeLinejoin="round"
+          />
+          <ellipse
+            className="sparkle-dot"
+            cx="9"
+            cy="9"
+            rx="2.1"
+            ry="2.1"
+            fill="#ffe396"
+            fillOpacity="0.57"
+          />
+        </svg>
+      </span>
+    );
+  });
+  return (
+    <div className="sparkles-bg" aria-hidden="true">
+      {sparkles}
+    </div>
+  );
+}
 // SPORTS SVG ASSETS – lively, playful and colorful
 const SPORTS_SVGS = [
   {
@@ -161,13 +217,14 @@ function FloatingSportsSVGs({ count = 8 }) {
  * The gradient is green-to-blue with overlays for a stadium/field aesthetic.
  */
 function SportsBackground() {
-  // Main animated sports field/sky gradient underlay + overlays
-  // Glowing highlight overlays using animated bg layers for a lively atmosphere
+  // Main animated sports field/sky gradient underlay + overlays + sparkle top layer
   return (
     <div
       className="iemo-bg-animated sports-animated-gradient"
       aria-hidden="true"
     >
+      {/* Animated sparkle twinkling stars and glints overlay */}
+      <SparklesLayer count={28} />
       {/* Animated moving radial highlights for the "lights in stadium" effect */}
       <div className="sports-bg-lights-bg"></div>
       <div className="sports-bg-glow1"></div>

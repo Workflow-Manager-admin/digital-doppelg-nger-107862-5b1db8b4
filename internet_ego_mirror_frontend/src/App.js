@@ -154,6 +154,86 @@ function decodeHtml(input) {
   return temp.value;
 }
 
+/**
+ * CrackerBlast
+ * Renders and animates a firework "cracker blast" (explosion) SVG at the given position.
+ * Triggers unmount/self-destruction after animation complete.
+ */
+function CrackerBlast({ x, y, onDone }) {
+  // Show blast and trigger onDone after 700ms
+  React.useEffect(() => {
+    const timeout = setTimeout(() => onDone && onDone(), 700);
+    return () => clearTimeout(timeout);
+  }, [onDone]);
+  // Animation SVG: many colorful rays, sparks, and circles
+  // Centered at x, y in viewport coordinates
+  return (
+    <div
+      className="cracker-blast"
+      style={{
+        left: `${x}px`,
+        top: `${y}px`,
+        pointerEvents: "none"
+      }}
+      aria-hidden="true"
+    >
+      <span className="cracker-explosion">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <g>
+            {/* Rays (10) */}
+            {[...Array(10)].map((_, i) => {
+              const angle = (i * 36);
+              const length = 26 + 18 * (i % 2);
+              const color = [
+                "#ffd500", "#ff4ecd", "#6C63FF", "#23ce6b", "#FF6584", "#36c6e7", "#fc1cff", "#ff654f", "#fecdff", "#FED502"
+              ][i % 10];
+              return (
+                <line
+                  key={i}
+                  x1="45"
+                  y1="45"
+                  x2={45 + length * Math.cos(angle * Math.PI / 180)}
+                  y2={45 + length * Math.sin(angle * Math.PI / 180)}
+                  stroke={color}
+                  strokeWidth="4.3"
+                  strokeLinecap="round"
+                  opacity="0.95"
+                />
+              );
+            })}
+            {/* Exploding circles */}
+            {[...Array(8)].map((_, i) => {
+              const angle = i * (360 / 8) + 25;
+              const dist = Math.random() * 14 + 20;
+              const size = Math.random() * 4.5 + 4;
+              const color = [
+                "#fffbe8", "#ff6584", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184"
+              ][i % 8];
+              return (
+                <circle
+                  key={`dot${i}`}
+                  cx={45 + dist * Math.cos(angle * Math.PI / 180)}
+                  cy={45 + dist * Math.sin(angle * Math.PI / 180)}
+                  r={size}
+                  fill={color}
+                  fillOpacity="0.82"
+                  filter="blur(0.2px)"
+                />
+              );
+            })}
+            {/* Glint at center */}
+            <ellipse
+              cx="45" cy="45" rx="14" ry="12.2"
+              fill="#fffbe8" fillOpacity="0.4"
+              filter="blur(2.6px)"
+            />
+          </g>
+        </svg>
+      </span>
+    </div>
+  );
+}
+
 // PUBLIC_INTERFACE
 function App() {
   const [step, setStep] = useState(0); // 0: Welcome, ...N: quiz, N+1: Results
@@ -163,12 +243,16 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
 
+  // For cracker blasts state (an array of {x, y, id}), use stable array for multiple quick blasts.
+  const [crackerBlasts, setCrackerBlasts] = useState([]);
+
   // Fetch new questions on start (sports-themed)
   async function fetchQuestions() {
     setLoading(true);
     setFetchError("");
     setQuestions([]);
     setAnswers([]);
+    setCrackerBlasts([]); // Clear all prior cracker blasts
     // Open Trivia DB: Sports
     const DIFFICULTY = ["easy", "medium", "hard"][Math.floor(Math.random() * 3)];
     const urlBase = "https://opentdb.com/api.php?amount=8&type=multiple&category=21&encode=url3986";
@@ -198,9 +282,29 @@ function App() {
   }
 
   // PUBLIC_INTERFACE
-  function handleAnswer(answerIdx) {
+  function handleAnswer(answerIdx, evt) {
+    // Determine where to show the blast:
+    let x = null, y = null;
+    if (evt?.target) {
+      const rect = evt.target.getBoundingClientRect();
+      // Center of button
+      x = rect.left + rect.width / 2 + window.scrollX;
+      y = rect.top + rect.height / 2 + window.scrollY;
+    } else {
+      // Center of viewport fallback
+      x = window.innerWidth / 2;
+      y = window.innerHeight / 2.1;
+    }
+    setCrackerBlasts(prev => [
+      ...prev,
+      { x, y, id: Date.now() + Math.random() }
+    ]);
     setAnswers(prev => [...prev, answerIdx]);
     setStep(s => s + 1);
+  }
+  // Remove cracker by its id
+  function handleCrackerBlastDone(id) {
+    setCrackerBlasts(blasts => blasts.filter(b => b.id !== id));
   }
 
   // PUBLIC_INTERFACE
@@ -252,6 +356,12 @@ function App() {
   return (
     <div className="iemo-app float-ui-app">
       <SportsBackground />
+      {/* Firework cracker effect overlay - appears above everything else */}
+      <div className="cracker-blast-container" aria-hidden="true" style={{ pointerEvents: "none" }}>
+        {crackerBlasts.map(({ x, y, id }) =>
+          <CrackerBlast key={id} x={x} y={y} onDone={() => handleCrackerBlastDone(id)} />
+        )}
+      </div>
       {step === 0 && AnimationWrappers.fade(<WelcomeScreen onStart={handleStart} />, 20)}
       {loading && AnimationWrappers.bounce(
         <div style={{
@@ -414,7 +524,7 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floa
                 : "drop-shadow(0 2px 16px #6C63FF15)",
               transition: "all .23s"
             }}
-            onClick={() => onAnswer(idx)}
+            onClick={(evt) => onAnswer(idx, evt)}
             tabIndex="0"
             aria-pressed={selected === idx}
             aria-label={a.text}
