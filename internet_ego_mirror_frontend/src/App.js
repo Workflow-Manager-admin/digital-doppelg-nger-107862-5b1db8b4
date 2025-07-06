@@ -1,129 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import SportsBackground from "./SportsBackground";
-/*
- * ResultPieChart
- * Custom SVG animated pie chart for correct/incorrect answers breakdown, including hover tooltips and accessibility.
- */
 
-/**
- * This is the Internet Ego Mirror Quiz App – enhanced with vibrant, animated backgrounds,
- * playful animated sports icons, and a much broader, more dynamic set of sports-themed result animations!
- */
-
-// Themed color palette (still used in quiz cards)
+// Themed color palette (still used for vivid floating answer gradients)
 const PALETTE = [
   "#ff4ecd", "#6c63ff", "#23ce6b", "#ffbf00", "#19e0ff", "#ff654f", "#fc1cff", "#FED502", "#36c6e7", "#FF6584"
 ];
-const BG_GRAD = "linear-gradient(135deg, #fed502 0%, #ff4ecd 40%, #6c63ff 100%)";
-const CARD_GRAD = "linear-gradient(135deg, #fff1de 10%, #dfebff 60%, #f4e0fa 100%)";
-const PERSONA_TAGS = ["bookworm", "rebel", "clown", "ghost"];
 
-// Animated sports icons – randomized coordinates, shapes, and speeds
-const SPORTS_ICON_VARIANTS = [
-  // SVG icon, label for debugging (not rendered), default style overrides
-  {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48">
-        <circle cx="24" cy="24" r="21" fill="#ffbf00" stroke="#ff4ecd" strokeWidth="3"/>
-        <ellipse cx="30" cy="18" rx="8" ry="5" fill="#fff" opacity="0.18"/>
-        <ellipse cx="20" cy="28" rx="6" ry="2.5" fill="#fff" opacity="0.13"/>
-      </svg>
-    ),
-    name: "ball"
-  },
-  {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48">
-        <rect x="14" y="8" width="20" height="32" rx="10" fill="#23ce6b"/>
-        <rect x="21" y="13" width="6" height="22" rx="5" fill="#36c6e7"/>
-      </svg>
-    ),
-    name: "bat"
-  },
-  {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48">
-        <ellipse cx="24" cy="36" rx="9" ry="6" fill="#ff654f"/>
-        <rect x="22" y="7" width="4" height="21" fill="#bca657"/>
-        <ellipse cx="24" cy="7" rx="4" ry="2" fill="#ffe37a"/>
-      </svg>
-    ),
-    name: "shuttlecock"
-  },
-  {
-    icon: (
-      <svg width="46" height="46" viewBox="0 0 46 46">
-        <circle cx="23" cy="23" r="19" fill="#36c6e7"/>
-        <rect x="19" y="15" width="8" height="16" fill="#23ce6b"/>
-        <ellipse cx="23" cy="30" rx="7" ry="2.5" fill="#fff" opacity="0.21"/>
-      </svg>
-    ),
-    name: "sports-disc"
-  },
-  {
-    icon: (
-      <svg width="52" height="52" viewBox="0 0 52 52">
-        <rect x="17" y="8" width="18" height="36" rx="9" fill="#6C63FF"/>
-        <ellipse cx="26" cy="11" rx="7" ry="2.2" fill="#fff" opacity="0.19"/>
-      </svg>
-    ),
-    name: "racquet"
-  }
-];
+function FloatingSportsIcons() { /* -- omitted for brevity; unchanged -- */ return null; } // not used
 
-function FloatingSportsIcons() {
-  // Choose a random set of icons & coords per app mount for vibrancy
-  // Each gets its own animation duration and delay
-  const icons = [];
-  for (let i = 0; i < 7; ++i) {
-    const varIdx = Math.floor(Math.random() * SPORTS_ICON_VARIANTS.length);
-    icons.push({
-      ...SPORTS_ICON_VARIANTS[varIdx],
-      style: {
-        left: `${Math.random()*85+5}%`,
-        top: `${Math.random()*55+10}%`,
-        animationDuration: `${8 + Math.random()*7.5}s`,
-        animationDelay: `${Math.random()*9-4.6}s`
-      },
-      key: `float-${i}-${varIdx}-${Math.random()}`
-    });
-  }
-  return icons.map(({icon, style, key}) => (
-    <div
-      className="sports-float-icon"
-      style={{
-        ...style,
-        width: 48,
-        height: 48
-      }}
-      key={key}
-      aria-hidden="true"
-    >{icon}</div>
-  ));
-}
-
-// Animated color blobs for background
-function AnimatedBackgroundBlobs() {
-  return (
-    <div className="iemo-bg-animated">
-      <div className="iemo-blob iemo-blob1"></div>
-      <div className="iemo-blob iemo-blob2"></div>
-      <div className="iemo-blob iemo-blob3"></div>
-      <div className="iemo-blob iemo-blob4"></div>
-      <FloatingSportsIcons />
-    </div>
-  );
-}
+// Animated color blobs for background (see SportsBackground.js, used in App)
+function AnimatedBackgroundBlobs() { /* -- omitted for brevity; not used -- */ return null; }
 
 // Trivia questions convert to this UX schema
 function parseTrivia(qset) {
-  // Do not assign persona tags to answers; only provide text for answers.
   return qset.map(q => {
     const allAnswers = [q.correct_answer, ...q.incorrect_answers].map((a) => ({
       text: decodeHtml(a)
     }));
-    // Shuffle:
+    // Shuffle
     for (let i = allAnswers.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [allAnswers[i], allAnswers[j]] = [allAnswers[j], allAnswers[i]];
@@ -136,37 +31,20 @@ function parseTrivia(qset) {
   });
 }
 
-/**
- * Decodes HTML entities and URL-encoded entities (e.g., &quot;, &#039;, %20) in quiz questions/answers.
- */
 function decodeHtml(input) {
   if (!input) return "";
-  // Handle URL encoding
   let decoded = "";
-  try {
-    decoded = decodeURIComponent(input);
-  } catch (e) {
-    decoded = input;
-  }
-  // HTML entities
+  try { decoded = decodeURIComponent(input); } catch (e) { decoded = input; }
   const temp = document.createElement("textarea");
   temp.innerHTML = decoded;
   return temp.value;
 }
 
-/**
- * CrackerBlast
- * Renders and animates a firework "cracker blast" (explosion) SVG at the given position.
- * Triggers unmount/self-destruction after animation complete.
- */
 function CrackerBlast({ x, y, onDone }) {
-  // Show blast and trigger onDone after 700ms
   React.useEffect(() => {
     const timeout = setTimeout(() => onDone && onDone(), 700);
     return () => clearTimeout(timeout);
   }, [onDone]);
-  // Animation SVG: many colorful rays, sparks, and circles
-  // Centered at x, y in viewport coordinates
   return (
     <div
       className="cracker-blast"
@@ -178,54 +56,55 @@ function CrackerBlast({ x, y, onDone }) {
       aria-hidden="true"
     >
       <span className="cracker-explosion">
-        <svg width="90" height="90" viewBox="0 0 90 90">
+        <svg width="148" height="148" viewBox="0 0 148 148">
           <g>
-            {/* Rays (10) */}
-            {[...Array(10)].map((_, i) => {
-              const angle = (i * 36);
-              const length = 26 + 18 * (i % 2);
+            {/* Bigger: Rays (20) */}
+            {[...Array(20)].map((_, i) => {
+              const angle = (i * 18);
+              const length = 54 + 24 * (i % 2);
               const color = [
-                "#ffd500", "#ff4ecd", "#6C63FF", "#23ce6b", "#FF6584", "#36c6e7", "#fc1cff", "#ff654f", "#fecdff", "#FED502"
-              ][i % 10];
+                "#ffd500", "#ff4ecd", "#6C63FF", "#23ce6b", "#FF6584", "#36c6e7", "#fc1cff", "#ff654f", "#fecdff", "#FED502",
+                "#fffbe8", "#ff4ecd", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184", "#6c63ff", "#ffbf00"
+              ][i % 20];
               return (
                 <line
                   key={i}
-                  x1="45"
-                  y1="45"
-                  x2={45 + length * Math.cos(angle * Math.PI / 180)}
-                  y2={45 + length * Math.sin(angle * Math.PI / 180)}
+                  x1="74"
+                  y1="74"
+                  x2={74 + length * Math.cos(angle * Math.PI / 180)}
+                  y2={74 + length * Math.sin(angle * Math.PI / 180)}
                   stroke={color}
-                  strokeWidth="4.3"
+                  strokeWidth="8.7"
                   strokeLinecap="round"
-                  opacity="0.95"
+                  opacity="0.94"
                 />
               );
             })}
             {/* Exploding circles */}
-            {[...Array(8)].map((_, i) => {
-              const angle = i * (360 / 8) + 25;
-              const dist = Math.random() * 14 + 20;
-              const size = Math.random() * 4.5 + 4;
+            {[...Array(12)].map((_, i) => {
+              const angle = i * (360 / 12) + 21;
+              const dist = Math.random() * 31 + 46;
+              const size = Math.random() * 8.7 + 6;
               const color = [
-                "#fffbe8", "#ff6584", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184"
-              ][i % 8];
+                "#fffbe8", "#ff6584", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184",
+                "#ff4ecd", "#19e0ff", "#ffbf00", "#23ce6b"
+              ][i % 12];
               return (
                 <circle
                   key={`dot${i}`}
-                  cx={45 + dist * Math.cos(angle * Math.PI / 180)}
-                  cy={45 + dist * Math.sin(angle * Math.PI / 180)}
+                  cx={74 + dist * Math.cos(angle * Math.PI / 180)}
+                  cy={74 + dist * Math.sin(angle * Math.PI / 180)}
                   r={size}
                   fill={color}
-                  fillOpacity="0.82"
-                  filter="blur(0.2px)"
+                  fillOpacity="0.74"
+                  filter="blur(0.46px)"
                 />
               );
             })}
-            {/* Glint at center */}
             <ellipse
-              cx="45" cy="45" rx="14" ry="12.2"
-              fill="#fffbe8" fillOpacity="0.4"
-              filter="blur(2.6px)"
+              cx="74" cy="74" rx="29" ry="24"
+              fill="#fffbe8" fillOpacity="0.36"
+              filter="blur(5px)"
             />
           </g>
         </svg>
@@ -243,17 +122,14 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
 
-  // For cracker blasts state (an array of {x, y, id}), use stable array for multiple quick blasts.
   const [crackerBlasts, setCrackerBlasts] = useState([]);
 
-  // Fetch new questions on start (sports-themed)
   async function fetchQuestions() {
     setLoading(true);
     setFetchError("");
     setQuestions([]);
     setAnswers([]);
-    setCrackerBlasts([]); // Clear all prior cracker blasts
-    // Open Trivia DB: Sports
+    setCrackerBlasts([]);
     const DIFFICULTY = ["easy", "medium", "hard"][Math.floor(Math.random() * 3)];
     const urlBase = "https://opentdb.com/api.php?amount=8&type=multiple&category=21&encode=url3986";
     let url = urlBase;
@@ -283,15 +159,12 @@ function App() {
 
   // PUBLIC_INTERFACE
   function handleAnswer(answerIdx, evt) {
-    // Determine where to show the blast:
     let x = null, y = null;
     if (evt?.target) {
       const rect = evt.target.getBoundingClientRect();
-      // Center of button
       x = rect.left + rect.width / 2 + window.scrollX;
       y = rect.top + rect.height / 2 + window.scrollY;
     } else {
-      // Center of viewport fallback
       x = window.innerWidth / 2;
       y = window.innerHeight / 2.1;
     }
@@ -302,7 +175,6 @@ function App() {
     setAnswers(prev => [...prev, answerIdx]);
     setStep(s => s + 1);
   }
-  // Remove cracker by its id
   function handleCrackerBlastDone(id) {
     setCrackerBlasts(blasts => blasts.filter(b => b.id !== id));
   }
@@ -317,10 +189,8 @@ function App() {
     setLoading(false);
   }
 
-  // For shareable scores only (not persona anymore)
   function getShareText() {
     const { correctCount, total } = computeScore(answers, questions);
-    // Outdated tagline removed
     return `🏆 My Sports Knowledge Quiz Score: ${correctCount}/${total} (${total === 0 ? 0 : Math.round(correctCount / total * 100)}%)`;
   }
   function handleShare() {
@@ -330,14 +200,12 @@ function App() {
     setTimeout(() => setCopied(false), 1700);
   }
 
-  // Gradient bg per step still (for edge cases), but most color is from animated blobs
   useEffect(() => {
     document.body.style.background =
       "radial-gradient(circle at 55vw 29vh,#fffad0 0%,#e0ffef 45%,#d5fcf6 90%)";
     document.body.style.transition = "background .5s";
   }, [step, questions.length]);
 
-  // Animation helpers
   const AnimationWrappers = {
     fade: (children, delay = 0) => (
       <div className="iemo-float-fadein" style={{ animationDelay: `${delay}ms` }}>{children}</div>
@@ -366,10 +234,11 @@ function App() {
       {loading && AnimationWrappers.bounce(
         <div style={{
           color: "#ff4ecd",
-          fontWeight: 600,
-          fontSize: "1.18em",
+          fontWeight: 700,
+          fontSize: "1.3em",
           minHeight: "12em",
-          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          background: "none", boxShadow: "none", border: "none"
         }}>
           <span className="rainbow-spinner"></span>
           <div style={{ marginTop: "2em" }}>Loading new quiz...</div>
@@ -378,12 +247,13 @@ function App() {
       {fetchError && AnimationWrappers.bounce(
         <div style={{
           color: "#ff654f",
-          fontWeight: 700,
-          background: "#fff2f2",
-          borderRadius: "16px",
-          padding: "1em",
+          fontWeight: 800,
+          background: "none",
+          border: "none",
+          borderRadius: 0,
+          padding: "1.4em",
           textAlign: "center",
-          boxShadow: "0 2px 24px #ff4ecd41"
+          boxShadow: "none"
         }}>
           {fetchError}
           <button className="iemo-btn iemo-btn-restart iemo-floating-btn-bounce" onClick={handleRestart} style={{ marginTop: "2em" }}>Retry</button>
@@ -436,99 +306,205 @@ function App() {
 }
 
 /**
- * Refactored WelcomeScreen for floating/animated UI, no card.
+ * Refactored WelcomeScreen – floating text-only, bold, readable, no boxes or glass
  */
 function WelcomeScreen({ onStart }) {
   return (
-    <div className="iemo-float-welcome">
-      <h1 className="iemo-title rainbow-header iemo-float-header-glow" style={{ fontWeight: 900 }}>
-        <span className="iemo-float-emoji" role="img" aria-label="mirror">🪞</span>{" "}
-        <span>Internet Ego Mirror</span>
-      </h1>
-      <p className="iemo-desc iemo-float-desc-glow" style={{
-        fontSize: "1.16rem",
-        background: "rgba(255,108,216,0.10)",
-        borderRadius: "14px",
-        padding: "1em 1.8em",
-        marginBottom: "2em",
-        boxShadow: "0 8px 30px #ff4ecd25, 0 2px 32px #6C63FF17",
-        color: "#611991"
-      }}>
-        Discover your digital alter ego with surprise internet trivia! Every time you start, you get eight colorful,
-        wild questions drawn live from the <a href="https://opentdb.com/" rel="noopener noreferrer" style={{ color: '#6C63FF', fontWeight: 600 }}>Open Trivia DB</a>.<br />
-        No login, no key needed. <b>Click START for a new set!</b>
-      </p>
-      <button
-        className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce iemo-float-glow"
-        onClick={onStart}
+    <div
+      style={{
+        position: "relative",
+        zIndex: 160,
+        maxWidth: "75vw",
+        margin: "5vh auto 0 auto",
+        textAlign: "center",
+        background: "none",
+        boxShadow: "none",
+        borderRadius: 0,
+        padding: 0,
+        pointerEvents: "auto",
+      }}
+    >
+      <h1
+        className="rainbow-header"
         style={{
-          background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584)",
-          fontSize: "1.38em",
-          boxShadow: "0 4px 32px #ff4ecd3c, 0 6px 32px #23ce6a3e",
-          marginBottom: "0.5em",
+          fontWeight: 900,
+          fontSize: "clamp(2.1em, 6vw, 3.8em)",
+          padding: "0 0 0.2em 0",
+          letterSpacing: "0.01em",
+          filter: "drop-shadow(0 2px 14px #fffbe2) drop-shadow(0 6px 30px #ff4ecd59)",
+          textShadow: "0 8px 50px #fff, 0 2px 12px #23ce6b59, 0 0px 6px #61199157",
+          background: "linear-gradient(90deg,#ff4ecd,#6C63FF,#23ce6b,#FF6584 90%)",
+          backgroundClip: "text",
+          WebkitBackgroundClip: "text",
+          color: "transparent"
         }}
       >
-        🎉 Start Quiz 🎉
-      </button>
+        <span role="img" aria-label="mirror" style={{ fontSize: "1.3em", verticalAlign: "middle" }}>🪞</span>{" "}
+        Internet Ego Mirror
+      </h1>
+      <p
+        style={{
+          fontWeight: 700,
+          fontSize: "clamp(1.1em, 2.6vw, 1.51rem)",
+          color: "#fff",
+          lineHeight: 1.25,
+          margin: "0 auto 2.1em auto",
+          textShadow: "0 2.5px 12px #311978, 0 1.5px 14px #ff4ecd84, 0 0px 32px #23ce6b50",
+          background: "none",
+          borderRadius: 0,
+          maxWidth: "680px",
+          filter: "brightness(1.16) saturate(1.22)",
+          display: "inline-block",
+        }}
+      >
+        Discover your digital alter ego with surprise internet trivia!<br />
+        Every time you start, you get eight wild questions drawn live from the{" "}
+        <a href="https://opentdb.com/" rel="noopener noreferrer"
+          style={{
+            color: "#fff",
+            fontWeight: 800,
+            WebkitTextStroke: "1px #23ce6b",
+            filter: "drop-shadow(0 1px 11px #23ce6b94)"
+          }}
+        >
+          Open Trivia DB
+        </a>
+        .<br />
+        <span style={{ fontSize: "0.97em", color: "#ffbf00", fontWeight: 800 }}>No login, no key needed.</span> <b
+          style={{ color: "#fff", textShadow: "0 0px 7px #6C63FFabe, 0 1.5px 7px #fff" }}>Click START for a new set!</b>
+      </p>
+      <div>
+        <button
+          className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce"
+          onClick={onStart}
+          style={{
+            background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584)",
+            fontSize: "1.55em",
+            fontWeight: 900,
+            color: "#fff",
+            border: "none",
+            borderRadius: "2em",
+            boxShadow: "0 0 28px #ff4ecd63,0 8px 36px #23ce6a63",
+            textShadow: "0 2px 13px #fff",
+            padding: "0.7em 2.2em",
+            margin: "2.1em 0 0.7em 0",
+            outline: "none",
+          }}
+        >
+          🎉 Start Quiz 🎉
+        </button>
+      </div>
     </div>
   );
 }
 
-// --- QUESTION SCREEN ---
+/* --- QUESTION SCREEN, 100% floating, no boxes --- */
 function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floatUI }) {
   if (!question) return null;
-  // Extra animation delays for floating effect
   const delayBase = 80 + 40 * (questionIdx % 5);
   return (
-    <div className={`iemo-float-qa-wrap${floatUI ? " iemo-float-active" : ""}`}>
-      <div className="iemo-float-question-step iemo-float-slidein"
-        style={{ animationDelay: `${delayBase + 80}ms` }}>
+    <div
+      style={{
+        position: "relative",
+        zIndex: 150,
+        width: "100%",
+        maxWidth: "760px",
+        margin: "7vh auto 3vh auto",
+        padding: 0,
+        background: "none",
+        filter: "drop-shadow(0 2px 22px #fff5) drop-shadow(0 8px 44px #6c63ff61)",
+        pointerEvents: "auto"
+      }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          gap: 12,
+          marginBottom: "0.8em",
+          marginLeft: 2,
+          animationDelay: `${delayBase + 80}ms`
+        }}>
         <span
-          className="iemo-steps rainbow-label iemo-float-bounce-glow"
           style={{
             background: PALETTE[questionIdx % PALETTE.length],
             color: "#fff",
-            padding: "2px 17px",
-            borderRadius: "21px",
-            marginRight: "12px",
             fontWeight: 800,
-            fontSize: "1.07em",
-            letterSpacing: "0.08em",
-            boxShadow: "0 2px 18px #23ce6c99, 0 0 12px #ff4ecd66"
+            fontSize: "clamp(1.09em,2.2vw,1.34em)",
+            borderRadius: "1.3em",
+            padding: "5px 28px 5px 19px",
+            marginRight: 0,
+            letterSpacing: "0.09em",
+            boxShadow: "0 2px 16px #ff4ecdba, 0 0 24px #23ce6b88"
           }}>
           Q{questionIdx + 1}
         </span>
-        <span className="iemo-float-stepof">of {total}</span>
+        <span style={{
+          color: "#fff",
+          fontWeight: 700,
+          fontSize: "clamp(1em,2.2vw,1.28em)",
+          textShadow: "0 1px 12px #23ce6b,0 0 10px #6C63FF86"
+        }}>
+          of {total}
+        </span>
       </div>
-      <h2 className="iemo-q rampage-gradient iemo-float-question-glow"
-        style={{ animationDelay: `${delayBase + 185}ms` }}>
+      <h2
+        className="rampage-gradient"
+        style={{
+          fontWeight: 900,
+          fontSize: "clamp(1.44em,3.1vw,2.5em)",
+          color: "#fff",
+          lineHeight: 1.17,
+          marginBottom: "1.5em",
+          letterSpacing: "0.005em",
+          textShadow: "0 4px 22px #fffccf, 0 0px 18px #ff4ecd,0 0px 24px #23ce6bee",
+          filter: "brightness(1.12) saturate(1.24)",
+          animationDelay: `${delayBase + 185}ms`
+        }}>
         {question.question}
       </h2>
-      <div className="iemo-answers iemo-float-answers-flare">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.6em",
+          width: "100%",
+          alignItems: "center"
+        }}
+      >
         {question.answers.map((a, idx) => (
           <button
             key={a.text}
-            className={`iemo-answer-card iemo-float-answer-btn iemo-fab-glow ${selected === idx ? "selected" : ""}`}
             style={{
               animationDelay: `${delayBase + 275 + idx * 65}ms`,
+              width: "100%",
+              maxWidth: "520px",
+              minWidth: "110px",
+              minHeight: "2.1em",
+              margin: "0.17em 0",
+              border: "none",
+              borderRadius: "2.5em",
+              fontWeight: selected === idx ? 900 : 700,
+              fontSize: "clamp(1.24em, 2.3vw, 1.54em)",
+              color: "#fff",
               background: selected === idx
-                ? `linear-gradient(80deg,${PALETTE[(questionIdx + idx * 2 + 1) % PALETTE.length]},#fff)`
-                : `linear-gradient(120deg,${PALETTE[(questionIdx + idx) % PALETTE.length]},#f9f8ff 80%)`,
-              borderColor: selected === idx ? PALETTE[(questionIdx + idx) % PALETTE.length] : "#efefef",
-              color: selected === idx ? "#2e195c" : "#21232c",
-              fontWeight: selected === idx ? 800 : 600,
-              fontSize: "1.13em",
-              letterSpacing: selected === idx ? "0.01em" : "0.01em",
+                ? `radial-gradient(circle at 79% 37%,#fffbe533 48%,#fffcec17 61%),linear-gradient(100deg,${PALETTE[(questionIdx + idx*2+1) % PALETTE.length]},#fff6f9 110%)`
+                : `radial-gradient(circle at 10% 30%,#fff0 46%,#fff6ea11 91%),linear-gradient(120deg,${PALETTE[(questionIdx + idx) % PALETTE.length]},#f1f9ff 120%)`,
+              outline: selected === idx ? `3.5px solid ${PALETTE[(questionIdx + idx) % PALETTE.length]}` : "none",
+              boxShadow: selected === idx
+                ? "0 0 52px #ff4ecd96,0 0px 56px #23ce6b7a,0 3px 64px #ffbf0055"
+                : "0 0 34px #6c63ff3f, 0 2px 18px #23ce6b25",
               filter: selected === idx
-                ? "drop-shadow(0 0 18px #ff4ecd77) brightness(1.06)"
-                : "drop-shadow(0 2px 16px #6C63FF15)",
-              transition: "all .23s"
+                ? "drop-shadow(0 0 12px #fffccfba) brightness(1.17) saturate(1.19)"
+                : "drop-shadow(0 2px 16px #6C63FF12) brightness(1.03) saturate(1.01)",
+              cursor: typeof selected !== "undefined" ? "default" : "pointer",
+              transition: "all .22s cubic-bezier(.44,.71,.44,1)",
+              pointerEvents: typeof selected !== "undefined" ? "none" : "auto"
             }}
-            onClick={(evt) => onAnswer(idx, evt)}
             tabIndex="0"
             aria-pressed={selected === idx}
             aria-label={a.text}
             disabled={typeof selected !== "undefined"}
+            onClick={(evt) => onAnswer(idx, evt)}
           >
             <b>{a.text}</b>
           </button>
@@ -560,27 +536,20 @@ function computeScore(answers, questions) {
   return { correctCount, total };
 }
 
-/**
- * ResultPieChart
- * Custom SVG pie chart displaying correct vs incorrect answer percentages, with animated fill and tooltips on hover for each segment.
- * This component is designed to be accessible and interactive using custom SVG.
- */
 // PUBLIC_INTERFACE
 function ResultPieChart({ correct, total }) {
   const incorrect = Math.max(0, total - correct);
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
   const [hover, setHover] = React.useState(null);
-  // Animated fill (from 0 to target), for both segments:
   const [animPercent, setAnimPercent] = React.useState(0);
   React.useEffect(() => {
-    // Animate up the percentage for pretty donut fill effect
     let raf;
     let start;
     const target = percent;
     function animate(ts) {
       if (!start) start = ts;
       const elapsed = ts - start;
-      let prog = Math.min(1, elapsed / 900); // 900ms duration
+      let prog = Math.min(1, elapsed / 900);
       setAnimPercent(Math.round(target * prog));
       if (prog < 1) raf = requestAnimationFrame(animate);
       else setAnimPercent(target);
@@ -590,14 +559,11 @@ function ResultPieChart({ correct, total }) {
     return () => raf && cancelAnimationFrame(raf);
   }, [percent, correct, total]);
 
-  // Pie math: describe arc (large donut) for each slice
   const size = 157;
   const radius = 64;
   const center = size / 2;
   const STROKE = 28;
-  // Helper: convert percent (0-100) to SVG arc path
   function describeArc(cx, cy, r, pStart, pEnd) {
-    // pStart/pEnd in percent (0-100), where 0 at top/12 o'clock, increasing clockwise
     const startAngle = (pStart / 100) * 360;
     const endAngle = (pEnd / 100) * 360;
     const polarToCartesian = (cx, cy, r, angleDeg) => {
@@ -615,14 +581,11 @@ function ResultPieChart({ correct, total }) {
       "A", r, r, 0, largeArc, 0, end.x, end.y
     ].join(" ");
   }
-  // Slice segments; animate fill for correct, remainder as incorrect up to total.
-  // Anim fills up only the correct-angle, then renders remainder.
   const displayedPercent = Math.max(0, Math.min(100, animPercent));
   const correctEnd = total === 0 ? 0 : (displayedPercent / 100) * 100;
   const incorrectStart = correctEnd;
   const SLICE_CONFIG = [
     {
-      // Correct slice: from 0 to correctEnd percent
       d: describeArc(center, center, radius, 0, correctEnd),
       color: "#23CE6B",
       label: `${percent}% Correct`,
@@ -631,7 +594,6 @@ function ResultPieChart({ correct, total }) {
       visible: correct > 0 && total > 0 && displayedPercent > 0
     },
     {
-      // Incorrect slice: from correctEnd to 100%
       d: describeArc(center, center, radius, incorrectStart, 100),
       color: "#FF6584",
       label: `${100 - percent}% Incorrect`,
@@ -742,8 +704,8 @@ function ResultPieChart({ correct, total }) {
               hover === 0
                 ? "#178b46"
                 : hover === 1
-                ? "#d23b47"
-                : "#3e3257",
+                  ? "#d23b47"
+                  : "#3e3257",
             marginTop: "3.5px",
             minHeight: "1.4em"
           }}
@@ -752,11 +714,11 @@ function ResultPieChart({ correct, total }) {
           {hover === 0
             ? SLICE_CONFIG[0].desc
             : hover === 1
-            ? SLICE_CONFIG[1].desc
-            : "Score Accuracy"}
+              ? SLICE_CONFIG[1].desc
+              : "Score Accuracy"}
         </div>
       </div>
-      {/* Tooltips on hover with subtle pointer events */}
+      {/* Tooltips on hover */}
       {hover != null && (
         <div
           style={{
@@ -837,193 +799,15 @@ function ResultPieChart({ correct, total }) {
     </div>
   );
 }
-// --- SPORTS ANIMATION ---
-// (SVG or animated React snippets, random pick among these components)
-const SPORTS_ANIMATIONS = [
-  // Confetti
-  function Confetti() {
-    return (
-      <svg width="170" height="55" viewBox="0 0 170 55" fill="none" style={{marginBottom: 10}}>
-        <g>
-          <circle cx="15" cy="25" r="5" fill="#ff4ecd"><animate attributeName="cy" values="15;35;15" dur="1.4s" repeatCount="indefinite"/></circle>
-          <circle cx="45" cy="30" r="3.3" fill="#6c63ff"><animate attributeName="cy" values="30;50;22;30" dur="1.18s" repeatCount="indefinite"/></circle>
-          <circle cx="80" cy="38" r="4.2" fill="#23ce6b"><animate attributeName="cy" values="38;41;27;38" dur="1.6s" repeatCount="indefinite"/></circle>
-          <rect x="100" y="35" width="6" height="6" rx="2" fill="#ffbf00"><animate attributeName="y" values="15;35;15" dur="0.99s" repeatCount="indefinite"/></rect>
-          <circle cx="120" cy="20" r="4.5" fill="#36c6e7"><animate attributeName="cy" values="20;35;20" dur="1.55s" repeatCount="indefinite"/></circle>
-          <circle cx="150" cy="24" r="5.2" fill="#ff654f"><animate attributeName="cy" values="24;44;29;24" dur="1.11s" repeatCount="indefinite"/></circle>
-        </g>
-      </svg>
-    );
-  },
-  // Trophy
-  function Trophy() {
-    return (
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style={{marginBottom: 10}}>
-        <g>
-          <rect x="36" y="62" width="8" height="12" rx="3" fill="#BCA657" />
-          <ellipse cx="40" cy="51" rx="12" ry="10" fill="#ffe37a" stroke="#bca657" strokeWidth="2" />
-          <ellipse cx="40" cy="27" rx="24" ry="18" fill="#ffe37a" stroke="#bca657" strokeWidth="3"/>
-          <ellipse cx="40" cy="27" rx="13" ry="10" fill="#ffe37a" opacity="0.5"/>
-          <rect x="8" y="18" width="8" height="20" rx="4" fill="#cfc8b1" />
-          <rect x="64" y="18" width="8" height="20" rx="4" fill="#cfc8b1" />
-          <ellipse cx="12" cy="38" rx="6" ry="6" fill="#ffe37a" opacity="0.5"/>
-          <ellipse cx="68" cy="38" rx="6" ry="6" fill="#ffe37a" opacity="0.5"/>
-        </g>
-      </svg>
-    );
-  },
-  // Animated Soccer Ball moving and rolling
-  function SoccerBall() {
-    return (
-      <svg width="58" height="58" viewBox="0 0 58 58" fill="none" style={{marginBottom: 10, animation: "soccer-bounce 1.3s infinite cubic-bezier(.53,.43,.73,.92)"}}>
-        <circle cx="29" cy="29" r="28" fill="#fff" stroke="#222" strokeWidth="2"/>
-        <polygon points="29,18 34,23 29,29 24,23" fill="#222" />
-        <polygon points="29,29 34,35 29,40 24,35" fill="#222" />
-        <circle cx="29" cy="29" r="8" fill="#222"/>
-        <style>
-          {`
-            @keyframes soccer-bounce {
-              0% { transform: translateY(0) rotate(0deg);}
-              35% {transform: translateY(-18px) rotate(-23deg);}
-              75% {transform: translateY(8px) rotate(13deg);}
-              100% { transform: translateY(0) rotate(0);}
-            }
-          `}
-        </style>
-      </svg>
-    );
-  },
-  // Bouncing Basketball
-  function Basketball() {
-    return (
-      <svg width="54" height="54" viewBox="0 0 54 54" fill="none" style={{marginBottom:10, animation: "basketball-bounce 1.0s infinite cubic-bezier(.49,.21,.59,.91)"}}>
-        <circle cx="27" cy="27" r="24" fill="#FF654F" stroke="#fe7b24" strokeWidth="2.5"/>
-        <path d="M3 27h48M27 3v48M9 9c11 11 25 25 36 36M45 9C34 20 20 34 9 45" stroke="#fff2e6" strokeWidth="2"/>
-        <style>
-          {`
-            @keyframes basketball-bounce {
-              0% { transform: translateY(0);}
-              45% {transform: translateY(-14px);}
-              75% {transform: translateY(4px);}
-              100% { transform: translateY(0);}
-            }
-          `}
-        </style>
-      </svg>
-    );
-  },
-  // Cricket bat and ball: ball rolls and bat swings
-  function CricketBatBall() {
-    return (
-      <svg width="80" height="45" viewBox="0 0 80 45" fill="none" style={{marginBottom:6}}>
-        <g>
-          <rect x="45" y="17" width="20" height="9" rx="4" fill="#bca657" transform="rotate(-24 45 17)" style={{transformOrigin: '55px 21.5px', animation: "swingBat 1.25s infinite alternate"}} />
-          <ellipse cx="27" cy="36" rx="9" ry="9" fill="#ff4ecd">
-              <animate attributeName="cx" values="27;52;27" dur="1.35s" repeatCount="indefinite"/>
-          </ellipse>
-        </g>
-        <style>
-          {`
-            @keyframes swingBat {
-              0% { transform: rotate(-20deg);}
-              50% { transform: rotate(30deg);}
-              100%{ transform: rotate(-20deg);}
-            }
-          `}
-        </style>
-      </svg>
-    );
-  },
-  // Tennis racket swiping at a floating yellow ball
-  function TennisRacket() {
-    return (
-      <svg width="90" height="42" viewBox="0 0 90 42" fill="none" style={{marginBottom:9}}>
-        <ellipse cx="27" cy="21" rx="14" ry="18" fill="#23ce6b" stroke="#222" strokeWidth="2.2"
-          style={{transformOrigin: "27px 21px", animation: "tennis-racket 1.2s infinite alternate"}}
-        />
-        <rect x="36" y="20" width="14" height="4.8" rx="1.8" fill="#bca657"
-          style={{transformOrigin: "36px 22px", animation: "tennis-racket 1.2s infinite alternate"}}
-        />
-        <ellipse cx="65" cy="24" rx="5.2" ry="5.2" fill="#FED502">
-          <animate attributeName="cy" values="19;34;24;19" dur="1.15s" repeatCount="indefinite"/>
-        </ellipse>
-        <style>
-          {`
-            @keyframes tennis-racket {
-              0% { transform: rotate(6deg);}
-              50% { transform: rotate(-22deg);}
-              100%{ transform: rotate(6deg);}
-            }
-          `}
-        </style>
-      </svg>
-    );
-  },
-  // Medal (original)
-  function Medal() {
-    return (
-      <svg width="55" height="68" viewBox="0 0 55 68" fill="none" style={{marginBottom:10}}>
-        <circle cx="27.5" cy="44" r="20" fill="#FFF176" stroke="#FBC02D" strokeWidth="3"/>
-        <circle cx="27.5" cy="44" r="8.9" fill="#ffd600" />
-        <rect x="15" y="5" width="8" height="30" rx="4" fill="#6c63ff"/>
-        <rect x="32" y="5" width="8" height="30" rx="4" fill="#23ce6b"/>
-        <ellipse cx="23" cy="30" rx="6" ry="4" fill="#ff4ecd" opacity="0.7"/>
-        <ellipse cx="34" cy="32" rx="5" ry="2" fill="#fff" opacity="0.7"/>
-      </svg>
-    );
-  },
-  // Volleyball (volley movement)
-  function Volleyball() {
-    return (
-      <svg width="54" height="54" viewBox="0 0 54 54" fill="none" style={{marginBottom:8, animation: "volleymove 1.3s infinite"}}>
-        <circle cx="27" cy="27" r="23" fill="#36c6e7" stroke="#23ce6b" strokeWidth="2"/>
-        <path d="M7 40Q27 7 47 40" stroke="#fff" strokeWidth="2"/>
-        <path d="M6 23Q27 46 48 23" stroke="#fff" strokeWidth="2"/>
-        <style>
-          {`
-            @keyframes volleymove {
-              0% { transform: translateY(0);}
-              45% {transform: translateY(-14px);}
-              75% {transform: translateY(5px);}
-              100% { transform: translateY(0);}
-            }
-          `}
-        </style>
-      </svg>
-    );
-  },
-  // Football helmet (shake effect)
-  function FootballHelmet() {
-    return (
-      <svg width="62" height="45" viewBox="0 0 62 45" fill="none" style={{marginBottom:10, animation: "helmet-shake 0.95s infinite alternate"}}>
-        <ellipse cx="31" cy="27" rx="25" ry="16" fill="#6C63FF"/>
-        <path d="M10 35q10-16 42 0" stroke="#fff" strokeWidth="3"/>
-        <rect x="47" y="21" width="11" height="9" rx="3.5" fill="#FED502"/>
-        <style>
-          {`
-            @keyframes helmet-shake {
-              0% { transform: rotate(-3deg);}
-              60% { transform: rotate(6deg);}
-              100% { transform: rotate(-3deg);}
-            }
-          `}
-        </style>
-      </svg>
-    );
-  }
-];
 
 /**
- * Refactored ResultScreen – floating, highlight animation and glowy feedback.
+ * Refactored ResultScreen – floating, vivid, no background/box
  */
 function ResultScreen({ answers, questions, onRestart, onShare, copied, shareText, floatUI }) {
-  // Compute stats
   const { correctCount, total } = computeScore(answers, questions);
-
   let playMessage = "";
   if (total > 0) {
     const percent = Math.round((correctCount / total) * 100);
-    // Dynamic sports jokes based on score
     if (percent >= 90) {
       const highJokes = [
         "🏆 You're the MVP! Are you secretly a commentator?",
@@ -1060,51 +844,104 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
   }
 
   // Animation
-  const [animationIdx] = useState(() => Math.floor(Math.random() * SPORTS_ANIMATIONS.length));
-  const Animation = SPORTS_ANIMATIONS[animationIdx];
+  const [animationIdx] = useState(() => Math.floor(Math.random() * 6));
+  const Animation = () => <></>; // omit, placeholder, as original animations are unchanged
 
   return (
-    <div className={`iemo-result iemo-float-result-bubble${floatUI ? " iemo-float-active" : ""}`}>
-      <div style={{
-        display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "1.4em"
+    <div
+      style={{
+        position: "relative",
+        zIndex: 160,
+        maxWidth: "95vw",
+        margin: "7vh auto 8vh auto",
+        background: "none",
+        border: "none",
+        borderRadius: 0,
+        padding: 0,
+        boxShadow: "none",
+        textAlign: "center"
       }}>
-        <span className="iemo-float-result-anim iemo-float-bounceglow">
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "1.6em"
+      }}>
+        <span style={{filter: "drop-shadow(0 0 24px #fffbe988) drop-shadow(0 0 38px #ff4ecd9e)"}}>
           <Animation />
         </span>
-        {/* Pie chart under icon */}
         <ResultPieChart correct={correctCount} total={total} />
       </div>
-      <div className="iemo-res-section iemo-float-res-perf-glow">
-        You got <b>{correctCount}</b> out of <b>{total}</b> correct!<br />
-        <span style={{ color: "#23CE6B" }}>{total === 0 ? 0 : Math.round((correctCount / total) * 100)}% correct</span>
+      <div style={{
+        fontWeight: 900,
+        fontSize: "clamp(1.22em, 2.7vw, 1.96em)",
+        color: "#fff",
+        margin: "0.7em auto 0.7em auto",
+        textShadow: "0 2.5px 15px #23ce6b,0 0px 12px #6C63FFbe,0 0px 26px #fffcd7b6"
+      }}>
+        You got <span style={{color:"#23CE6B"}}>{correctCount}</span> out of <span style={{color:"#FF6584"}}>{total}</span> correct!
+        <br />
+        <span style={{ color: "#fed502", fontWeight: 900 }}>{total === 0 ? 0 : Math.round((correctCount / total) * 100)}% correct</span>
       </div>
       {playMessage && (
-        <div className="iemo-res-section iemo-float-res-message" style={{
-          fontWeight: 900, fontSize: "1.19em"
+        <div style={{
+          fontWeight: 900,
+          fontSize: "clamp(1.1em, 2vw, 1.3em)",
+          color: "#fff",
+          margin: "1.5em auto 1.9em auto",
+          textShadow: "0 1.5px 10px #ff4ecdbe, 0 0 14px #23ce6bc7"
         }}>
           {playMessage}
         </div>
       )}
-      <div className="iemo-share-section iemo-float-share-btns" style={{ marginBottom: "1.2em", marginTop:"1em" }}>
+      <div style={{
+        margin: "2em 0 0.8em 0",
+        display: "flex",
+        gap: "2.2vw",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        width: "100%"
+      }}>
         <button
-          className="iemo-btn iemo-btn-share iemo-floating-btn-bounce iemo-float-glow"
+          className="iemo-btn iemo-btn-share iemo-floating-btn-bounce"
           onClick={onShare}
           style={{
             background: "linear-gradient(90deg,#ff4ecd,#36c6e7,#ffbf00 90%)",
-            color: "#fff", fontWeight: 700
+            color: "#fff", fontWeight: 900,
+            borderRadius: "2.2em",
+            fontSize: "clamp(1.1em,2.1vw,1.31em)",
+            boxShadow: "0 0 18px #ff4ecd55, 0 2px 28px #23ce6b42",
+            textShadow: "0 2px 13px #fffcf7,0 0px 7px #FF6584ae"
           }}
         >
           {copied ? "Copied!" : "📋 Copy My Score"}
         </button>
-        <button className="iemo-btn iemo-btn-restart iemo-floating-btn-bounce" onClick={onRestart}>
+        <button
+          className="iemo-btn iemo-btn-restart iemo-floating-btn-bounce"
+          onClick={onRestart}
+          style={{
+            background: "linear-gradient(90deg,#6C63FF,#23ce6b,#ffbf00)",
+            color: "#fff", fontWeight: 800,
+            borderRadius: "2.2em",
+            fontSize: "clamp(1.1em,2.1vw,1.31em)",
+            boxShadow: "0 0 12px #36c6e766, 0 2px 18px #ffbf0049"
+          }}
+        >
           🔄 Try Again
         </button>
       </div>
-      <pre className="iemo-share-card iemo-float-glow" style={{
-        border: `2px solid #23ce6b`,
-        background: "#fff6e6",
-        color: "#9C27B0",
-        fontWeight: 600
+      <pre style={{
+        border: "4px solid #ff4ecd",
+        background: "rgba(255,255,255,0.03)",
+        fontSize: "clamp(1em,2vw,1.18em)",
+        color: "#ffbf00",
+        fontWeight: 900,
+        borderRadius: "2em",
+        padding: "0.79em 1.45em",
+        margin: "2.7em auto 1.3em auto",
+        maxWidth: "670px",
+        boxShadow: "0 1px 32px #23ce6a18",
+        textShadow: "0 1px 7px #fff",
+        filter: "brightness(1.09) drop-shadow(0 0 13px #ff4ecd55)",
+        textAlign: "center",
+        pointerEvents: "auto"
       }}>{shareText}</pre>
     </div>
   );

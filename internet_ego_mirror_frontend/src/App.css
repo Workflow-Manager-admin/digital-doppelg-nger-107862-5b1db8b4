@@ -333,31 +333,97 @@
 .iemo-float-welcome,
 .iemo-float-qa-wrap,
 .iemo-result.iemo-float-result-bubble {
-  position: relative;
-  z-index: 120;
-  /* Vibrant glassmorphic white bg for readability, border, shadow, and subtle blur */
-  background: rgba(255,255,255,0.88);
-  box-shadow: 0 2px 24px #6c63ffd3, 0 9px 42px #efedfb60, 0 0 0 2px #6c63ff1b;
-  border-radius: 2.1em;
-  backdrop-filter: blur(8px) saturate(125%);
-  -webkit-backdrop-filter: blur(8px) saturate(125%);
-  margin: 1.4em auto 2.2em auto;
-  padding: 2.1em 2.1em 2.1em 2.1em;
-  max-width: clamp(330px, 83vw, 510px);
-  min-width: 0;
-  min-height: 0;
-  box-sizing: border-box;
-  border: 1px solid #e6e0fd;
+  /* Remove ALL card/glass overlay, margin, border, blur, box, bg, etc. */
+  position: static !important;
+  z-index: unset !important;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: unset !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  box-sizing: inherit !important;
 }
 
-.iemo-float-welcome {
-  box-shadow: 0 3px 38px #ff4ecd58, 0 8px 42px #23ce6a38, 0 0 0 2px #6c63ff1d;
-}
-.iemo-float-qa-wrap {
-  box-shadow: 0 6px 36px #23ce6b69, 0 2.5px 18px #6C63FF40, 0 0 0 2px #23ce6b1e;
-}
+/* Remove old box-shadow overlays for these states too */
+.iemo-float-welcome,
+.iemo-float-qa-wrap,
 .iemo-result.iemo-float-result-bubble {
-  box-shadow: 0 6px 36px #ffbf0068, 0 2.5px 18px #6c63ff49, 0 0 0 2px #fed50216;
+  box-shadow: none !important;
+}
+
+/* Remove container effect for glassy/colored background on answer cards */
+.iemo-answer-card.iemo-float-answer-btn {
+  /* Remove background+border as card, only color and big button style visually */
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 2.5em !important;
+  font-weight: 700;
+  outline: none !important;
+}
+
+/* Make selected answer visually pop but still not in a box or with overlay */
+.iemo-answer-card.selected {
+  box-shadow: none !important;
+  outline: none !important;
+  background: none !important;
+}
+
+/* Questions and steps: remove background overlays, use only strong text style */
+.iemo-float-question-glow, .iemo-float-header-glow {
+  color: #fff !important;
+  background: none !important;
+  text-shadow: 0 3px 26px #fff 60%, 0 2px 17px #ff4ecd46, 0 2px 2px #6c63ff35 !important;
+  z-index: 140;
+}
+
+.iemo-desc.iemo-float-desc-glow {
+  background: none !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  text-shadow: 0 2.5px 12px #23ce6b, 0 1.5px 14px #ff4ecd74, 0 0px 32px #6c63ff2c !important;
+  z-index: 119;
+}
+
+/* Remove all share/result containers and card boxes */
+.iemo-share-card.iemo-float-glow {
+  background: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  padding: 0 !important;
+}
+
+.iemo-btn, .iemo-btn-accent, .iemo-btn-share, .iemo-btn-restart {
+  /* Keep fun gradients, but remove all box-related overlays/inner shadows */
+  position: relative;
+  z-index: 131;
+  background: linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584 110%) !important;
+  color: #fff !important;
+  text-shadow: 0 1px 8px #6C63FF38, 0 1.2px 16px #ff4ecd30;
+  border-radius: 2em !important;
+  border: none !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 30px #ff4ecd3c,0 0 44px #23ce6a3e !important;
+  outline: none !important;
+  padding: 0.64em 2.1em !important;
+  font-size: 1.12em !important;
+}
+
+/* Remove card-like background from "loading" and error panel state */
+@media (max-width: 640px) {
+  .iemo-float-welcome,
+  .iemo-float-qa-wrap,
+  .iemo-result.iemo-float-result-bubble {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: unset !important;
+  }
 }
 
 .iemo-answers.iemo-float-answers-flare,
