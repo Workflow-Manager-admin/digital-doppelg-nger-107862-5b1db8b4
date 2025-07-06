@@ -4,6 +4,7 @@ import SportsBackground from "./SportsBackground";
 import QuoteBox from "./QuoteBox";
 import NumberFact from "./NumberFact";
 import WordOfTheMatch from "./WordOfTheMatch";
+import JokeWidget from "./JokeWidget";
 
 // Compute quiz score summary
 function computeScore(answers, questions) {
@@ -388,6 +389,7 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
       <NumberFact number={correctCount} forScore={true} />
       {/* Word of the Match */}
       <WordOfTheMatch />
+      <JokeWidget />
       <div style={{
         margin: "2em 0 0.9em 0",
         display: "flex",
