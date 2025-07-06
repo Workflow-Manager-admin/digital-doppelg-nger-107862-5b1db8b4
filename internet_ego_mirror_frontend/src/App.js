@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import SportsBackground from "./SportsBackground";
+/*
+ * ResultPieChart
+ * Custom SVG animated pie chart for correct/incorrect answers breakdown, including hover tooltips and accessibility.
+ */
 
 /**
  * This is the Internet Ego Mirror Quiz App – enhanced with vibrant, animated backgrounds,
@@ -452,6 +456,149 @@ function computeScore(answers, questions) {
   return { correctCount, total };
 }
 
+function ResultPieChart({ correct, total }) {
+  // Draw a custom SVG pie chart with two slices, and percentage/tooltip in the center.
+  const incorrect = Math.max(0, total - correct);
+  const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+  const [hover, setHover] = React.useState(null);
+
+  // Compute arc for the correct slice:
+  // Uses SVG arc formula on a 70px radius circle in 154x154px SVG.
+  const size = 154, radius = 66, center = 77;
+  const toRadians = x => (x / 100) * 360 * (Math.PI / 180);
+  const sliceAngle = total > 0 ? (correct / total) * 360 : 0;
+  // SVG arc sweep flag
+  function describeArc(cx, cy, r, startAngle, endAngle){
+    // From https://stackoverflow.com/a/18473154/2441655
+    const polarToCartesian = (cx, cy, r, angleDeg) => {
+      var angleRad = (angleDeg-90) * Math.PI / 180.0;
+      return {
+        x: cx + (r * Math.cos(angleRad)),
+        y: cy + (r * Math.sin(angleRad))
+      };
+    };
+    const start = polarToCartesian(cx, cy, r, endAngle);
+    const end = polarToCartesian(cx, cy, r, startAngle);
+
+    const arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
+    const d = [
+      "M", start.x, start.y,
+      "A", r, r, 0, arcSweep, 0, end.x, end.y
+    ].join(" ");
+    return d;
+  }
+  // For < 100% correctness, always render both slices
+  const arcProps = {
+    correct: {
+      d: describeArc(center, center, radius, 0, sliceAngle),
+      color: "#23CE6B"
+    },
+    incorrect: {
+      d: describeArc(center, center, radius, sliceAngle, 360),
+      color: "#FF6584"
+    }
+  };
+  // Tooltip/label logic
+  const SLICE_LABELS = [
+    {
+      label: `${percent}% Correct`,
+      desc: `${correct} out of ${total} Correct`
+    },
+    {
+      label: `${100 - percent}% Incorrect`,
+      desc: `${incorrect} out of ${total} Incorrect`
+    }
+  ];
+  return (
+    <div style={{ width: size, height: size, marginBottom: "1.4em", position: "relative", userSelect: "none" }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{
+        boxShadow: "0 2px 18px #23ce6a38, 0 4px 38px #ff4ecd19",
+        background: "rgba(246,237,253,0.10)",
+        borderRadius: "50%",
+        display: "block"
+      }}>
+        {/* Background ring */}
+        <circle cx={center} cy={center} r={radius} stroke="#ece4fb" strokeWidth="28" fill="none"/>
+        {/* Correct arc */}
+        {total > 0 && correct > 0 &&
+          <path
+            d={arcProps.correct.d}
+            stroke={arcProps.correct.color}
+            strokeWidth="28"
+            fill="none"
+            strokeLinecap="round"
+            style={{ filter: hover === 0 ? "drop-shadow(0 0 8px #23CE6B44)" : "" , cursor: "pointer"}}
+            onMouseOver={() => setHover(0)}
+            onFocus={() => setHover(0)}
+            onMouseOut={() => setHover(null)}
+            onBlur={() => setHover(null)}
+            tabIndex={0}
+          />
+        }
+        {/* Incorrect arc */}
+        {total > 0 && incorrect > 0 &&
+          <path
+            d={arcProps.incorrect.d}
+            stroke={arcProps.incorrect.color}
+            strokeWidth="28"
+            fill="none"
+            strokeLinecap="round"
+            style={{ filter: hover === 1 ? "drop-shadow(0 0 8px #FF658444)" : "" , cursor: "pointer"}}
+            onMouseOver={() => setHover(1)}
+            onFocus={() => setHover(1)}
+            onMouseOut={() => setHover(null)}
+            onBlur={() => setHover(null)}
+            tabIndex={0}
+          />
+        }
+      </svg>
+      {/* Center donut/label */}
+      <div style={{
+        position: "absolute",
+        left: 0, top: 0, width: "100%", height: "100%",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        pointerEvents: "none",
+        flexDirection: "column",
+        zIndex: 2
+      }}>
+        <div style={{
+          background: "rgba(255,255,255,0.89)",
+          borderRadius: "54%",
+          padding: "0.5em 1.2em",
+          fontWeight: 900,
+          fontSize: "1.58em",
+          color: "#6C63FF",
+          boxShadow: "0 2px 15px #36c6e71d"
+        }}>
+          {percent}%
+        </div>
+        <div style={{
+          fontSize: "0.82em",
+          fontWeight: 700,
+          color: hover === 0 ? "#178b46" : (hover === 1 ? "#b43b47" : "#341c3d"),
+          marginTop: "4px"
+        }}>
+          {hover === 0 ? SLICE_LABELS[0].desc : hover === 1 ? SLICE_LABELS[1].desc : "Accuracy"}
+        </div>
+      </div>
+      {/* Accessible legend */}
+      <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 8 }}>
+        <span style={{ display: "flex", alignItems: "center", fontSize: "0.98em" }}>
+          <span style={{
+            width: 14, height: 14, borderRadius: "50%", background: "#23CE6B", display: "inline-block", marginRight: 5
+          }}/>
+          <span style={{ color: "#23CE6B", fontWeight: 800 }}>Correct</span>
+        </span>
+        <span style={{ display: "flex", alignItems: "center", fontSize: "0.98em" }}>
+          <span style={{
+            width: 14, height: 14, borderRadius: "50%", background: "#FF6584", display: "inline-block", marginRight: 5
+          }}/>
+          <span style={{ color: "#FF6584", fontWeight: 800 }}>Incorrect</span>
+        </span>
+      </div>
+    </div>
+  );
+}
 // --- SPORTS ANIMATION ---
 // (SVG or animated React snippets, random pick among these components)
 const SPORTS_ANIMATIONS = [
@@ -661,6 +808,8 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
         <span className="iemo-float-result-anim iemo-float-bounceglow">
           <Animation />
         </span>
+        {/* Pie chart under icon */}
+        <ResultPieChart correct={correctCount} total={total} />
       </div>
       <div className="iemo-res-section iemo-float-res-perf-glow">
         You got <b>{correctCount}</b> out of <b>{total}</b> correct!<br />
