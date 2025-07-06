@@ -972,16 +972,7 @@ function App() {
         )}
       </main>
 
-      {/* Global footer: always below main content */}
-      <footer className="iemo-footer" style={{
-        margin: "2.7em auto 2em auto",
-        color: "#7c6ead", fontWeight: 700, textAlign: "center", fontSize: "1em",
-        textShadow: "0 1.3px 7px #36c6e71a"
-      }}>
-        <span className="iemo-footer-brand">
-          &copy; {new Date().getFullYear()} Internet Ego Mirror &mdash; Playful sports persona quizzes
-        </span>
-      </footer>
+      {/* (Footer removed as requested) */}
     </div>
   );
 }
