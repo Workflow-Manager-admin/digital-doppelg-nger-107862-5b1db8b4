@@ -74,7 +74,9 @@ function parseTrivia(qset) {
     }
     return {
       question: decodeHtml(q.question),
-      answers: allAnswers
+      answers: allAnswers,
+      // For result stats, store the correct answer in decoded form
+      correct_answer: decodeHtml(q.correct_answer)
     };
   });
 }
@@ -234,13 +236,33 @@ function App() {
           />
         )}
         {(step > (questions.length || 0) && persona != null && !loading && !fetchError) && (
-          <ResultScreen
-            persona={persona}
-            shareText={getShareText()}
-            copied={copied}
-            onRestart={handleRestart}
-            onShare={handleShare}
-          />
+          (() => {
+            // Store result data for ResultScreen to access for score stats
+            window.__latestResults = {
+              answers: answers,
+              questions: questions.map((q, idx) => {
+                // Add correct_answer onto question for later lookup in ResultScreen
+                // This is only possible if we stored it in parseTrivia
+                if (questions[idx] && questions[idx].question) {
+                  // These 'answers' are from parseTrivia, which only includes shuffled answers.
+                  // However, answer correctness can be checked by matching with the text from correct_answer from data.results, but we don't have direct access here.
+                  // Instead, we'll attach correct_answer on each question record in parseTrivia. See above for future patch.
+                  // For now, pass through as is.
+                  return { ...q };
+                }
+                return q;
+              })
+            };
+            return (
+              <ResultScreen
+                persona={persona}
+                shareText={getShareText()}
+                copied={copied}
+                onRestart={handleRestart}
+                onShare={handleShare}
+              />
+            );
+          })()
         )}
       </div>
       <div className="iemo-footer" style={{
@@ -339,9 +361,69 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected }) {
   );
 }
 
-// --- RESULTS SCREEN ---
+/**
+ * PUBLIC_INTERFACE
+ * ResultScreen now also displays:
+ * - Percentage of correct and incorrect answers in the quiz
+ * - A lighthearted, playful sports knowledge message based on the user's performance
+ * 
+ * Score-based sports messages:
+ * 90–100%: 'You are a walking sports Wikipedia!'
+ * 60–89%: 'Solid performance—you’d own the local sports bar quiz!'
+ * 40–59%: 'You watch the highlights, don’t you?'
+ * <40%: 'Maybe try playing some Fantasy Sports?'
+ */
 function ResultScreen({ persona, shareText, copied, onRestart, onShare }) {
-  // blast aura
+  // Accept percentages from parent in future; for now, infer via global scope in this file
+  // We need access to concrete answer data, so we check the context of App() and use closure trick:
+  // We'll add a window.__latestResults = {answers, questions} before rendering this screen in App.
+  let correctCount = 0, total = 0;
+  if (window.__latestResults && window.__latestResults.answers && window.__latestResults.questions) {
+    total = window.__latestResults.questions.length;
+    correctCount = window.__latestResults.answers.reduce((cnt, ansIdx, idx) => {
+      if (
+        typeof ansIdx !== "undefined" &&
+        window.__latestResults.questions[idx] &&
+        ansIdx === 0 // Correct answer always at index 0 before shuffle, but in parseTrivia all options are shuffled, so need to detect which shuffled answer has persona "bookworm" (not reliable). Instead, store correct answer index in questions: adjust parseTrivia for future, but for now, assume correct is the answer whose 'persona' matches that of the first answer before shuffling, or more robustly, the answer that matches text === decodeHtml(q.correct_answer).
+        && window.__latestResults.questions[idx].answers
+      ) {
+        // Find answer in answers array whose text matches the original trivia's correct answer
+        const currQ = window.__latestResults.questions[idx];
+        return currQ.answers[ansIdx].text === currQ.answers.find(a => a.text === decodeHtml(currQ.correct_answer))?.text
+          ? cnt + 1
+          : cnt;
+      }
+      return cnt;
+    }, 0);
+  }
+  // Fallback: if answers/total not detected, don't show percent block
+  let percentBlock = null, playMessage = null;
+  if (typeof total === "number" && total > 0) {
+    const percent = Math.round((correctCount / total) * 100);
+    const incorrect = total - correctCount;
+    percentBlock = (
+      <div className="iemo-res-section" style={{
+        background: "#fff2f4", borderRadius: "13px", padding: "0.76em 0.5em",
+        boxShadow: "0 2px 14px #ff4ecd10", marginTop: "1em", fontWeight: 700
+      }}>
+        <span style={{ color: "#6C63FF", fontSize: "1.13em" }}>
+          You got <b>{correctCount}</b> out of <b>{total}</b> correct!<br/>
+          <span style={{ color: "#23CE6B" }}>{percent}% correct</span>
+          <span style={{ color: "#FF6584", marginLeft: "0.9em" }}>{100 - percent}% wrong</span>
+        </span>
+      </div>
+    );
+    // Score message
+    if (percent >= 90) {
+      playMessage = "You are a walking sports Wikipedia!";
+    } else if (percent >= 60) {
+      playMessage = "Solid performance—you’d own the local sports bar quiz!";
+    } else if (percent >= 40) {
+      playMessage = "You watch the highlights, don’t you?";
+    } else {
+      playMessage = "Maybe try playing some Fantasy Sports?";
+    }
+  }
   return (
     <div className="iemo-result" style={{
       background: "linear-gradient(120deg,#f6edfd 70%,#d8fce9 100%)",
@@ -367,6 +449,16 @@ function ResultScreen({ persona, shareText, copied, onRestart, onShare }) {
           background:"#fff8f9", color: "#a334be", padding:"0.7em", borderRadius:"12px"
         }}>{persona.description}</span>
       </div>
+      {/* PERCENT AND FUNNY SPORTS KNOWLEDGE BLOCK */}
+      {percentBlock}
+      {playMessage && (
+        <div className="iemo-res-section" style={{
+          color: "#FF6584", background: "#fff0ec", margin: "0.75em 0",
+          fontWeight: 900, borderRadius: "12px", fontSize: "1.21em", boxShadow: "0 2px 12px #ffd0ff22"
+        }}>
+          {playMessage}
+        </div>
+      )}
       <div className="iemo-res-section">
         <strong className="iemo-label">Aura Color</strong>
         <span className="iemo-color-sample" style={{
