@@ -41,8 +41,9 @@ function decodeHtml(input) {
 }
 
 function CrackerBlast({ x, y, onDone }) {
+  // Fireworks: make firework SVG and dots much larger for a lively/layer-filling effect!
   React.useEffect(() => {
-    const timeout = setTimeout(() => onDone && onDone(), 700);
+    const timeout = setTimeout(() => onDone && onDone(), 840);
     return () => clearTimeout(timeout);
   }, [onDone]);
   return (
@@ -56,55 +57,56 @@ function CrackerBlast({ x, y, onDone }) {
       aria-hidden="true"
     >
       <span className="cracker-explosion">
-        <svg width="148" height="148" viewBox="0 0 148 148">
+        <svg width="340" height="340" viewBox="0 0 340 340">
           <g>
-            {/* Bigger: Rays (20) */}
-            {[...Array(20)].map((_, i) => {
-              const angle = (i * 18);
-              const length = 54 + 24 * (i % 2);
+            {/* Massive firework rays */}
+            {[...Array(24)].map((_, i) => {
+              const angle = (i * 15);
+              const length = 120 + 62 * (i % 2);
               const color = [
                 "#ffd500", "#ff4ecd", "#6C63FF", "#23ce6b", "#FF6584", "#36c6e7", "#fc1cff", "#ff654f", "#fecdff", "#FED502",
-                "#fffbe8", "#ff4ecd", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184", "#6c63ff", "#ffbf00"
-              ][i % 20];
+                "#fffbe8", "#ff4ecd", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184", "#6c63ff", "#ffbf00",
+                "#23ce6b", "#6C63FF", "#ff4ecd", "#ffbf00"
+              ][i % 24];
               return (
                 <line
                   key={i}
-                  x1="74"
-                  y1="74"
-                  x2={74 + length * Math.cos(angle * Math.PI / 180)}
-                  y2={74 + length * Math.sin(angle * Math.PI / 180)}
+                  x1="170"
+                  y1="170"
+                  x2={170 + length * Math.cos(angle * Math.PI / 180)}
+                  y2={170 + length * Math.sin(angle * Math.PI / 180)}
                   stroke={color}
-                  strokeWidth="8.7"
+                  strokeWidth="16.5"
                   strokeLinecap="round"
                   opacity="0.94"
                 />
               );
             })}
-            {/* Exploding circles */}
-            {[...Array(12)].map((_, i) => {
-              const angle = i * (360 / 12) + 21;
-              const dist = Math.random() * 31 + 46;
-              const size = Math.random() * 8.7 + 6;
+            {/* Much bigger and more plentiful explosion dots */}
+            {[...Array(20)].map((_, i) => {
+              const angle = i * (360 / 20) + 21;
+              const dist = Math.random() * 82 + 100;
+              const size = Math.random() * 22.5 + 9;
               const color = [
                 "#fffbe8", "#ff6584", "#36c6e7", "#fed502", "#fc1cff", "#6C63FF", "#23ce6b", "#ffe184",
-                "#ff4ecd", "#19e0ff", "#ffbf00", "#23ce6b"
-              ][i % 12];
+                "#ff4ecd", "#19e0ff", "#ffbf00", "#23ce6b", "#fed502", "#6c63ff", "#ffbf00", "#ff4ecd", "#36c6e7", "#6C63FF", "#fc1cff", "#23ce6b"
+              ][i % 20];
               return (
                 <circle
                   key={`dot${i}`}
-                  cx={74 + dist * Math.cos(angle * Math.PI / 180)}
-                  cy={74 + dist * Math.sin(angle * Math.PI / 180)}
+                  cx={170 + dist * Math.cos(angle * Math.PI / 180)}
+                  cy={170 + dist * Math.sin(angle * Math.PI / 180)}
                   r={size}
                   fill={color}
-                  fillOpacity="0.74"
-                  filter="blur(0.46px)"
+                  fillOpacity="0.82"
+                  filter="blur(0.79px)"
                 />
               );
             })}
             <ellipse
-              cx="74" cy="74" rx="29" ry="24"
-              fill="#fffbe8" fillOpacity="0.36"
-              filter="blur(5px)"
+              cx="170" cy="170" rx="62" ry="54"
+              fill="#fffbe8" fillOpacity="0.45"
+              filter="blur(10px)"
             />
           </g>
         </svg>
@@ -309,13 +311,14 @@ function App() {
  * Refactored WelcomeScreen – floating text-only, bold, readable, no boxes or glass
  */
 function WelcomeScreen({ onStart }) {
+  // Welcome text: all float, no bg, bold, super-readable vivid
   return (
     <div
       style={{
         position: "relative",
         zIndex: 160,
         maxWidth: "75vw",
-        margin: "5vh auto 0 auto",
+        margin: "7vh auto 0 auto",
         textAlign: "center",
         background: "none",
         boxShadow: "none",
@@ -328,11 +331,10 @@ function WelcomeScreen({ onStart }) {
         className="rainbow-header"
         style={{
           fontWeight: 900,
-          fontSize: "clamp(2.1em, 6vw, 3.8em)",
+          fontSize: "clamp(2.2em, 6vw, 4.2em)",
           padding: "0 0 0.2em 0",
           letterSpacing: "0.01em",
-          filter: "drop-shadow(0 2px 14px #fffbe2) drop-shadow(0 6px 30px #ff4ecd59)",
-          textShadow: "0 8px 50px #fff, 0 2px 12px #23ce6b59, 0 0px 6px #61199157",
+          textShadow: "0 8px 54px #fff, 0 2px 20px #23ce6bcc, 0 0px 26px #ff4ecd9e",
           background: "linear-gradient(90deg,#ff4ecd,#6C63FF,#23ce6b,#FF6584 90%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
@@ -344,16 +346,16 @@ function WelcomeScreen({ onStart }) {
       </h1>
       <p
         style={{
-          fontWeight: 700,
-          fontSize: "clamp(1.1em, 2.6vw, 1.51rem)",
+          fontWeight: 900,
+          fontSize: "clamp(1.16em, 2.8vw, 1.59rem)",
           color: "#fff",
-          lineHeight: 1.25,
-          margin: "0 auto 2.1em auto",
-          textShadow: "0 2.5px 12px #311978, 0 1.5px 14px #ff4ecd84, 0 0px 32px #23ce6b50",
+          lineHeight: 1.26,
+          margin: "0 auto 2.3em auto",
+          textShadow: "0 5px 28px #23ce6b, 0 4.5px 24px #ff4ecd94, 0 1.5px 14px #fff",
           background: "none",
           borderRadius: 0,
-          maxWidth: "680px",
-          filter: "brightness(1.16) saturate(1.22)",
+          maxWidth: "800px",
+          filter: "brightness(1.22) saturate(1.35)",
           display: "inline-block",
         }}
       >
@@ -362,16 +364,16 @@ function WelcomeScreen({ onStart }) {
         <a href="https://opentdb.com/" rel="noopener noreferrer"
           style={{
             color: "#fff",
-            fontWeight: 800,
+            fontWeight: 900,
             WebkitTextStroke: "1px #23ce6b",
-            filter: "drop-shadow(0 1px 11px #23ce6b94)"
+            filter: "drop-shadow(0 2px 17px #23ce6bb8)"
           }}
         >
           Open Trivia DB
         </a>
         .<br />
-        <span style={{ fontSize: "0.97em", color: "#ffbf00", fontWeight: 800 }}>No login, no key needed.</span> <b
-          style={{ color: "#fff", textShadow: "0 0px 7px #6C63FFabe, 0 1.5px 7px #fff" }}>Click START for a new set!</b>
+        <span style={{ fontSize: "1.05em", color: "#ffbf00", fontWeight: 900 }}>No login, no key needed.</span>
+        <b style={{ color: "#fff", textShadow: "0 0px 12px #6C63FFde, 0 1.9px 12px #fff" }}> Click START for a new set!</b>
       </p>
       <div>
         <button
@@ -379,15 +381,15 @@ function WelcomeScreen({ onStart }) {
           onClick={onStart}
           style={{
             background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584)",
-            fontSize: "1.55em",
+            fontSize: "1.72em",
             fontWeight: 900,
             color: "#fff",
             border: "none",
-            borderRadius: "2em",
-            boxShadow: "0 0 28px #ff4ecd63,0 8px 36px #23ce6a63",
-            textShadow: "0 2px 13px #fff",
-            padding: "0.7em 2.2em",
-            margin: "2.1em 0 0.7em 0",
+            borderRadius: "2.6em",
+            boxShadow: "none",
+            textShadow: "0 2px 19px #fff",
+            padding: "1em 2.5em",
+            margin: "2.5em 0 1.3em 0",
             outline: "none",
           }}
         >
@@ -408,11 +410,11 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floa
         position: "relative",
         zIndex: 150,
         width: "100%",
-        maxWidth: "760px",
-        margin: "7vh auto 3vh auto",
+        maxWidth: "920px",
+        margin: "8vh auto 5vh auto",
         padding: 0,
         background: "none",
-        filter: "drop-shadow(0 2px 22px #fff5) drop-shadow(0 8px 44px #6c63ff61)",
+        boxShadow: "none",
         pointerEvents: "auto"
       }}>
       <div
@@ -420,29 +422,30 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floa
           display: "flex",
           alignItems: "baseline",
           gap: 12,
-          marginBottom: "0.8em",
-          marginLeft: 2,
+          marginBottom: "0.7em",
+          marginLeft: 3,
           animationDelay: `${delayBase + 80}ms`
         }}>
         <span
           style={{
             background: PALETTE[questionIdx % PALETTE.length],
             color: "#fff",
-            fontWeight: 800,
-            fontSize: "clamp(1.09em,2.2vw,1.34em)",
-            borderRadius: "1.3em",
-            padding: "5px 28px 5px 19px",
+            fontWeight: 900,
+            fontSize: "clamp(1.19em,2.8vw,1.67em)",
+            borderRadius: "1.75em",
+            padding: "5px 33px 5px 22px",
             marginRight: 0,
-            letterSpacing: "0.09em",
-            boxShadow: "0 2px 16px #ff4ecdba, 0 0 24px #23ce6b88"
+            letterSpacing: "0.13em",
+            boxShadow: "none",
+            textShadow: "0 3px 16px #ff4ecd, 0 0 24px #23ce6baa"
           }}>
           Q{questionIdx + 1}
         </span>
         <span style={{
           color: "#fff",
-          fontWeight: 700,
-          fontSize: "clamp(1em,2.2vw,1.28em)",
-          textShadow: "0 1px 12px #23ce6b,0 0 10px #6C63FF86"
+          fontWeight: 800,
+          fontSize: "clamp(1.11em,2.7vw,1.51em)",
+          textShadow: "0 1.6px 13px #23ce6b,0 0 15px #fff"
         }}>
           of {total}
         </span>
@@ -451,13 +454,13 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floa
         className="rampage-gradient"
         style={{
           fontWeight: 900,
-          fontSize: "clamp(1.44em,3.1vw,2.5em)",
+          fontSize: "clamp(1.7em,4vw,2.52em)",
           color: "#fff",
           lineHeight: 1.17,
           marginBottom: "1.5em",
           letterSpacing: "0.005em",
-          textShadow: "0 4px 22px #fffccf, 0 0px 18px #ff4ecd,0 0px 24px #23ce6bee",
-          filter: "brightness(1.12) saturate(1.24)",
+          textShadow: "0 9px 32px #fffccf, 0 0px 20px #ff4ecd,0 0px 20px #23ce6be9",
+          filter: "brightness(1.17) saturate(1.22)",
           animationDelay: `${delayBase + 185}ms`
         }}>
         {question.question}
@@ -466,7 +469,7 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floa
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "1.6em",
+          gap: "2em",
           width: "100%",
           alignItems: "center"
         }}
@@ -474,30 +477,27 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floa
         {question.answers.map((a, idx) => (
           <button
             key={a.text}
+            className="iemo-answer-card iemo-float-answer-btn"
             style={{
-              animationDelay: `${delayBase + 275 + idx * 65}ms`,
-              width: "100%",
-              maxWidth: "520px",
+              animationDelay: `${delayBase + 300 + idx * 70}ms`,
+              width: "clamp(120px,65vw,540px)",
               minWidth: "110px",
-              minHeight: "2.1em",
+              minHeight: "2.2em",
               margin: "0.17em 0",
               border: "none",
-              borderRadius: "2.5em",
-              fontWeight: selected === idx ? 900 : 700,
-              fontSize: "clamp(1.24em, 2.3vw, 1.54em)",
-              color: "#fff",
-              background: selected === idx
-                ? `radial-gradient(circle at 79% 37%,#fffbe533 48%,#fffcec17 61%),linear-gradient(100deg,${PALETTE[(questionIdx + idx*2+1) % PALETTE.length]},#fff6f9 110%)`
-                : `radial-gradient(circle at 10% 30%,#fff0 46%,#fff6ea11 91%),linear-gradient(120deg,${PALETTE[(questionIdx + idx) % PALETTE.length]},#f1f9ff 120%)`,
-              outline: selected === idx ? `3.5px solid ${PALETTE[(questionIdx + idx) % PALETTE.length]}` : "none",
-              boxShadow: selected === idx
-                ? "0 0 52px #ff4ecd96,0 0px 56px #23ce6b7a,0 3px 64px #ffbf0055"
-                : "0 0 34px #6c63ff3f, 0 2px 18px #23ce6b25",
-              filter: selected === idx
-                ? "drop-shadow(0 0 12px #fffccfba) brightness(1.17) saturate(1.19)"
-                : "drop-shadow(0 2px 16px #6C63FF12) brightness(1.03) saturate(1.01)",
+              borderRadius: "3.1em",
+              fontWeight: selected === idx ? 900 : 800,
+              fontSize: "clamp(1.33em, 3vw, 1.67em)",
+              color: selected === idx ? "#fed502" : "#fff",
+              background: "none",
+              outline: "none",
+              boxShadow: "none",
+              textShadow:
+                selected === idx
+                  ? "0 6px 32px #23ce6bbd, 0 4px 14px #ff4ecdbe, 0 3px 22px #fff"
+                  : "0 2px 14px #23ce6b, 0 2px 10px #ff4ecd, 0 0px 24px #6c63ff",
               cursor: typeof selected !== "undefined" ? "default" : "pointer",
-              transition: "all .22s cubic-bezier(.44,.71,.44,1)",
+              transition: "all .19s cubic-bezier(.44,.71,.44,1)",
               pointerEvents: typeof selected !== "undefined" ? "none" : "auto"
             }}
             tabIndex="0"
@@ -842,18 +842,16 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
       playMessage = lowJokes[Math.floor(Math.random() * lowJokes.length)];
     }
   }
-
-  // Animation
   const [animationIdx] = useState(() => Math.floor(Math.random() * 6));
-  const Animation = () => <></>; // omit, placeholder, as original animations are unchanged
+  const Animation = () => <></>;
 
   return (
     <div
       style={{
         position: "relative",
         zIndex: 160,
-        maxWidth: "95vw",
-        margin: "7vh auto 8vh auto",
+        maxWidth: "99vw",
+        margin: "8vh auto 8vh auto",
         background: "none",
         border: "none",
         borderRadius: 0,
@@ -862,39 +860,41 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
         textAlign: "center"
       }}>
       <div style={{
-        display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "1.6em"
+        display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "2.2em"
       }}>
-        <span style={{filter: "drop-shadow(0 0 24px #fffbe988) drop-shadow(0 0 38px #ff4ecd9e)"}}>
+        <span style={{ filter: "none" }}>
           <Animation />
         </span>
         <ResultPieChart correct={correctCount} total={total} />
       </div>
       <div style={{
         fontWeight: 900,
-        fontSize: "clamp(1.22em, 2.7vw, 1.96em)",
+        fontSize: "clamp(1.36em, 3.4vw, 2.24em)",
         color: "#fff",
-        margin: "0.7em auto 0.7em auto",
-        textShadow: "0 2.5px 15px #23ce6b,0 0px 12px #6C63FFbe,0 0px 26px #fffcd7b6"
+        margin: "0.8em auto 0.7em auto",
+        textShadow: "0 2.7px 17px #23ce6b,0 1.5px 14px #ff4ecdbe,0 0px 28px #fffcd7b8"
       }}>
-        You got <span style={{color:"#23CE6B"}}>{correctCount}</span> out of <span style={{color:"#FF6584"}}>{total}</span> correct!
+        You got <span style={{ color: "#23CE6B" }}>{correctCount}</span> out of <span style={{ color: "#FF6584" }}>{total}</span> correct!
         <br />
-        <span style={{ color: "#fed502", fontWeight: 900 }}>{total === 0 ? 0 : Math.round((correctCount / total) * 100)}% correct</span>
+        <span style={{ color: "#fed502", fontWeight: 900 }}>
+          {total === 0 ? 0 : Math.round((correctCount / total) * 100)}% correct
+        </span>
       </div>
       {playMessage && (
         <div style={{
           fontWeight: 900,
-          fontSize: "clamp(1.1em, 2vw, 1.3em)",
+          fontSize: "clamp(1.14em, 2.5vw, 1.56em)",
           color: "#fff",
-          margin: "1.5em auto 1.9em auto",
-          textShadow: "0 1.5px 10px #ff4ecdbe, 0 0 14px #23ce6bc7"
+          margin: "2.1em auto 2.3em auto",
+          textShadow: "0 2.2px 14px #ff4ecdbe, 0 0 15px #23ce6bad"
         }}>
           {playMessage}
         </div>
       )}
       <div style={{
-        margin: "2em 0 0.8em 0",
+        margin: "2em 0 0.9em 0",
         display: "flex",
-        gap: "2.2vw",
+        gap: "2.7vw",
         justifyContent: "center",
         flexWrap: "wrap",
         width: "100%"
@@ -903,12 +903,12 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
           className="iemo-btn iemo-btn-share iemo-floating-btn-bounce"
           onClick={onShare}
           style={{
-            background: "linear-gradient(90deg,#ff4ecd,#36c6e7,#ffbf00 90%)",
+            background: "linear-gradient(90deg,#ff4ecd,#36c6e7,#ffbf00 89%)",
             color: "#fff", fontWeight: 900,
-            borderRadius: "2.2em",
-            fontSize: "clamp(1.1em,2.1vw,1.31em)",
-            boxShadow: "0 0 18px #ff4ecd55, 0 2px 28px #23ce6b42",
-            textShadow: "0 2px 13px #fffcf7,0 0px 7px #FF6584ae"
+            borderRadius: "2.6em",
+            fontSize: "clamp(1.17em,2.7vw,1.51em)",
+            boxShadow: "none",
+            textShadow: "0 2px 19px #fff,0 0px 11px #FF6584ee"
           }}
         >
           {copied ? "Copied!" : "📋 Copy My Score"}
@@ -918,30 +918,31 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
           onClick={onRestart}
           style={{
             background: "linear-gradient(90deg,#6C63FF,#23ce6b,#ffbf00)",
-            color: "#fff", fontWeight: 800,
-            borderRadius: "2.2em",
-            fontSize: "clamp(1.1em,2.1vw,1.31em)",
-            boxShadow: "0 0 12px #36c6e766, 0 2px 18px #ffbf0049"
+            color: "#fff", fontWeight: 900,
+            borderRadius: "2.6em",
+            fontSize: "clamp(1.17em,2.7vw,1.51em)",
+            boxShadow: "none"
           }}
         >
           🔄 Try Again
         </button>
       </div>
       <pre style={{
-        border: "4px solid #ff4ecd",
-        background: "rgba(255,255,255,0.03)",
-        fontSize: "clamp(1em,2vw,1.18em)",
-        color: "#ffbf00",
+        background: "none",
+        border: "none",
+        fontSize: "clamp(1.02em,2.5vw,1.23em)",
+        color: "#fed502",
         fontWeight: 900,
-        borderRadius: "2em",
-        padding: "0.79em 1.45em",
+        borderRadius: "2.8em",
+        padding: "1em 1.67em",
         margin: "2.7em auto 1.3em auto",
-        maxWidth: "670px",
-        boxShadow: "0 1px 32px #23ce6a18",
-        textShadow: "0 1px 7px #fff",
-        filter: "brightness(1.09) drop-shadow(0 0 13px #ff4ecd55)",
+        maxWidth: "700px",
+        boxShadow: "none",
+        textShadow: "0 2px 10px #ff4ecd66, 0 0 10px #fff",
+        filter: "brightness(1.09)",
         textAlign: "center",
-        pointerEvents: "auto"
+        pointerEvents: "auto",
+        letterSpacing: "0.01em"
       }}>{shareText}</pre>
     </div>
   );
