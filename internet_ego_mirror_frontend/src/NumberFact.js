@@ -31,7 +31,34 @@ function NumberFact({ number, forScore = true }) {
         setLoading(false);
       })
       .catch(() => {
-        setErr("Couldn't load number fact. Try again later!");
+        // If fetching fails, provide a playful, static fallback fact
+        // (no error message shown!)
+        let staticFallbacks = [
+          // General playful sports/internet line
+          "In cricket, a score of zero is called a duck. Better luck on your next number!",
+          "In basketball, the number 23 is iconic thanks to Michael Jordan.",
+          "A perfect 10 is the best score in gymnastics—how close did you get?",
+          "The number 8 is lucky in some cultures and worn by many top footballers!",
+          "Four goals by a player in a football match? That’s called a super hat-trick.",
+          "Cricket fans know: 99 is the score everyone fears missing by one!",
+          "In soccer, 0 is a clean sheet for goalkeepers—defense wins games!",
+          "Did you know? The marathon distance is precisely 42.195 kilometers.",
+          "Five rings on the Olympic flag: one for each inhabited continent.",
+          "It's said that Wayne Gretzky scored his 50th goal in just 39 games—hockey history!",
+          "The number 7 shirt is revered by many in football (soccer) legends.",
+          "An over in cricket has 6 balls. Every ball can change the match!",
+          "A hat-trick means scoring 3 goals in a match—legendary!",
+          "Numeral trivia: Zero wasn’t used in Europe until the Middle Ages!",
+          // Playful catch-all
+          "Fun fact: Some numbers are so cool, they have their own sports legends!"
+        ];
+        // Pick a quasi-random fallback (based on the number, so it's stable per input)
+        let pick = number;
+        // Normalize to a valid index
+        if (typeof pick !== "number" || isNaN(pick) || pick < 0) pick = 0;
+        let fallbackText = staticFallbacks[pick % staticFallbacks.length];
+        setFact(fallbackText);
+        setErr(""); // Hide error msg
         setLoading(false);
       });
   }, [number]);
@@ -60,8 +87,6 @@ function NumberFact({ number, forScore = true }) {
         <span style={{ color: "#6c63ff", fontWeight: 900 }}>
           Fetching a fun number fact...
         </span>
-      ) : err ? (
-        <span style={{ color: "#ff4ecd" }}>{err}</span>
       ) : (
         <>
           <span style={{ color: "#6C63FF", fontWeight: 800, marginRight: ".25em" }}>
