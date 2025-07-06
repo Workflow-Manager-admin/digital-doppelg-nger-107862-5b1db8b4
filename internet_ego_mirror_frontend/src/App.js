@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import SportsBackground from "./SportsBackground";
 import QuoteBox from "./QuoteBox";
+import NumberFact from "./NumberFact";
 
 // --- OpenWeatherMap integration ---
 /** OpenWeatherMapWeather: Shows current weather for a given location/stadium.
@@ -1776,6 +1777,8 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
           {playMessage}
         </div>
       )}
+      {/* Numbers API Number Fact here */}
+      <NumberFact number={correctCount} forScore={true} />
       <div style={{
         margin: "2em 0 0.9em 0",
         display: "flex",
