@@ -353,8 +353,8 @@ function App() {
  */
 function WelcomeScreen({ onStart }) {
   // PUBLIC_INTERFACE
-  // Modern vivid welcome, realistic, expressive SVG – cricket bat (wood grain), red stitched ball, classic football (pent/panels), tennis racquet with string mesh
-  // Animated, rainbow neon-glow text, and energetic, glowing animated Start button
+  // All four sports symbolic items (cricket bat, ball, football, tennis racquet) tightly packed inside a vivid colored circular badge SVG.
+  // Vivid, bold, highly readable "the clueless cup" + tagline, and large animated "Start" button.
 
   return (
     <div
@@ -375,148 +375,165 @@ function WelcomeScreen({ onStart }) {
         alignItems: "center"
       }}
     >
-      {/* Custom sports SVG group: cricket bat+ball, football, tennis racquet+strings, in lively layout */}
+      {/* Badge-style circle with ALL 4 icons packed compactly, using vivid colors and no large gap */}
       <div
         style={{
           display: "block",
           margin: "0 auto 2em auto",
-          width: "clamp(325px,52vw,605px)",
-          height: "clamp(220px,36vw,355px)",
+          width: "clamp(285px,42vw,390px)",
+          height: "clamp(285px,42vw,390px)",
           position: "relative",
-          filter: "drop-shadow(0 12px 59px #23ce6baa) drop-shadow(0 2px 40px #fed50280)"
+          filter: "drop-shadow(0 11px 52px #23ce6bbc) drop-shadow(0 1px 29px #fed50270)"
         }}
         aria-hidden="true"
       >
-        <svg width="100%" height="100%" viewBox="0 0 650 340" style={{ maxWidth: "99vw" }}>
-          {/* Cricket Bat – wood grain, angled left-back */}
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 320 320"
+          style={{ maxWidth: "99vw", display: "block" }}
+          aria-label="Sports badge"
+        >
+          {/* Outer badge ring (bold multi-color gradient) */}
+          <defs>
+            <radialGradient id="badgeGrad" cx="55%" cy="41%" r="63%" fx="60%" fy="42%">
+              <stop offset="0%" stopColor="#fffbe5"/>
+              <stop offset="64%" stopColor="#fed502"/>
+              <stop offset="87%" stopColor="#ff4ecd"/>
+              <stop offset="98%" stopColor="#36c6e7"/>
+              <stop offset="100%" stopColor="#23ce6b"/>
+            </radialGradient>
+            <radialGradient id="badgeBg" cx="50%" cy="50%" r="80%">
+              <stop offset="70%" stopColor="#fffef4" stopOpacity="0.98"/>
+              <stop offset="99%" stopColor="#ffecfe" stopOpacity="0.69"/>
+              <stop offset="100%" stopColor="#FFFCE7" stopOpacity="0.2" />
+            </radialGradient>
+          </defs>
+          {/* Outer badge circle with colored rim */}
+          <circle cx="160" cy="160" r="150" fill="url(#badgeBg)" stroke="url(#badgeGrad)" strokeWidth="22"/>
+          {/* Soft white-glow highlight */}
+          <ellipse cx="110" cy="85" rx="60" ry="24" fill="#fffbb9" fillOpacity="0.23"/>
+          {/* SPORTS ICONS LAYER */}
+          {/* --- Cricket Bat (angled left back) --- */}
           <g>
-            {/* Bat blade - wood texture effect */}
-            <rect x="50" y="105" width="37" height="150" rx="13" fill="url(#batwood)" stroke="#ba8530" strokeWidth="5" transform="rotate(-22 86 180)" />
+            <rect x="58" y="110" width="22" height="93" rx="7.7"
+              fill="url(#batbody)" stroke="#cd933a" strokeWidth="3.2"
+              transform="rotate(-34 69 156)" />
             <defs>
-              <linearGradient id="batwood" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0.1" stopColor="#fce7c1"/>
-                <stop offset="0.36" stopColor="#f8d18d"/>
-                <stop offset="0.77" stopColor="#f0b96c"/>
-                <stop offset="1" stopColor="#bb8431"/>
+              <linearGradient id="batbody" x1="59" y1="111" x2="80" y2="202" gradientUnits="userSpaceOnUse">
+                <stop offset="0.1" stopColor="#ffe0ab"/>
+                <stop offset="0.5" stopColor="#e8b566"/>
+                <stop offset="1" stopColor="#c28132"/>
               </linearGradient>
             </defs>
-            {/* Bat details: lines for grain */}
-            <path d="M71 117 Q58 168 83 243" stroke="#e7bd70" strokeWidth="5.7" fill="none" opacity="0.3" transform="rotate(-16 86 180)" />
-            {/* Bat Grip */}
-            <rect x="77" y="83" width="12" height="38" rx="5" fill="#b80058" stroke="#fff" strokeWidth="2" transform="rotate(-20 83 92)" />
-            <rect x="81" y="82" width="5" height="29" rx="2.5" fill="url(#gripstripes)" transform="rotate(-21 87 92)" />
+            <rect x="64" y="94" width="11" height="25" rx="4"
+              fill="url(#batgrip)" stroke="#fff" strokeWidth="1.3"
+              transform="rotate(-33 69 106)" />
             <defs>
-              <linearGradient id="gripstripes" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0.1" stopColor="#fcb5e8"/>
-                <stop offset="0.73" stopColor="#ba2177"/>
-                <stop offset="1" stopColor="#fff"/>
+              <linearGradient id="batgrip" x1="65" y1="95" x2="75" y2="111" gradientUnits="userSpaceOnUse">
+                <stop offset="0.08" stopColor="#f59bbf"/>
+                <stop offset="0.78" stopColor="#d11e71"/>
               </linearGradient>
             </defs>
           </g>
-          {/* Cricket Ball (red, stitched, overlapping bat corner) */}
+          {/* --- Football (near center, overlapping bat) --- */}
           <g>
-            <circle cx="84" cy="247" r="24" fill="#d41b47" stroke="#930031" strokeWidth="5"/>
-            {/* Ball shine */}
-            <ellipse cx="87" cy="240" rx="6.7" ry="16" fill="#fff" opacity="0.09"/>
-            {/* Stitches, white dashes */}
-            <path d="M64 247 Q81 238 104 247" stroke="#fff" strokeDasharray="4,5" strokeWidth="3.1" fill="none"/>
-            <path d="M69 241 Q84 238 99 242" stroke="#fff" strokeDasharray="2,6" strokeWidth="1.7" fill="none" opacity="0.66"/>
-            <path d="M70 253 Q84 257 97 253" stroke="#fff" strokeDasharray="2,7" strokeWidth="1.7" fill="none" opacity="0.66"/>
+            <circle cx="113" cy="165" r="37" fill="#fff" stroke="#383838" strokeWidth="5.5"/>
+            {/* Black pent panels */}
+            <polygon points="113,147 127,159 122,173 105,173 100,159" fill="#343434"/>
+            <polygon points="113,132 119,141 113,147 107,141" fill="#222"/>
+            <polygon points="137,155 134,167 122,173 127,159" fill="#343434"/>
+            <polygon points="89,155 100,159 105,173 92,167" fill="#343434"/>
+            {/* seam/thin arc */}
+            <path d="M88 183 Q113 187 139 181" stroke="#343434" strokeWidth="2.5" fill="none" opacity="0.3"/>
           </g>
-          {/* Football (soccer, classic pent/hex/circular patches), overlapped center */}
+          {/* --- Cricket Ball (red), overlaps corner of football --- */}
           <g>
-            <circle cx="240" cy="110" r="52" fill="#fff" stroke="#343434" strokeWidth="7"/>
-            {/* Black pentagons (using paths/hex for realism) */}
-            <polygon points="240,91 257,105 252,127 228,127 223,105" fill="#222" />
-            <polygon points="240,70 249,84 240,91 231,84" fill="#343434" />
-            <polygon points="272,99 267,117 252,127 257,105" fill="#222" />
-            <polygon points="208,99 223,105 228,127 213,117" fill="#222" />
-            {/* Two bold arcs for seam effect */}
-            <path d="M199 130 Q235 135 281 130" stroke="#282828" strokeWidth="5" fill="none" opacity="0.37" />
-            <path d="M220 81 Q240 56 260 81" stroke="#343434" strokeWidth="3" fill="none" opacity="0.28" />
+            <circle cx="91" cy="202" r="16" fill="#e32e5c" stroke="#ae0649" strokeWidth="4"/>
+            <ellipse cx="94" cy="197" rx="4" ry="8.7" fill="#fff" opacity="0.09"/>
+            <path d="M77 202 Q91 193 106 203" stroke="#fff" strokeDasharray="3,5" strokeWidth="1.6" fill="none"/>
           </g>
-          {/* Tennis Racquet (angled, mesh detail), tennis ball in front */}
+          {/* --- Tennis Racquet (angled right, behind tennis ball) --- */}
           <g>
-            {/* Racquet head */}
-            <ellipse cx="487" cy="117" rx="54" ry="89" fill="#3ced89" stroke="#17816b" strokeWidth="8" transform="rotate(17 487 117)" />
-            {/* Strings mesh */}
+            {/* Head */}
+            <ellipse cx="200" cy="110" rx="33" ry="56" fill="#23ce6b" stroke="#11816a" strokeWidth="5.7" transform="rotate(18 200 110)" />
+            {/* Strings: main verticals */}
             {
-              Array.from({ length: 12 }).map((_, idx) => (
+              Array.from({ length: 6 }).map((_, idx) => (
                 <line
-                  key={`racq-str-main-${idx}`}
-                  x1={487 - 42 + idx * 7.2}
-                  y1={35}
-                  x2={487 - 33 + idx * 6.15}
-                  y2={199}
-                  stroke="#eaf8fb" strokeWidth="2.2" opacity="0.59"
-                  transform="rotate(17 487 117)"
+                  key={`tenstrv${idx}`}
+                  x1={200-25+idx*10}
+                  y1={64}
+                  x2={200-17+idx*8}
+                  y2={155}
+                  stroke="#eaf8fb" strokeWidth="1.15" opacity="0.59"
+                  transform="rotate(18 200 110)"
                 />
               ))
             }
+            {/* Strings: main horizontals */}
             {
-              Array.from({ length: 10 }).map((_, idx) => (
+              Array.from({ length: 5 }).map((_, idx) => (
                 <line
-                  key={`racq-str-side-${idx}`}
-                  x1={480}
-                  y1={27 + idx*13}
-                  x2={552}
-                  y2={62 + idx*8}
-                  stroke="#eaf8fb" strokeWidth="2.2" opacity="0.56"
-                  transform="rotate(17 487 117)"
+                  key={`tenstrh${idx}`}
+                  x1={170}
+                  y1={81+idx*18}
+                  x2={230}
+                  y2={84+idx*15}
+                  stroke="#eaf8fb" strokeWidth="1.17" opacity="0.55"
+                  transform="rotate(18 200 110)"
                 />
               ))
             }
-            {/* Racquet throat/handle */}
-            <rect x="470" y="198" width="32" height="60" rx="13" fill="#fed502" stroke="#bba101" strokeWidth="4" transform="rotate(18 480 218.9)" />
+            {/* Handle */}
+            <rect x="188" y="155" width="15" height="38" rx="5" fill="#fed502" stroke="#bba101" strokeWidth="2.4" transform="rotate(15 200 172)" />
           </g>
-          {/* Tennis Ball (across racquet throat, overlapped for action) */}
+          {/* --- Tennis Ball (overlapping handle, prominent) --- */}
           <g>
-            <circle cx="537" cy="192" r="27" fill="#fde944" stroke="#d2bc22" strokeWidth="5"/>
-            {/* Ball curved stripe */}
-            <path d="M527 183 Q545 174 554 203" stroke="#fff" strokeWidth="3.2" fill="none" opacity="0.6"/>
+            <circle cx="235" cy="167" r="18" fill="#fdf743" stroke="#b7ae22" strokeWidth="3"/>
+            <path d="M225 156 Q242 151 248 173" stroke="#fff" strokeWidth="2" fill="none" opacity="0.42"/>
           </g>
-          {/* Layered, playful - balls and racquet cross, football prominent. */}
-          {/* Shadow beneath for clarity */}
-          <ellipse cx="330" cy="315" rx="195" ry="18" fill="#2323230d"/>
+          {/* Drop shadow under badge */}
+          <ellipse cx="160" cy="296" rx="92" ry="13" fill="#23232316"/>
         </svg>
       </div>
-      {/* Neon, animated site name */}
+      {/* Rainbow-glow neon site name, extra-bright and big */}
       <div
         style={{
-          margin: "0 0 1.25em 0",
+          margin: "0 0 0.9em 0",
           fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
-          fontWeight: 900,
-          fontSize: "clamp(2.9em, 8vw, 5.2em)",
-          letterSpacing: "-0.01em",
+          fontWeight: 910,
+          fontSize: "clamp(2.85em, 8vw, 5.14em)",
+          letterSpacing: "-0.03em",
           background: "linear-gradient(95deg,#fed502 0,#ff4ecd 38%,#36c6e7 70%,#23ce6b 90%,#ffbf00 99%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           color: "transparent",
           lineHeight: 1.07,
           textShadow:
-            "0 7.5px 49px #fff, 0 2.6px 29px #fed502cc, 0 0px 24px #23ce6bb0, 0 1.4px 12px #ff4ecd",
-          animation: "pop-welcome-title 1.14s cubic-bezier(.62,-0.23,.54,1.38) both, neon-glow-title 2.2s ease-in-out infinite alternate"
+            "0 8.5px 54px #fff, 0 2.8px 33px #fed502f2, 0 0px 26px #23ce6bcc, 0 1.6px 15px #ff4ecdd9",
+          filter: "brightness(1.27) drop-shadow(0 5px 18px #fed502b7)",
+          animation: "pop-welcome-title 1.1s cubic-bezier(.62,-0.23,.54,1.38) both, neon-glow-title 2.3s ease-in-out infinite alternate"
         }}
       >
         the clueless cup
       </div>
-      {/* Glowing, energetic animated tagline */}
+      {/* Super-bright, bold, readable tagline */}
       <div
         style={{
           fontWeight: 900,
           fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
-          fontSize: "clamp(1.28em,3vw,2em)",
-          background:
-            "linear-gradient(90deg,#fed502 35%,#36c6e7 52%,#ff4ecd 99%)",
+          fontSize: "clamp(1.30em,2.5vw,2em)",
+          background: "linear-gradient(90deg,#fed502 30%,#36c6e7 65%,#ff4ecd 100%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           color: "transparent",
-          margin: "0 0 2.3em 0",
+          margin: "0 0 2.25em 0",
           textShadow:
-            "0 8px 29px #23ce6b90, 0 2.5px 16px #fff, 0 2.5px 24px #ff4ecd90, 0 1px 17px #fed502a8",
-          letterSpacing: "0.015em",
-          filter: "brightness(1.23) drop-shadow(0 4px 18px #fed502cc)",
-          animation: "float-tagline 1.38s cubic-bezier(.63,-0.07,.57,1.18) both, neon-glow-tagline 3.7s ease-in-out infinite alternate"
+            "0 7px 27px #36c6e99c, 0 3.5px 17px #ff4ecd, 0 0px 22px #fed502d8, 0 2px 14px #fff",
+          letterSpacing: "0.011em",
+          filter: "brightness(1.37) drop-shadow(0 5px 15px #fed502cb)",
+          animation: "float-tagline 1.23s cubic-bezier(.63,-0.07,.57,1.18) both, neon-glow-tagline 2.9s ease-in-out infinite alternate"
         }}
       >
         For those who bench press trivia, not weights.
@@ -526,93 +543,63 @@ function WelcomeScreen({ onStart }) {
           className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce"
           onClick={onStart}
           style={{
-            background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584 97%)",
+            background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584 96%)",
             fontSize: "clamp(2.5em,5.2vw,3.8em)",
             fontWeight: 900,
             color: "#fff",
             border: "none",
             borderRadius: "3.7em",
-            boxShadow: "0 8px 51px #23ce6b99, 0 2px 28px #fed50292",
-            textShadow: "0 0px 26px #fff, 0 2.1px 24px #ff4ecdcc",
-            padding: "1.31em 2.8em",
-            margin: "1.3em 0 2.4em 0",
+            boxShadow: "0 8px 49px #23ce6bb6, 0 2px 28px #fed50284",
+            textShadow: "0 0px 26px #fff, 0 2.3px 25px #ff4ecdcb",
+            padding: "1.33em 2.88em",
+            margin: "1.19em 0 2.4em 0",
             outline: "none",
             cursor: "pointer",
-            animation: "sports-bounce-glow 1.1s cubic-bezier(.66,.09,.33,1.35) infinite alternate, neon-glow-btn 2.6s ease-in-out infinite alternate"
+            animation: "sports-bounce-glow 1.1s cubic-bezier(.66,.09,.33,1.35) infinite alternate, neon-glow-btn 2.6s ease-in-out infinite alternate",
+            filter: "brightness(1.10)"
           }}
         >
-          <span role="img" aria-label="start whistle" style={{ fontSize: "1.17em", verticalAlign: "middle", marginRight: "0.49em"}}>🏁</span>
+          <span role="img" aria-label="start whistle" style={{ fontSize: "1.32em", verticalAlign: "middle", marginRight: "0.53em"}}>🏁</span>
           Start
-          <span role="img" aria-label="tada" style={{ fontSize: "1.17em", verticalAlign: "middle", marginLeft: "0.45em"}}>🎉</span>
+          <span role="img" aria-label="tada" style={{ fontSize: "1.32em", verticalAlign: "middle", marginLeft: "0.53em"}}>🎉</span>
         </button>
       </div>
-      {/* Custom keyframes for welcome animation */}
+      {/* Keyframes for welcome badge (overrides if needed) */}
       <style>
         {`
           @keyframes pop-welcome-title {
-            0% {
-              opacity: 0;
-              transform: scale(0.7) translateY(61px);
-              filter: brightness(1.78) blur(5.5px);
-            }
-            80% {
-              opacity: 1;
-              transform: scale(1.18) translateY(-9px);
-              filter: brightness(1.19) blur(0.6px);
-            }
-            87% {
-              opacity: 1;
-              transform: scale(0.92) translateY(4px);
-              filter: brightness(1.13);
-            }
-            100% {
-              opacity: 1;
-              transform: scale(1.04) translateY(0);
-              filter: brightness(1.09) blur(0px);
-            }
+            0%   {opacity:0;transform:scale(0.7) translateY(60px);filter:brightness(2.0) blur(6px);}
+            83%  {opacity:1;transform:scale(1.19) translateY(-10px);filter:brightness(1.21) blur(0.5px);}
+            89%  {opacity:1;transform:scale(0.93) translateY(3px);filter:brightness(1.13);}
+            100% {opacity:1;transform:scale(1.03) translateY(0);filter:brightness(1.14) blur(0px);}
           }
           @keyframes neon-glow-title {
-            0% { filter: drop-shadow(0 0 18px #fed50280) drop-shadow(0 0 12px #36c6e7c7); }
-            60% { filter: drop-shadow(0 0 22px #23ce6bcc) drop-shadow(0 0 23px #ff4ecdba); }
-            100% { filter: drop-shadow(0 0 33px #ff4ecd) drop-shadow(0 0 19px #fed502d1);}
+            0% { filter: drop-shadow(0 0 17px #fed50285) drop-shadow(0 0 14px #36c6e7be);}
+            56% { filter: drop-shadow(0 0 33px #ff4ecdff) drop-shadow(0 0 22px #36c6e7b7);}
+            100% { filter: drop-shadow(0 0 31px #23ce6bcc) drop-shadow(0 0 24px #fed502c8);}
           }
           @keyframes float-tagline {
-            0% {
-              opacity: 0;
-              transform: translateY(61px) scale(0.89) skewX(-7deg);
-              filter: blur(3.8px) brightness(2.2);
-            }
-            62% {
-              opacity: 1;
-              transform: translateY(-7px) scale(1.11) skewX(4deg);
-              filter: blur(0.5px) brightness(1.16);
-            }
-            88% {
-              transform: translateY(4px) scale(0.97);
-              filter: blur(0.5px) brightness(1.1);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0) scale(1.03);
-              filter: blur(0) brightness(1.13);
-            }
+            0%   {opacity:0;transform:translateY(49px) scale(0.89) skewX(-8deg);filter:blur(3.3px) brightness(2.18);}
+            65%  {opacity:1;transform:translateY(-9px) scale(1.15) skewX(4deg);filter:blur(0.7px) brightness(1.25);}
+            86%  {transform:translateY(3px) scale(0.98);filter:blur(0.3px) brightness(1.13);}
+            100% {opacity:1;transform:translateY(0) scale(1.05);filter:blur(0) brightness(1.17);}
           }
           @keyframes neon-glow-tagline {
-            0%   { filter: drop-shadow(0 0 14px #fed50267) brightness(1.09);}
-            56%  { filter: drop-shadow(0 0 28px #23ce6ba9) brightness(1.16);}
-            100% { filter: drop-shadow(0 0 13px #fed502ab) brightness(1.08);}
+            0%   { filter: drop-shadow(0 0 16px #fed50267) brightness(1.09);}
+            52%  { filter: drop-shadow(0 0 21px #36c6e7b4) brightness(1.18);}
+            100% { filter: drop-shadow(0 0 19px #fed502ca) brightness(1.07);}
           }
           @keyframes sports-bounce-glow {
-            0%   { transform: translateY(0) scale(1); filter: drop-shadow(0 0 21px #36c6e765) brightness(1.12);}
-            18%  { transform: translateY(-16px) scale(1.13); filter: drop-shadow(0 0 43px #fed502ac) brightness(1.18);}
-            45%  { transform: translateY(9px) scale(1.05);  filter: drop-shadow(0 0 32px #23ce6bcc) brightness(1.14);}
-            63%  { transform: translateY(-8px) scale(1.09); filter: drop-shadow(0 0 30px #ff4ecd88) brightness(1.23);}
-            81%  { transform: translateY(6px) scale(1.07);  filter: drop-shadow(0 0 23px #fed502c0) brightness(1.11);}
-            100% { transform: translateY(0) scale(1.01);    filter: drop-shadow(0 0 27px #23ce6baa) brightness(1.15);}
+            0%   { transform: translateY(0) scale(1); filter: drop-shadow(0 0 25px #36c6e766) brightness(1.20);}
+            18%  { transform: translateY(-16px) scale(1.13); filter: drop-shadow(0 0 37px #fed502bb) brightness(1.21);}
+            45%  { transform: translateY(9px) scale(1.06);  filter: drop-shadow(0 0 32px #23ce6bcc) brightness(1.14);}
+            63%  { transform: translateY(-7px) scale(1.11); filter: drop-shadow(0 0 39px #ff4ecd98) brightness(1.24);}
+            81%  { transform: translateY(7px) scale(1.07);  filter: drop-shadow(0 0 29px #fed502c0) brightness(1.11);}
+            100% { transform: translateY(0) scale(1.02);    filter: drop-shadow(0 0 35px #23ce6baa) brightness(1.23);}
           }
           @keyframes neon-glow-btn {
-            0%, 100% { filter: drop-shadow(0 0 19px #fed50296) drop-shadow(0 0 12px #ff4ecd96); }
-            52% { filter: drop-shadow(0 0 33px #23ce6bcc) drop-shadow(0 0 22px #ffd502c9);}
+            0%, 100% { filter: drop-shadow(0 0 23px #fed502a6) drop-shadow(0 0 15px #ff4ecdbe);}
+            52% { filter: drop-shadow(0 0 39px #23ce6bcc) drop-shadow(0 0 26px #ffd502d4);}
           }
         `}
       </style>
