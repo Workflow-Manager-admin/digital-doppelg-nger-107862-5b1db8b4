@@ -349,12 +349,12 @@ function App() {
 }
 
 /**
- * Refactored WelcomeScreen – now only big clear SVG symbol, new site name & custom tagline, all animated, with bold animated Start
+ * Refactored WelcomeScreen for new design: Trophy cup SVG badge with all 4 sports icons inside, extremely visible animated title and tagline, huge animated Start button.
  */
 function WelcomeScreen({ onStart }) {
   // PUBLIC_INTERFACE
-  // All four sports symbolic items (cricket bat, ball, football, tennis racquet) tightly packed inside a vivid colored circular badge SVG.
-  // Vivid, bold, highly readable "the clueless cup" + tagline, and large animated "Start" button.
+  // Trophy cup SVG with cricket bat, red ball, football, and tennis racquet artfully packed inside.
+  // Ultra-bright, animated site title/tagline, big animated Start button.
 
   return (
     <div
@@ -375,165 +375,232 @@ function WelcomeScreen({ onStart }) {
         alignItems: "center"
       }}
     >
-      {/* Badge-style circle with ALL 4 icons packed compactly, using vivid colors and no large gap */}
+      {/* Trophy cup badge with sports icons tucked inside */}
       <div
         style={{
           display: "block",
           margin: "0 auto 2em auto",
-          width: "clamp(285px,42vw,390px)",
-          height: "clamp(285px,42vw,390px)",
+          width: "clamp(220px,32vw,330px)", // moderately sized
+          height: "clamp(220px,32vw,330px)",
           position: "relative",
-          filter: "drop-shadow(0 11px 52px #23ce6bbc) drop-shadow(0 1px 29px #fed50270)"
+          filter: "drop-shadow(0 9px 38px #23ce6bae) drop-shadow(0 1px 21px #fed50288)",
         }}
         aria-hidden="true"
       >
         <svg
           width="100%"
           height="100%"
-          viewBox="0 0 320 320"
+          viewBox="0 0 330 330"
           style={{ maxWidth: "99vw", display: "block" }}
-          aria-label="Sports badge"
+          aria-label="Trophy Cup with Sports Icons"
         >
-          {/* Outer badge ring (bold multi-color gradient) */}
+          {/* Trophy outline with gold gradients, rim, handles */}
           <defs>
-            <radialGradient id="badgeGrad" cx="55%" cy="41%" r="63%" fx="60%" fy="42%">
-              <stop offset="0%" stopColor="#fffbe5"/>
-              <stop offset="64%" stopColor="#fed502"/>
-              <stop offset="87%" stopColor="#ff4ecd"/>
-              <stop offset="98%" stopColor="#36c6e7"/>
-              <stop offset="100%" stopColor="#23ce6b"/>
+            <linearGradient id="trophyGoldA" x1="0%" y1="30%" x2="100%" y2="75%">
+              <stop offset="0%" stopColor="#fff45c"/>
+              <stop offset="43%" stopColor="#fed502"/>
+              <stop offset="100%" stopColor="#ffbf00"/>
+            </linearGradient>
+            <radialGradient id="trophyShine" cx="50%" cy="18%" r="98%">
+              <stop offset="16%" stopColor="#ffe"/>
+              <stop offset="100%" stopColor="#fffde780"/>
             </radialGradient>
-            <radialGradient id="badgeBg" cx="50%" cy="50%" r="80%">
-              <stop offset="70%" stopColor="#fffef4" stopOpacity="0.98"/>
-              <stop offset="99%" stopColor="#ffecfe" stopOpacity="0.69"/>
-              <stop offset="100%" stopColor="#FFFCE7" stopOpacity="0.2" />
+            <radialGradient id="cupBody" cx="55%" cy="44%" r="60%">
+              <stop offset="0%" stopColor="#fffbe0"/>
+              <stop offset="64%" stopColor="#fed502"/>
+              <stop offset="98%" stopColor="#ffdb4e" />
+              <stop offset="100%" stopColor="#ffbf007a"/>
             </radialGradient>
           </defs>
-          {/* Outer badge circle with colored rim */}
-          <circle cx="160" cy="160" r="150" fill="url(#badgeBg)" stroke="url(#badgeGrad)" strokeWidth="22"/>
-          {/* Soft white-glow highlight */}
-          <ellipse cx="110" cy="85" rx="60" ry="24" fill="#fffbb9" fillOpacity="0.23"/>
-          {/* SPORTS ICONS LAYER */}
-          {/* --- Cricket Bat (angled left back) --- */}
+          {/* Handles */}
+          <path
+            d="M56,98 Q6,130 50,180 Q78,215 115,187"
+            fill="none"
+            stroke="url(#trophyGoldA)"
+            strokeWidth="12"
+            strokeLinecap="round"
+            opacity="0.93"
+          />
+          <path
+            d="M274,98 Q324,130 280,180 Q252,215 215,187"
+            fill="none"
+            stroke="url(#trophyGoldA)"
+            strokeWidth="12"
+            strokeLinecap="round"
+            opacity="0.93"
+          />
+          {/* Cup body */}
+          <ellipse
+            cx="165"
+            cy="130"
+            rx="85"
+            ry="70"
+            fill="url(#cupBody)"
+            stroke="url(#trophyGoldA)"
+            strokeWidth="9"
+            opacity="0.99"
+          />
+          {/* Cup rim */}
+          <ellipse
+            cx="165"
+            cy="91"
+            rx="98"
+            ry="27"
+            fill="url(#trophyShine)"
+            stroke="url(#trophyGoldA)"
+            strokeWidth="11"
+            opacity="0.75"
+          />
+          {/* Trophy base */}
+          <rect
+            x="118"
+            y="192"
+            width="94"
+            height="36"
+            rx="15"
+            fill="url(#trophyGoldA)"
+            stroke="#9c8318"
+            strokeWidth="7"
+            opacity="0.87"
+          />
+          {/* Plinth oval */}
+          <ellipse
+            cx="165"
+            cy="237"
+            rx="35"
+            ry="15"
+            fill="#fffbe8"
+            opacity="0.28"
+          />
+          {/* Cup body center shine */}
+          <ellipse
+            cx="155"
+            cy="120"
+            rx="27"
+            ry="12"
+            fill="#fff9be"
+            opacity="0.23"
+          />
+
+          {/* --- SPORTS ICONS INSIDE THE TROPHY -- */}
+          {/* Cricket bat (upper left, angled) */}
           <g>
-            <rect x="58" y="110" width="22" height="93" rx="7.7"
-              fill="url(#batbody)" stroke="#cd933a" strokeWidth="3.2"
-              transform="rotate(-34 69 156)" />
+            <rect
+              x="69"
+              y="90"
+              width="16"
+              height="63"
+              rx="6.8"
+              fill="url(#trophyBatBody)"
+              stroke="#b58f3a"
+              strokeWidth="2"
+              transform="rotate(-27 77 120)"
+            />
             <defs>
-              <linearGradient id="batbody" x1="59" y1="111" x2="80" y2="202" gradientUnits="userSpaceOnUse">
+              <linearGradient id="trophyBatBody" x1="70" y1="109" x2="78" y2="157" gradientUnits="userSpaceOnUse">
                 <stop offset="0.1" stopColor="#ffe0ab"/>
                 <stop offset="0.5" stopColor="#e8b566"/>
                 <stop offset="1" stopColor="#c28132"/>
               </linearGradient>
             </defs>
-            <rect x="64" y="94" width="11" height="25" rx="4"
-              fill="url(#batgrip)" stroke="#fff" strokeWidth="1.3"
-              transform="rotate(-33 69 106)" />
+            {/* Bat grip */}
+            <rect
+              x="73"
+              y="78"
+              width="8"
+              height="17"
+              rx="3"
+              fill="url(#trophyBatGrip)"
+              stroke="#fff"
+              strokeWidth="1"
+              transform="rotate(-25 77 89)"
+            />
             <defs>
-              <linearGradient id="batgrip" x1="65" y1="95" x2="75" y2="111" gradientUnits="userSpaceOnUse">
-                <stop offset="0.08" stopColor="#f59bbf"/>
-                <stop offset="0.78" stopColor="#d11e71"/>
+              <linearGradient id="trophyBatGrip" x1="75" y1="78" x2="79" y2="93" gradientUnits="userSpaceOnUse">
+                <stop offset="0.08" stopColor="#e22e9c"/>
+                <stop offset="0.78" stopColor="#a71a5e"/>
               </linearGradient>
             </defs>
           </g>
-          {/* --- Football (near center, overlapping bat) --- */}
+          {/* Football (overlaps bat, left) */}
           <g>
-            <circle cx="113" cy="165" r="37" fill="#fff" stroke="#383838" strokeWidth="5.5"/>
-            {/* Black pent panels */}
-            <polygon points="113,147 127,159 122,173 105,173 100,159" fill="#343434"/>
-            <polygon points="113,132 119,141 113,147 107,141" fill="#222"/>
-            <polygon points="137,155 134,167 122,173 127,159" fill="#343434"/>
-            <polygon points="89,155 100,159 105,173 92,167" fill="#343434"/>
-            {/* seam/thin arc */}
-            <path d="M88 183 Q113 187 139 181" stroke="#343434" strokeWidth="2.5" fill="none" opacity="0.3"/>
+            <circle cx="97" cy="142" r="25" fill="#fff" stroke="#383838" strokeWidth="3"/>
+            {/* Black patch */}
+            <polygon points="97,130 108,137 105,149 97,153 89,149 86,137" fill="#2c2c2c"/>
+            {/* seams */}
+            <path d="M88 153 Q97 158 106 153" stroke="#222" strokeWidth="1.3" fill="none"/>
           </g>
-          {/* --- Cricket Ball (red), overlaps corner of football --- */}
+          {/* Cricket ball (red, bottom left) */}
           <g>
-            <circle cx="91" cy="202" r="16" fill="#e32e5c" stroke="#ae0649" strokeWidth="4"/>
-            <ellipse cx="94" cy="197" rx="4" ry="8.7" fill="#fff" opacity="0.09"/>
-            <path d="M77 202 Q91 193 106 203" stroke="#fff" strokeDasharray="3,5" strokeWidth="1.6" fill="none"/>
+            <circle cx="82" cy="173" r="12" fill="#e02b39" stroke="#b3142a" strokeWidth="2.1"/>
+            <ellipse cx="83" cy="170" rx="2.3" ry="7.0" fill="#fff" opacity="0.10"/>
+            <path d="M72 172 Q83 162 93 174" stroke="#fff" strokeDasharray="2,4" strokeWidth="1.05" fill="none"/>
           </g>
-          {/* --- Tennis Racquet (angled right, behind tennis ball) --- */}
+          {/* Tennis racquet (upper right, angled) */}
           <g>
             {/* Head */}
-            <ellipse cx="200" cy="110" rx="33" ry="56" fill="#23ce6b" stroke="#11816a" strokeWidth="5.7" transform="rotate(18 200 110)" />
-            {/* Strings: main verticals */}
+            <ellipse cx="223" cy="105" rx="25" ry="39" fill="#23ce6b" stroke="#25b981" strokeWidth="3.1" transform="rotate(18 223 105)" />
+            {/* Strings (vertical) */}
             {
-              Array.from({ length: 6 }).map((_, idx) => (
+              Array.from({ length: 4 }).map((_, idx) => (
                 <line
-                  key={`tenstrv${idx}`}
-                  x1={200-25+idx*10}
-                  y1={64}
-                  x2={200-17+idx*8}
-                  y2={155}
-                  stroke="#eaf8fb" strokeWidth="1.15" opacity="0.59"
-                  transform="rotate(18 200 110)"
+                  key={`tenstrv2-${idx}`}
+                  x1={223-14+idx*9} y1={73} x2={223-5+idx*7} y2={135}
+                  stroke="#ffe"
+                  strokeWidth="0.8"
+                  opacity="0.62"
+                  transform="rotate(18 223 105)"
                 />
               ))
             }
-            {/* Strings: main horizontals */}
-            {
-              Array.from({ length: 5 }).map((_, idx) => (
-                <line
-                  key={`tenstrh${idx}`}
-                  x1={170}
-                  y1={81+idx*18}
-                  x2={230}
-                  y2={84+idx*15}
-                  stroke="#eaf8fb" strokeWidth="1.17" opacity="0.55"
-                  transform="rotate(18 200 110)"
-                />
-              ))
-            }
+            {/* Strings (horizontal) */}
+            <line x1={203} y1={108} x2={243} y2={110} stroke="#ffe" strokeWidth="0.8" opacity="0.55" transform="rotate(18 223 105)" />
+            <line x1={206} y1={95} x2={239} y2={99} stroke="#ffe" strokeWidth="0.8" opacity="0.4" transform="rotate(18 223 105)" />
             {/* Handle */}
-            <rect x="188" y="155" width="15" height="38" rx="5" fill="#fed502" stroke="#bba101" strokeWidth="2.4" transform="rotate(15 200 172)" />
+            <rect x="214" y="135" width="11" height="28" rx="4" fill="#fed502" stroke="#bba101" strokeWidth="1.15" transform="rotate(15 220 146)" />
           </g>
-          {/* --- Tennis Ball (overlapping handle, prominent) --- */}
+          {/* Tennis ball (mid right) */}
           <g>
-            <circle cx="235" cy="167" r="18" fill="#fdf743" stroke="#b7ae22" strokeWidth="3"/>
-            <path d="M225 156 Q242 151 248 173" stroke="#fff" strokeWidth="2" fill="none" opacity="0.42"/>
+            <circle cx="249" cy="151" r="13" fill="#fdf743" stroke="#b7ae22" strokeWidth="2"/>
+            <path d="M240 144 Q257 142 257 156" stroke="#fff" strokeWidth="1.1" fill="none" opacity="0.46"/>
           </g>
-          {/* Drop shadow under badge */}
-          <ellipse cx="160" cy="296" rx="92" ry="13" fill="#23232316"/>
         </svg>
       </div>
-      {/* Rainbow-glow neon site name, extra-bright and big */}
+      {/* Animated, ultra-visible site name */}
       <div
         style={{
-          margin: "0 0 0.9em 0",
+          margin: "0 0 0.6em 0",
           fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
-          fontWeight: 910,
-          fontSize: "clamp(2.85em, 8vw, 5.14em)",
-          letterSpacing: "-0.03em",
+          fontWeight: 980,
+          fontSize: "clamp(2.95em, 8vw, 5.3em)",
+          letterSpacing: "-0.026em",
           background: "linear-gradient(95deg,#fed502 0,#ff4ecd 38%,#36c6e7 70%,#23ce6b 90%,#ffbf00 99%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           color: "transparent",
-          lineHeight: 1.07,
-          textShadow:
-            "0 8.5px 54px #fff, 0 2.8px 33px #fed502f2, 0 0px 26px #23ce6bcc, 0 1.6px 15px #ff4ecdd9",
-          filter: "brightness(1.27) drop-shadow(0 5px 18px #fed502b7)",
-          animation: "pop-welcome-title 1.1s cubic-bezier(.62,-0.23,.54,1.38) both, neon-glow-title 2.3s ease-in-out infinite alternate"
+          lineHeight: 1.04,
+          textShadow: "0 9.5px 46px #fff, 0 2.8px 31px #fed502fa, 0 0px 26px #23ce6bcc, 0 1.6px 15px #ff4ecdca",
+          filter: "brightness(1.32) drop-shadow(0 5px 22px #fed502c4)",
+          animation: "pop-welcome-title 1.1s cubic-bezier(.62,-0.23,.54,1.38) both, neon-glow-title 1.6s ease-in-out infinite alternate"
         }}
       >
-        the clueless cup
+        The Clueless Cup
       </div>
-      {/* Super-bright, bold, readable tagline */}
+      {/* Extra-bold/bright animated tagline */}
       <div
         style={{
           fontWeight: 900,
           fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
-          fontSize: "clamp(1.30em,2.5vw,2em)",
+          fontSize: "clamp(1.39em,2.8vw,2.17em)",
           background: "linear-gradient(90deg,#fed502 30%,#36c6e7 65%,#ff4ecd 100%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           color: "transparent",
-          margin: "0 0 2.25em 0",
-          textShadow:
-            "0 7px 27px #36c6e99c, 0 3.5px 17px #ff4ecd, 0 0px 22px #fed502d8, 0 2px 14px #fff",
-          letterSpacing: "0.011em",
-          filter: "brightness(1.37) drop-shadow(0 5px 15px #fed502cb)",
-          animation: "float-tagline 1.23s cubic-bezier(.63,-0.07,.57,1.18) both, neon-glow-tagline 2.9s ease-in-out infinite alternate"
+          margin: "0 0 2.15em 0",
+          textShadow: "0 7px 24px #36c6e9a0, 0 3.5px 16px #ff4ecd, 0 0px 25px #fed502d3, 0 2px 11px #fff",
+          letterSpacing: "0.016em",
+          filter: "brightness(1.41) drop-shadow(0 5px 19px #fed502a9)",
+          animation: "float-tagline 1.05s cubic-bezier(.63,-0.07,.57,1.18) both, neon-glow-tagline 1.6s ease-in-out infinite alternate"
         }}
       >
         For those who bench press trivia, not weights.
@@ -543,63 +610,63 @@ function WelcomeScreen({ onStart }) {
           className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce"
           onClick={onStart}
           style={{
-            background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584 96%)",
-            fontSize: "clamp(2.5em,5.2vw,3.8em)",
+            background: "linear-gradient(90deg,#ff4ecd,#23ce6b,#FF6584 99%)",
+            fontSize: "clamp(2.45em,5vw,3.8em)",
             fontWeight: 900,
             color: "#fff",
             border: "none",
-            borderRadius: "3.7em",
+            borderRadius: "3.6em",
             boxShadow: "0 8px 49px #23ce6bb6, 0 2px 28px #fed50284",
             textShadow: "0 0px 26px #fff, 0 2.3px 25px #ff4ecdcb",
-            padding: "1.33em 2.88em",
-            margin: "1.19em 0 2.4em 0",
+            padding: "1.22em 2.77em",
+            margin: "1.1em 0 2.1em 0",
             outline: "none",
             cursor: "pointer",
             animation: "sports-bounce-glow 1.1s cubic-bezier(.66,.09,.33,1.35) infinite alternate, neon-glow-btn 2.6s ease-in-out infinite alternate",
-            filter: "brightness(1.10)"
+            filter: "brightness(1.13)"
           }}
         >
-          <span role="img" aria-label="start whistle" style={{ fontSize: "1.32em", verticalAlign: "middle", marginRight: "0.53em"}}>🏁</span>
+          <span role="img" aria-label="start whistle" style={{ fontSize: "1.16em", verticalAlign: "middle", marginRight: "0.48em"}}>🏆</span>
           Start
-          <span role="img" aria-label="tada" style={{ fontSize: "1.32em", verticalAlign: "middle", marginLeft: "0.53em"}}>🎉</span>
+          <span role="img" aria-label="tada" style={{ fontSize: "1.16em", verticalAlign: "middle", marginLeft: "0.48em"}}>🎉</span>
         </button>
       </div>
-      {/* Keyframes for welcome badge (overrides if needed) */}
+      {/* Keyframes for welcome screen (overrides if needed) */}
       <style>
         {`
           @keyframes pop-welcome-title {
             0%   {opacity:0;transform:scale(0.7) translateY(60px);filter:brightness(2.0) blur(6px);}
             83%  {opacity:1;transform:scale(1.19) translateY(-10px);filter:brightness(1.21) blur(0.5px);}
             89%  {opacity:1;transform:scale(0.93) translateY(3px);filter:brightness(1.13);}
-            100% {opacity:1;transform:scale(1.03) translateY(0);filter:brightness(1.14) blur(0px);}
+            100% {opacity:1;transform:scale(1.03) translateY(0);filter:brightness(1.17) blur(0px);}
           }
           @keyframes neon-glow-title {
-            0% { filter: drop-shadow(0 0 17px #fed50285) drop-shadow(0 0 14px #36c6e7be);}
-            56% { filter: drop-shadow(0 0 33px #ff4ecdff) drop-shadow(0 0 22px #36c6e7b7);}
-            100% { filter: drop-shadow(0 0 31px #23ce6bcc) drop-shadow(0 0 24px #fed502c8);}
+            0% { filter: drop-shadow(0 0 23px #fed50292) drop-shadow(0 0 19px #36c6e7ce);}
+            51% { filter: drop-shadow(0 0 49px #ff4ecdff) drop-shadow(0 0 38px #36c6e7b7);}
+            100% { filter: drop-shadow(0 0 39px #23ce6bd3) drop-shadow(0 0 28px #fed502c1);}
           }
           @keyframes float-tagline {
-            0%   {opacity:0;transform:translateY(49px) scale(0.89) skewX(-8deg);filter:blur(3.3px) brightness(2.18);}
-            65%  {opacity:1;transform:translateY(-9px) scale(1.15) skewX(4deg);filter:blur(0.7px) brightness(1.25);}
-            86%  {transform:translateY(3px) scale(0.98);filter:blur(0.3px) brightness(1.13);}
-            100% {opacity:1;transform:translateY(0) scale(1.05);filter:blur(0) brightness(1.17);}
+            0%   {opacity:0;transform:translateY(49px) scale(0.89) skewX(-8deg);filter:blur(3.3px) brightness(2.13);}
+            65%  {opacity:1;transform:translateY(-9px) scale(1.15) skewX(4deg);filter:blur(0.7px) brightness(1.23);}
+            86%  {transform:translateY(3px) scale(0.98);filter:blur(0.3px) brightness(1.10);}
+            100% {opacity:1;transform:translateY(0) scale(1.05);filter:blur(0) brightness(1.16);}
           }
           @keyframes neon-glow-tagline {
-            0%   { filter: drop-shadow(0 0 16px #fed50267) brightness(1.09);}
-            52%  { filter: drop-shadow(0 0 21px #36c6e7b4) brightness(1.18);}
-            100% { filter: drop-shadow(0 0 19px #fed502ca) brightness(1.07);}
+            0%   { filter: drop-shadow(0 0 20px #fed50285) brightness(1.07);}
+            48%  { filter: drop-shadow(0 0 33px #36c6e7b4) brightness(1.21);}
+            100% { filter: drop-shadow(0 0 22px #ff4ecdce) brightness(1.10);}
           }
           @keyframes sports-bounce-glow {
-            0%   { transform: translateY(0) scale(1); filter: drop-shadow(0 0 25px #36c6e766) brightness(1.20);}
-            18%  { transform: translateY(-16px) scale(1.13); filter: drop-shadow(0 0 37px #fed502bb) brightness(1.21);}
-            45%  { transform: translateY(9px) scale(1.06);  filter: drop-shadow(0 0 32px #23ce6bcc) brightness(1.14);}
-            63%  { transform: translateY(-7px) scale(1.11); filter: drop-shadow(0 0 39px #ff4ecd98) brightness(1.24);}
-            81%  { transform: translateY(7px) scale(1.07);  filter: drop-shadow(0 0 29px #fed502c0) brightness(1.11);}
-            100% { transform: translateY(0) scale(1.02);    filter: drop-shadow(0 0 35px #23ce6baa) brightness(1.23);}
+            0%   { transform: translateY(0) scale(1); filter: drop-shadow(0 0 19px #36c6e766) brightness(1.19);}
+            18%  { transform: translateY(-11px) scale(1.10); filter: drop-shadow(0 0 33px #fed502bb) brightness(1.20);}
+            45%  { transform: translateY(7px) scale(1.05);  filter: drop-shadow(0 0 31px #23ce6bcc) brightness(1.13);}
+            63%  { transform: translateY(-7px) scale(1.09); filter: drop-shadow(0 0 35px #ff4ecd98) brightness(1.25);}
+            81%  { transform: translateY(7px) scale(1.06);  filter: drop-shadow(0 0 29px #fed502c0) brightness(1.11);}
+            100% { transform: translateY(0) scale(1.01);    filter: drop-shadow(0 0 29px #23ce6baa) brightness(1.21);}
           }
           @keyframes neon-glow-btn {
-            0%, 100% { filter: drop-shadow(0 0 23px #fed502a6) drop-shadow(0 0 15px #ff4ecdbe);}
-            52% { filter: drop-shadow(0 0 39px #23ce6bcc) drop-shadow(0 0 26px #ffd502d4);}
+            0%,100% { filter: drop-shadow(0 0 20px #fed502a6) drop-shadow(0 0 15px #ff4ecdbe);}
+            55% { filter: drop-shadow(0 0 38px #23ce6bcc) drop-shadow(0 0 26px #ffd502d4);}
           }
         `}
       </style>
