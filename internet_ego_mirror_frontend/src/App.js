@@ -107,21 +107,27 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
 
-  // Fetch new questions on start
+  // Fetch new questions on start (computer/gadget tech themed only)
   async function fetchQuestions() {
     setLoading(true);
     setFetchError("");
     setQuestions([]);
     setAnswers([]);
-    // Random difficulty, random category, always 8 Qs
-    const DIFFICULTY = ["easy", "medium", "hard"][Math.floor(Math.random()*3)];
-    let url = `https://opentdb.com/api.php?amount=8&type=multiple&encode=url3986`;
-    if (Math.random() < 0.7) url += `&difficulty=${DIFFICULTY}`;
+    // Always tech trivia: Category 18 (Science: Computers) from Open Trivia DB
+    const DIFFICULTY = ["easy", "medium", "hard"][Math.floor(Math.random() * 3)];
+    const categories = [18]; // 18 is Science: Computers, see https://opentdb.com/api_config.php
+    // In the future, if Open Trivia DB adds a gadgets or related category, add its id to this array.
+    const category = categories[Math.floor(Math.random() * categories.length)];
+    let url =
+      `https://opentdb.com/api.php?amount=8&type=multiple&category=${category}&encode=url3986`;
+    if (Math.random() < 0.8) url += `&difficulty=${DIFFICULTY}`;
     try {
       const resp = await fetch(url);
       const data = await resp.json();
       if (!data.results || !data.results.length) {
-        setFetchError("Could not load questions from the server. Please try again.");
+        setFetchError(
+          "Could not load technology questions from server. Please try again."
+        );
         setLoading(false);
         return;
       }
