@@ -34,7 +34,7 @@ function QuoteBox({ prominent = false }) {
         })
         .catch(() => {
           if (!isMounted) return;
-          setQuote("Can't fetch quote. Stay positive & playful!");
+          setQuote("");
           setAuthor("");
           setLoading(false);
         });
