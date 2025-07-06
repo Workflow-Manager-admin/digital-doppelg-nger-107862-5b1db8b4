@@ -456,144 +456,278 @@ function computeScore(answers, questions) {
   return { correctCount, total };
 }
 
+/**
+ * ResultPieChart
+ * Custom SVG pie chart displaying correct vs incorrect answer percentages, with animated fill and tooltips on hover for each segment.
+ * This component is designed to be accessible and interactive using custom SVG.
+ */
+// PUBLIC_INTERFACE
 function ResultPieChart({ correct, total }) {
-  // Draw a custom SVG pie chart with two slices, and percentage/tooltip in the center.
   const incorrect = Math.max(0, total - correct);
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
   const [hover, setHover] = React.useState(null);
+  // Animated fill (from 0 to target), for both segments:
+  const [animPercent, setAnimPercent] = React.useState(0);
+  React.useEffect(() => {
+    // Animate up the percentage for pretty donut fill effect
+    let raf;
+    let start;
+    const target = percent;
+    function animate(ts) {
+      if (!start) start = ts;
+      const elapsed = ts - start;
+      let prog = Math.min(1, elapsed / 900); // 900ms duration
+      setAnimPercent(Math.round(target * prog));
+      if (prog < 1) raf = requestAnimationFrame(animate);
+      else setAnimPercent(target);
+    }
+    setAnimPercent(0);
+    raf = requestAnimationFrame(animate);
+    return () => raf && cancelAnimationFrame(raf);
+  }, [percent, correct, total]);
 
-  // Compute arc for the correct slice:
-  // Uses SVG arc formula on a 70px radius circle in 154x154px SVG.
-  const size = 154, radius = 66, center = 77;
-  const toRadians = x => (x / 100) * 360 * (Math.PI / 180);
-  const sliceAngle = total > 0 ? (correct / total) * 360 : 0;
-  // SVG arc sweep flag
-  function describeArc(cx, cy, r, startAngle, endAngle){
-    // From https://stackoverflow.com/a/18473154/2441655
+  // Pie math: describe arc (large donut) for each slice
+  const size = 157;
+  const radius = 64;
+  const center = size / 2;
+  const STROKE = 28;
+  // Helper: convert percent (0-100) to SVG arc path
+  function describeArc(cx, cy, r, pStart, pEnd) {
+    // pStart/pEnd in percent (0-100), where 0 at top/12 o'clock, increasing clockwise
+    const startAngle = (pStart / 100) * 360;
+    const endAngle = (pEnd / 100) * 360;
     const polarToCartesian = (cx, cy, r, angleDeg) => {
-      var angleRad = (angleDeg-90) * Math.PI / 180.0;
+      const rad = ((angleDeg - 90) * Math.PI) / 180.0;
       return {
-        x: cx + (r * Math.cos(angleRad)),
-        y: cy + (r * Math.sin(angleRad))
+        x: cx + r * Math.cos(rad),
+        y: cy + r * Math.sin(rad),
       };
     };
     const start = polarToCartesian(cx, cy, r, endAngle);
     const end = polarToCartesian(cx, cy, r, startAngle);
-
-    const arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
-    const d = [
+    const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+    return [
       "M", start.x, start.y,
-      "A", r, r, 0, arcSweep, 0, end.x, end.y
+      "A", r, r, 0, largeArc, 0, end.x, end.y
     ].join(" ");
-    return d;
   }
-  // For < 100% correctness, always render both slices
-  const arcProps = {
-    correct: {
-      d: describeArc(center, center, radius, 0, sliceAngle),
-      color: "#23CE6B"
-    },
-    incorrect: {
-      d: describeArc(center, center, radius, sliceAngle, 360),
-      color: "#FF6584"
-    }
-  };
-  // Tooltip/label logic
-  const SLICE_LABELS = [
+  // Slice segments; animate fill for correct, remainder as incorrect up to total.
+  // Anim fills up only the correct-angle, then renders remainder.
+  const displayedPercent = Math.max(0, Math.min(100, animPercent));
+  const correctEnd = total === 0 ? 0 : (displayedPercent / 100) * 100;
+  const incorrectStart = correctEnd;
+  const SLICE_CONFIG = [
     {
+      // Correct slice: from 0 to correctEnd percent
+      d: describeArc(center, center, radius, 0, correctEnd),
+      color: "#23CE6B",
       label: `${percent}% Correct`,
-      desc: `${correct} out of ${total} Correct`
+      desc: `${correct} out of ${total} Correct`,
+      idx: 0,
+      visible: correct > 0 && total > 0 && displayedPercent > 0
     },
     {
+      // Incorrect slice: from correctEnd to 100%
+      d: describeArc(center, center, radius, incorrectStart, 100),
+      color: "#FF6584",
       label: `${100 - percent}% Incorrect`,
-      desc: `${incorrect} out of ${total} Incorrect`
-    }
+      desc: `${incorrect} out of ${total} Incorrect`,
+      idx: 1,
+      visible: incorrect > 0 && total > 0 && displayedPercent === percent
+    },
   ];
+
   return (
-    <div style={{ width: size, height: size, marginBottom: "1.4em", position: "relative", userSelect: "none" }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{
-        boxShadow: "0 2px 18px #23ce6a38, 0 4px 38px #ff4ecd19",
-        background: "rgba(246,237,253,0.10)",
-        borderRadius: "50%",
-        display: "block"
-      }}>
+    <div
+      style={{
+        width: size,
+        height: size,
+        marginBottom: "1.4em",
+        position: "relative",
+        userSelect: "none",
+        cursor: "default"
+      }}
+      aria-label={`Quiz Results Pie Chart. ${percent}% correct, ${100 - percent}% incorrect.`}
+      tabIndex={0}
+    >
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        style={{
+          boxShadow: "0 2px 18px #23ce6a38, 0 4px 38px #ff4ecd19",
+          background: "rgba(246,237,253,0.10)",
+          borderRadius: "50%",
+          display: "block",
+        }}
+      >
         {/* Background ring */}
-        <circle cx={center} cy={center} r={radius} stroke="#ece4fb" strokeWidth="28" fill="none"/>
-        {/* Correct arc */}
-        {total > 0 && correct > 0 &&
-          <path
-            d={arcProps.correct.d}
-            stroke={arcProps.correct.color}
-            strokeWidth="28"
-            fill="none"
-            strokeLinecap="round"
-            style={{ filter: hover === 0 ? "drop-shadow(0 0 8px #23CE6B44)" : "" , cursor: "pointer"}}
-            onMouseOver={() => setHover(0)}
-            onFocus={() => setHover(0)}
-            onMouseOut={() => setHover(null)}
-            onBlur={() => setHover(null)}
-            tabIndex={0}
-          />
-        }
-        {/* Incorrect arc */}
-        {total > 0 && incorrect > 0 &&
-          <path
-            d={arcProps.incorrect.d}
-            stroke={arcProps.incorrect.color}
-            strokeWidth="28"
-            fill="none"
-            strokeLinecap="round"
-            style={{ filter: hover === 1 ? "drop-shadow(0 0 8px #FF658444)" : "" , cursor: "pointer"}}
-            onMouseOver={() => setHover(1)}
-            onFocus={() => setHover(1)}
-            onMouseOut={() => setHover(null)}
-            onBlur={() => setHover(null)}
-            tabIndex={0}
-          />
-        }
+        <circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke="#ece4fb"
+          strokeWidth={STROKE}
+          fill="none"
+        />
+        {/* Render each arc segment */}
+        {SLICE_CONFIG.map(
+          (seg) =>
+            seg.visible && (
+              <path
+                key={seg.idx}
+                d={seg.d}
+                stroke={seg.color}
+                strokeWidth={STROKE}
+                fill="none"
+                strokeLinecap="round"
+                tabIndex={0}
+                onMouseOver={() => setHover(seg.idx)}
+                onFocus={() => setHover(seg.idx)}
+                onMouseOut={() => setHover(null)}
+                onBlur={() => setHover(null)}
+                style={{
+                  filter:
+                    hover === seg.idx
+                      ? `drop-shadow(0 0 8px ${seg.color}88)`
+                      : "",
+                  cursor: "pointer",
+                  transition: "filter 0.18s cubic-bezier(.42,.62,.52,.91)",
+                  outline: hover === seg.idx ? `3px dashed ${seg.color}` : "none",
+                }}
+                aria-label={seg.label}
+              />
+            )
+        )}
       </svg>
-      {/* Center donut/label */}
-      <div style={{
-        position: "absolute",
-        left: 0, top: 0, width: "100%", height: "100%",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        pointerEvents: "none",
-        flexDirection: "column",
-        zIndex: 2
-      }}>
-        <div style={{
-          background: "rgba(255,255,255,0.89)",
-          borderRadius: "54%",
-          padding: "0.5em 1.2em",
-          fontWeight: 900,
-          fontSize: "1.58em",
-          color: "#6C63FF",
-          boxShadow: "0 2px 15px #36c6e71d"
-        }}>
+      {/* Center info donut label */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
+          flexDirection: "column",
+          zIndex: 2,
+        }}
+      >
+        <div
+          style={{
+            background: "rgba(255,255,255,0.91)",
+            borderRadius: "53%",
+            padding: "0.46em 1.18em",
+            fontWeight: 900,
+            fontSize: "1.57em",
+            color: "#6C63FF",
+            boxShadow: "0 2px 14px #36c6e71d",
+            transition: "background 0.23s",
+          }}
+        >
           {percent}%
         </div>
-        <div style={{
-          fontSize: "0.82em",
-          fontWeight: 700,
-          color: hover === 0 ? "#178b46" : (hover === 1 ? "#b43b47" : "#341c3d"),
-          marginTop: "4px"
-        }}>
-          {hover === 0 ? SLICE_LABELS[0].desc : hover === 1 ? SLICE_LABELS[1].desc : "Accuracy"}
+        <div
+          style={{
+            fontSize: "0.85em",
+            fontWeight: 700,
+            color:
+              hover === 0
+                ? "#178b46"
+                : hover === 1
+                ? "#d23b47"
+                : "#3e3257",
+            marginTop: "3.5px",
+            minHeight: "1.4em"
+          }}
+          aria-live="polite"
+        >
+          {hover === 0
+            ? SLICE_CONFIG[0].desc
+            : hover === 1
+            ? SLICE_CONFIG[1].desc
+            : "Score Accuracy"}
         </div>
       </div>
+      {/* Tooltips on hover with subtle pointer events */}
+      {hover != null && (
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "46%",
+            transform: "translate(-50%, -125%)",
+            zIndex: 4,
+            background: "#fff8fc",
+            color: hover === 0 ? "#23ce6b" : "#FF6584",
+            borderRadius: "13px",
+            padding: "0.48em 1.1em",
+            fontWeight: 800,
+            fontSize: "1.01em",
+            boxShadow:
+              "0 2px 18px #ff4ecd23, 0 4px 18px #23ce6b18, 0 0.4px 4px #6c63ff18",
+            pointerEvents: "none",
+            border: `2px solid ${hover === 0 ? "#23CE6B" : "#FF6584"}`,
+            opacity: 0.97,
+            transition: "opacity 0.13s cubic-bezier(.45,.64,.52,.97)",
+          }}
+        >
+          {SLICE_CONFIG[hover].label}
+        </div>
+      )}
       {/* Accessible legend */}
-      <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 8 }}>
-        <span style={{ display: "flex", alignItems: "center", fontSize: "0.98em" }}>
-          <span style={{
-            width: 14, height: 14, borderRadius: "50%", background: "#23CE6B", display: "inline-block", marginRight: 5
-          }}/>
-          <span style={{ color: "#23CE6B", fontWeight: 800 }}>Correct</span>
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          justifyContent: "center",
+          marginTop: 12,
+        }}
+      >
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: "0.99em",
+            fontWeight: 700,
+          }}
+        >
+          <span
+            style={{
+              width: 15,
+              height: 15,
+              borderRadius: "50%",
+              background: "#23CE6B",
+              display: "inline-block",
+              marginRight: 6,
+              boxShadow: "0 0px 9px #23ce6baa"
+            }}
+          />
+          <span style={{ color: "#23CE6B" }}>Correct</span>
         </span>
-        <span style={{ display: "flex", alignItems: "center", fontSize: "0.98em" }}>
-          <span style={{
-            width: 14, height: 14, borderRadius: "50%", background: "#FF6584", display: "inline-block", marginRight: 5
-          }}/>
-          <span style={{ color: "#FF6584", fontWeight: 800 }}>Incorrect</span>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: "0.99em",
+            fontWeight: 700,
+          }}
+        >
+          <span
+            style={{
+              width: 15,
+              height: 15,
+              borderRadius: "50%",
+              background: "#FF6584",
+              display: "inline-block",
+              marginRight: 6,
+              boxShadow: "0 0px 9px #ff658488"
+            }}
+          />
+          <span style={{ color: "#FF6584" }}>Incorrect</span>
         </span>
       </div>
     </div>
