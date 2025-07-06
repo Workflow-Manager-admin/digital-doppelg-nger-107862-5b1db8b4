@@ -270,6 +270,31 @@
   background: linear-gradient(120deg, #23ce6b 0%, #36c6e7 70%, #84aaff 100%);
   animation: sports-bg-gradient-anim 15s ease-in-out infinite alternate;
 }
+/* Ensure stacking context */
+.sports-animated-gradient {
+  position: relative;
+  overflow: hidden;
+}
+.sports-animated-gradient:before {
+  content: "";
+  z-index: 0;
+  position: absolute;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+      115deg,
+      rgba(255,245,214,0.15) 0%,
+      rgba(255,78,205,0.055) 22%,
+      rgba(68,255,183,0.12) 44%,
+      rgba(54,198,231,0.14) 66%,
+      rgba(255,191,0,0.10) 94%);
+  opacity: 0.6;
+  animation: sports-under-gradient-slide 13s linear infinite alternate;
+}
+@keyframes sports-under-gradient-slide {
+    0% { background-position: 0 0;}
+    100% { background-position: 190vw 80vh;}
+}
 @keyframes sports-bg-gradient-anim {
   0% {
     background: linear-gradient(117deg,#22d262 0%, #34acd7 63%, #547fff 100%);
@@ -356,6 +381,63 @@
 @keyframes sports-lines-glow-move { 0%,100% { background: rgba(255,255,255,0.10);} 40% { background: rgba(200,240,255,0.23);} 80% { background: rgba(36,206,247,0.11);}}
 @keyframes floatSportsMove { 0% { transform: translateY(0px) scale(1) rotate(-2deg); filter: brightness(1) drop-shadow(0 3px 15px #ffbf0059);} 30% { transform: translateY(-33px) scale(1.036) rotate(14deg); filter: brightness(1.13) drop-shadow(0 8px 18px #36c6e76e);} 60% { transform: translateY(-70px) scale(0.97) rotate(-12deg); filter: brightness(1.08) drop-shadow(0 16px 33px #fed50269);} 90% { transform: translateY(8px) scale(1.03) rotate(18deg); filter: brightness(1.09) drop-shadow(0 3px 32px #ff4ecd53);} 100% { transform: translateY(0px) scale(1) rotate(-2deg); filter: brightness(1) drop-shadow(0 3px 15px #ffbf0059);}}
 
+.sports-float-icon.large-sports-float-icon
+{
+  /* *ALREADY* used for static floating sports icons, but now overridden by new animation classes */
+  position: absolute;
+  will-change: transform, filter;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 18px #6c63ff33) drop-shadow(0 8px 18px #23ce6b38);
+  border-radius: 99vw;
+  z-index: 7;
+  opacity: 0.87;
+  animation: floatSportsMove 19s linear infinite alternate;
+  background: none;
+}
+
+/* Bolder, larger, more vivid and individually animated (by injected keyframes) */
+.sports-float-icon.sports-move-unique {
+  position: absolute;
+  left: 0; top: 0;
+  pointer-events: none;
+  border-radius: 999vw;
+  transition: filter 0.27s;
+  /* animation and size will be set per-instance via style */
+}
+
+/* Extra-large variant for punchy effect */
+.sports-float-icon.very-large {
+  /* At least 30% bigger for giant effect */
+  min-width: 150px!important;
+  min-height: 150px!important;
+  width: clamp(140px, 29vw, 55vw)!important;
+  height: clamp(140px, 30vw, 54vw)!important;
+  opacity: 0.91!important;
+  filter: drop-shadow(0 16px 69px #ff4ecd56) drop-shadow(0 17px 83px #ffbf0072)!important;
+}
+ 
+/* Slightly more contrast: overlayed gradients under the SVGs */
+.sports-animated-gradient:before {
+  content: "";
+  z-index: 0;
+  position: absolute;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+      115deg,
+      rgba(255,245,214,0.15) 0%,
+      rgba(255,78,205,0.055) 22%,
+      rgba(68,255,183,0.12) 44%,
+      rgba(54,198,231,0.14) 66%,
+      rgba(255,191,0,0.10) 94%);
+  opacity: 0.6;
+  animation: sports-under-gradient-slide 13s linear infinite alternate;
+}
+@keyframes sports-under-gradient-slide {
+    0% { background-position: 0 0;}
+    100% { background-position: 190vw 80vh;}
+}
+
 /* Footer remains as usual; float above bg but no boxy bg */
 .iemo-footer {
   z-index: 240;
@@ -366,3 +448,4 @@
 .iemo-footer-brand, .iemo-footer-mini {
   text-shadow: 0 1.5px 9px #fff, 0 0 16px #23ce6b39;
 }
+/* The above CSS was largely unaltered below the new floating/animated SVGs section */
