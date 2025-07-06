@@ -2,6 +2,248 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import SportsBackground from "./SportsBackground";
 
+// NewsAPI headline section component
+function NewsAPISportsHeadlines({ apiKey, onSetApiKey }) {
+  const [news, setNews] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showInput, setShowInput] = useState(!apiKey);
+
+  // PUBLIC_INTERFACE
+  function handleApiKeySave(e) {
+    e.preventDefault();
+    const k = e.target.elements.newsApiKey.value.trim();
+    if (k) {
+      onSetApiKey(k);
+      setShowInput(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!apiKey) return;
+    setLoading(true);
+    setError("");
+    fetch(
+      `https://newsapi.org/v2/top-headlines?category=sports&language=en&pageSize=6&apiKey=${apiKey}`
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.status !== "ok") throw new Error(data.message || "Error");
+        setNews(data.articles || []);
+      })
+      .catch((err) => {
+        setError(
+          "Error fetching news headlines. Check your API key or try again later."
+        );
+      })
+      .finally(() => setLoading(false));
+  }, [apiKey]);
+
+  return (
+    <div
+      style={{
+        background: "none",
+        boxShadow: "none",
+        border: "none",
+        margin: "3.5em 0 2.25em 0",
+        textAlign: "center",
+        maxWidth: 700,
+        width: "97vw"
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 900,
+          fontSize: "clamp(1.06em,2.3vw,1.46em)",
+          color: "#ff4ecd",
+          letterSpacing: "0.005em",
+          marginBottom: "0.5em",
+          textShadow: "0 1.7px 18px #FF658470, 0 1.4px 11px #23ce6baa"
+        }}
+      >
+        📰 Latest Sports Headlines (Powered by NewsAPI.org)
+      </div>
+      {(!apiKey || showInput) && (
+        <form
+          onSubmit={handleApiKeySave}
+          style={{
+            margin: "1.3em auto 1.1em auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          <label
+            htmlFor="newsApiKey"
+            style={{
+              color: "#6C63FF",
+              fontWeight: 700,
+              fontSize: "1.1em",
+              marginBottom: 5
+            }}
+          >
+            Enter your NewsAPI.org API Key:
+          </label>
+          <input
+            type="text"
+            id="newsApiKey"
+            name="newsApiKey"
+            required
+            placeholder="Paste your API key here"
+            style={{
+              fontSize: "1.09em",
+              padding: "0.54em 1.2em",
+              borderRadius: "1.6em",
+              border: "2px solid #36c6e7",
+              outline: "none",
+              marginBottom: "0.7em"
+            }}
+            autoComplete="off"
+          />
+          <button
+            type="submit"
+            style={{
+              background: "linear-gradient(90deg,#36c6e7,#23ce6b,#FF6584 110%)",
+              fontWeight: 800,
+              color: "#fff",
+              fontSize: "1em",
+              border: "none",
+              borderRadius: "1.6em",
+              padding: "0.55em 1.7em",
+              cursor: "pointer",
+              marginBottom: 4,
+              marginTop: ".5em"
+            }}
+          >
+            Save API Key & Show News
+          </button>
+          <div
+            style={{
+              color: "#aaa",
+              fontSize: "0.97em",
+              marginTop: "0.45em"
+            }}
+          >
+            <span style={{ color: "#ff6584", fontWeight: 700 }}>How do I get a key?</span>
+            <br />
+            1. Register a free account at{" "}
+            <a
+              href="https://newsapi.org/register"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#6C63FF", fontWeight: 700 }}
+            >
+              newsapi.org
+            </a>
+            <br />
+            2. After signup/login, copy your personal API key from the dashboard.<br />
+            3. Paste it above.<br />
+            <span style={{ color: "#23ce6b", fontWeight: 700 }}>Your API key is only stored locally in this browser.</span>
+          </div>
+        </form>
+      )}
+      {apiKey && !showInput && (
+        <div>
+          <button
+            onClick={() => setShowInput(true)}
+            style={{
+              background: "none",
+              color: "#36c6e7",
+              border: "none",
+              fontWeight: 700,
+              cursor: "pointer",
+              marginBottom: "0.6em",
+              textDecoration: "underline"
+            }}
+            tabIndex={0}
+            aria-label="Edit NewsAPI Key"
+          >
+            Change NewsAPI Key
+          </button>
+        </div>
+      )}
+      {loading && (
+        <div style={{ margin: "2em 0", color: "#19e0ff" }}>Loading headlines...</div>
+      )}
+      {error && (
+        <div
+          style={{
+            color: "#FF6584",
+            fontWeight: 800,
+            margin: "1em auto"
+          }}
+        >
+          {error}
+        </div>
+      )}
+      {!loading && !error && news && news.length > 0 && (
+        <ul
+          style={{
+            listStyle: "none",
+            padding: 0,
+            margin: "1.3em auto 0 auto",
+            textAlign: "left",
+            maxWidth: 660
+          }}
+        >
+          {news.map((a, i) => (
+            <li
+              key={a.url}
+              style={{
+                marginBottom: "0.8em",
+                background: "rgba(54,198,231,0.12)",
+                borderLeft: "5px solid #23ce6b",
+                padding: "0.8em 1.1em",
+                borderRadius: "0.9em"
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 700,
+                  color: "#6C63FF",
+                  fontSize: "1.01em"
+                }}
+              >
+                <a
+                  href={a.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "#6C63FF",
+                    textDecoration: "none"
+                  }}
+                >
+                  {a.title}
+                </a>
+              </span>
+              <br />
+              <span
+                style={{
+                  color: "#666",
+                  fontSize: "0.98em",
+                  fontWeight: 400
+                }}
+              >
+                {a.source?.name ? a.source.name : ""}
+                {a.author ? " | " + a.author : ""}
+                {a.publishedAt
+                  ? " | " +
+                    new Date(a.publishedAt).toLocaleString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit"
+                    })
+                  : ""}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 // Themed color palette (still used for vivid floating answer gradients)
 const PALETTE = [
   "#ff4ecd", "#6c63ff", "#23ce6b", "#ffbf00", "#19e0ff", "#ff654f", "#fc1cff", "#FED502", "#36c6e7", "#FF6584"
@@ -165,6 +407,15 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
 
+  // NewsAPI integration
+  const [newsApiKey, setNewsApiKeyState] = useState(
+    () => window.localStorage.getItem("newsApiKey") || ""
+  );
+  function setNewsApiKey(k) {
+    setNewsApiKeyState(k);
+    window.localStorage.setItem("newsApiKey", k || "");
+  }
+
   const [crackerBlasts, setCrackerBlasts] = useState([]);
 
   async function fetchQuestions() {
@@ -273,7 +524,18 @@ function App() {
           <CrackerBlast key={id} x={x} y={y} onDone={() => handleCrackerBlastDone(id)} />
         )}
       </div>
-      {step === 0 && AnimationWrappers.fade(<WelcomeScreen onStart={handleStart} />, 20)}
+      {step === 0 &&
+        AnimationWrappers.fade(
+          <div>
+            <NewsAPISportsHeadlines
+              apiKey={newsApiKey}
+              onSetApiKey={setNewsApiKey}
+            />
+            <WelcomeScreen onStart={handleStart} />
+          </div>,
+          20
+        )
+      }
       {loading && AnimationWrappers.bounce(
         <div style={{
           color: "#ff4ecd",
