@@ -1,5 +1,5 @@
 :root {
-  --iemo-bg: #fcfdff;
+  --iemo-bg: linear-gradient(120deg, #23ce6b 0%, #2fd374 16%, #36c6e7 75%, #84aaff 100%);
   --iemo-card-bg: #ffeaff;
   --iemo-border: #da55f6;
   --iemo-shadow: 0 4px 32px 0 #8236d85e;
@@ -11,10 +11,12 @@
   --iemo-accent: #23CE6B;
   --iemo-radius: 26px;
   --iemo-rainbow: linear-gradient(90deg, #ff4ecd, #6C63FF, #23ce6b, #FF6584 85%);
+  --sports-bg-main: linear-gradient(120deg, #23ce6b 5%, #2fd374 14%, #36c6e7 70%, #2b78ff 100%);
+  --sports-bg-secondary: radial-gradient(ellipse 55% 40% at 50% 18%, #e8ffe4 35%, #d5fcf6 90%);
 }
 
 /* == ANIMATED BACKGROUND EFFECTS == */
-/* Animated, lively floating sports SVG background */
+/* Animated, lively floating sports SVG background and sports field gradients */
 .iemo-bg-animated {
   position: fixed;
   z-index: 0;
@@ -22,8 +24,10 @@
   left: 0; top: 0;
   pointer-events: none;
   overflow: hidden;
-  background: none !important;
+  background: var(--sports-bg-main), var(--sports-bg-secondary) !important;
+  /* Fallback: use plain green-blue if not overridden by inline style */
 }
+
 
 .sports-float-icon {
   position: absolute;

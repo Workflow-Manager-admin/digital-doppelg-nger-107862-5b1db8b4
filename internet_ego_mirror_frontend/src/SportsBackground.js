@@ -1,6 +1,9 @@
 import React from "react";
 import "./App.css";
 
+// Sports background main color gradient
+// Subtle sports texture using multiple gradients and SVG icons
+
 // SPORTS SVG ASSETS – lively, playful and colorful
 const SPORTS_SVGS = [
   {
@@ -154,12 +157,115 @@ function FloatingSportsSVGs({ count = 8 }) {
 
 /**
  * PUBLIC_INTERFACE
- * Renders ONLY large, colorful, animated sports SVGs (balls/bats/racquets/nets/fields) floating and moving around, as the app background.
- * Icons are much larger and responsively scaled for strong visual impact, and don't get cut off.
+ * Renders a sports-themed, vibrant gradient background with animated sports SVGs.
+ * The gradient is green-to-blue with overlays for a stadium/field aesthetic.
  */
 function SportsBackground() {
+  // Main sports field/sky gradient underlay
+  // Subtle texture: White stadium arc, semi-transparent lines for track/arena effect
   return (
-    <div className="iemo-bg-animated" aria-hidden="true">
+    <div
+      className="iemo-bg-animated"
+      aria-hidden="true"
+      style={{
+        // Gradient goes from vibrant green (field) to blue (sky/stadium) bottom-right
+        background:
+          "linear-gradient(120deg, #23ce6b 0%, #36c6e7 70%, #84aaff 100%)",
+        // Add secondary overlay effect: subtle repeating field lines
+        position: "fixed",
+        inset: 0,
+        minWidth: "100vw",
+        minHeight: "100vh",
+        zIndex: 0,
+        // Below floating SVG sports icons
+        pointerEvents: "none",
+        overflow: "hidden"
+      }}
+    >
+      {/* Stadium arc - as an SVG overlay (top left corner, faded white) */}
+      <svg
+        width="640"
+        height="340"
+        viewBox="0 0 640 340"
+        style={{
+          position: "absolute",
+          top: "-40px",
+          left: "-40px",
+          zIndex: 1,
+          opacity: 0.14,
+        }}
+        aria-hidden="true"
+      >
+        <ellipse
+          cx="300"
+          cy="210"
+          rx="290"
+          ry="120"
+          fill="white"
+          opacity="0.18"
+        />
+        <ellipse
+          cx="390"
+          cy="88"
+          rx="185"
+          ry="53"
+          fill="#fff"
+          opacity="0.07"
+        />
+      </svg>
+
+      {/* Field/track lines (horizontal) */}
+      {[1, 2, 3, 4].map((n) => (
+        <div
+          key={n}
+          style={{
+            position: "absolute",
+            left: 0,
+            width: "100vw",
+            height: "2px",
+            top: `${16 + n * 13}vh`,
+            background:
+              n % 2 === 0
+                ? "rgba(255,255,255,0.12)"
+                : "rgba(200,230,255,0.09)",
+            zIndex: 2,
+            borderRadius: "4px",
+          }}
+        />
+      ))}
+      {/* Optional: Add arena/track ring effect at bottom */}
+      <svg
+        width="930"
+        height="120"
+        viewBox="0 0 930 120"
+        style={{
+          position: "absolute",
+          bottom: "-36px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 2,
+          opacity: 0.16,
+        }}
+        aria-hidden="true"
+      >
+        <ellipse
+          cx="465"
+          cy="30"
+          rx="340"
+          ry="30"
+          fill="#fff"
+          opacity="0.19"
+        />
+        <ellipse
+          cx="465"
+          cy="86"
+          rx="240"
+          ry="18"
+          fill="#fff"
+          opacity="0.09"
+        />
+      </svg>
+      {/* Finally, the large animated floating sports icons (on top of gradient) */}
       <FloatingSportsSVGs count={8} />
     </div>
   );
