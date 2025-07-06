@@ -366,431 +366,480 @@ function WelcomeScreen({ onStart }) {
           width: "clamp(222px,33vw,340px)",
           height: "clamp(222px,33vw,340px)",
           position: "relative",
-          filter:
-            "drop-shadow(0 9px 44px #ff4ecdba) drop-shadow(0 3px 41px #36c6e7b0)",
+          filter: "drop-shadow(0 17px 30px #ffcd0ec9) drop-shadow(0 7px 54px #6c63ffa0)"
         }}
         aria-hidden="true"
       >
-        {/* --- NEW TROPHY SVG: Enhanced metallic effects and dimensional shading, ultra-detailed sports symbols --- */}
+        {/* --- PROFESSIONAL, HYPER-REALISTIC, HIGH-DETAIL TROPHY SVG --- */}
         <svg
           width="100%"
           height="100%"
           viewBox="0 0 340 340"
           style={{ maxWidth: "99vw", display: "block" }}
-          aria-label="Realistic Sports Trophy Cup"
+          aria-label="Professional Sports Trophy Cup"
         >
+          {/* Gold gradients, ambient shadow, rim highlights, glassy sports gear, and dimensionality */}
           <defs>
-            {/* Metallic gold gradients */}
-            <linearGradient id="trophyGold" x1="15%" y1="10%" x2="85%" y2="92%">
-              <stop offset="0%" stopColor="#fffbe8" />
-              <stop offset="18%" stopColor="#fff8ca" />
-              <stop offset="42%" stopColor="#fad54a" />
-              <stop offset="70%" stopColor="#ffd502" />
-              <stop offset="83%" stopColor="#b59842" />
-              <stop offset="100%" stopColor="#a17d30" />
-            </linearGradient>
-            <radialGradient id="goldInner" cx="45%" cy="39%" r="80%">
-              <stop offset="0%" stopColor="#fff6c4" />
-              <stop offset="33%" stopColor="#ffe16f" />
-              <stop offset="70%" stopColor="#eebe34" />
-              <stop offset="84%" stopColor="#ebd88b" />
-              <stop offset="99%" stopColor="#966b0a" />
-            </radialGradient>
-            <linearGradient id="goldRimFlat" x1="20%" y1="35%" x2="85%" y2="62%">
+            <radialGradient id="trophyBodyGold" cx="50%" cy="37%" r="63%">
               <stop offset="0%" stopColor="#fffbe8"/>
-              <stop offset="50%" stopColor="#ffd502"/>
-              <stop offset="90%" stopColor="#a57b2d"/>
-              <stop offset="100%" stopColor="#fed67a"/>
-            </linearGradient>
-            <radialGradient id="goldBase" cx="55%" cy="80%" r="60%">
-              <stop offset="0%" stopColor="#ffeab8" />
-              <stop offset="50%" stopColor="#ffbd3d" />
-              <stop offset="83%" stopColor="#856319" />
-              <stop offset="100%" stopColor="#957220" />
+              <stop offset="18%" stopColor="#fff6b6"/>
+              <stop offset="38%" stopColor="#ffe580"/>
+              <stop offset="62%" stopColor="#ffd502"/>
+              <stop offset="80%" stopColor="#d5a823"/>
+              <stop offset="96%" stopColor="#a77a32"/>
             </radialGradient>
-            <radialGradient id="cupShine3D" cx="35%" cy="25%" r="80%">
-              <stop offset="0%" stopColor="#fff" stopOpacity="0.72"/>
-              <stop offset="25%" stopColor="#fffbe0" stopOpacity="0.39"/>
-              <stop offset="42%" stopColor="#f8e698" stopOpacity="0.2"/>
-              <stop offset="88%" stopColor="#ffd502" stopOpacity="0.11"/>
-              <stop offset="100%" stopColor="#fffbe0" stopOpacity="0" />
+            <radialGradient id="goldCrown" cx="60%" cy="30%" r="54%">
+              <stop offset="0%" stopColor="#fffbe8" />
+              <stop offset="50%" stopColor="#ffe482" />
+              <stop offset="72%" stopColor="#ffd502" />
+              <stop offset="98%" stopColor="#c29741" />
             </radialGradient>
-            {/* Glassy blue gradient for tennis racquet */}
-            <linearGradient id="racketBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#bbf6ff" />
-              <stop offset="60%" stopColor="#36c6e7" />
-              <stop offset="100%" stopColor="#148a99" />
+            <linearGradient id="rimSilver" x1="0%" y1="60%" x2="100%" y2="40%">
+              <stop offset="1%" stopColor="#fffbe8" />
+              <stop offset="25%" stopColor="#eee7cd" />
+              <stop offset="55%" stopColor="#dbb259" />
+              <stop offset="100%" stopColor="#bf9625" />
             </linearGradient>
-            {/* Bat handle brown */}
-            <linearGradient id="batWood" x1="10%" y1="14%" x2="74%" y2="92%">
-              <stop offset="0%" stopColor="#ffeabb" />
-              <stop offset="40%" stopColor="#f4ce8a" />
-              <stop offset="100%" stopColor="#ae8338" />
+            <radialGradient id="trophyInnerShadow" cx="48%" cy="75%" r="70%">
+              <stop offset="10%" stopColor="#ffd502" stopOpacity="0"/>
+              <stop offset="60%" stopColor="#fcf4b1" stopOpacity="0.13"/>
+              <stop offset="100%" stopColor="#b07e19" stopOpacity="0.36"/>
+            </radialGradient>
+            <linearGradient id="handleGoldOuter" x1="10%" y1="20%" x2="85%" y2="70%">
+              <stop offset="0%" stopColor="#ffecbf" />
+              <stop offset="33%" stopColor="#ffe066" />
+              <stop offset="53%" stopColor="#bf9c52" />
+              <stop offset="72%" stopColor="#ffcf4d" />
+              <stop offset="100%" stopColor="#845c23" />
             </linearGradient>
-            <linearGradient id="batGripNew" x1="12%" y1="16%" x2="90%" y2="88%">
-              <stop offset="0%" stopColor="#e04b43" />
-              <stop offset="1" stopColor="#940d22" />
+            <radialGradient id="cupReflect" cx="35%" cy="21%" r="40%">
+              <stop offset="0%" stopColor="#ffffffb9" />
+              <stop offset="44%" stopColor="#faf9d28e" />
+              <stop offset="75%" stopColor="#fffacd41" />
+              <stop offset="100%" stopColor="#fffacd00" />
+            </radialGradient>
+            <radialGradient id="shadowUnderTrophy" cx="50%" cy="65%" r="80%">
+              <stop offset="0%" stopColor="#a7884a" stopOpacity="0.27"/>
+              <stop offset="63%" stopColor="#5d4725" stopOpacity="0.10"/>
+              <stop offset="97%" stopColor="#000" stopOpacity="0"/>
+            </radialGradient>
+            {/* Cricket Bat gradients */}
+            <linearGradient id="cricketBatWood2" x1="10%" y1="16%" x2="90%" y2="98%">
+              <stop offset="0%" stopColor="#ffeccf"/>
+              <stop offset="50%" stopColor="#eec391"/>
+              <stop offset="100%" stopColor="#c48e43"/>
             </linearGradient>
-            <radialGradient id="ballRedReal" cx="48%" cy="44%" r="85%">
-              <stop offset="0%" stopColor="#fff3e0" />
-              <stop offset="14%" stopColor="#ff7272" />
-              <stop offset="44%" stopColor="#e4321a" />
-              <stop offset="80%" stopColor="#9d1817" />
-              <stop offset="100%" stopColor="#5a0e0b" />
+            <linearGradient id="batGripGold" x1="7%" y1="12%" x2="82%" y2="82%">
+              <stop offset="0%" stopColor="#e96e55"/>
+              <stop offset="100%" stopColor="#952026"/>
+            </linearGradient>
+            <radialGradient id="cricketBallRed" cx="46%" cy="46%" r="88%">
+              <stop offset="0%" stopColor="#fff" />
+              <stop offset="17%" stopColor="#fa8889"/>
+              <stop offset="37%" stopColor="#e12b28"/>
+              <stop offset="72%" stopColor="#99242a"/>
+              <stop offset="100%" stopColor="#520d17"/>
             </radialGradient>
             {/* Football gradients */}
-            <radialGradient id="footballPatch" cx="60%" cy="55%" r="75%">
-              <stop offset="0%" stopColor="#fff" />
-              <stop offset="80%" stopColor="#eceffa" />
-              <stop offset="100%" stopColor="#c2c9d5" />
+            <radialGradient id="soccerPatch2" cx="56%" cy="60%" r="78%">
+              <stop offset="0%" stopColor="#fff"/>
+              <stop offset="57%" stopColor="#dbd9cf"/>
+              <stop offset="100%" stopColor="#b4b2a7"/>
             </radialGradient>
-            <linearGradient id="footballDark" x1="22%" y1="62%" x2="92%" y2="20%">
-              <stop offset="0%" stopColor="#ededed" />
-              <stop offset="1" stopColor="#9aa4b2" />
-            </linearGradient>
-            {/* Tennis ball fill */}
-            <radialGradient id="tennisBall" cx="43%" cy="36%" r="95%">
+            {/* Tennis gradients */}
+            <radialGradient id="tennisYellow2" cx="44%" cy="44%" r="95%">
               <stop offset="0%" stopColor="#ffffad" />
-              <stop offset="80%" stopColor="#f3e334" />
-              <stop offset="100%" stopColor="#b5a800" />
+              <stop offset="75%" stopColor="#efe348" />
+              <stop offset="100%" stopColor="#768200" />
             </radialGradient>
+            <linearGradient id="racquetBlue2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#eafffa" />
+              <stop offset="49%" stopColor="#77e9f8" />
+              <stop offset="100%" stopColor="#259da7" />
+            </linearGradient>
           </defs>
-          {/* 1. Extra realistic handles, with metallic rim-light */}
+          {/* Ambient Shadow Under Trophy */}
+          <ellipse
+            cx="169"
+            cy="307"
+            rx="83"
+            ry="23"
+            fill="url(#shadowUnderTrophy)"
+            opacity="0.61"
+            style={{filter: "blur(6.4px)"}}
+          />
+          {/* LEFT Handle (3D, metallic, winding) */}
           <path
-            d="M77 97 Q10 174 110 263 Q146 299 179 214"
+            d="M97 135 Q 25 210 120 277 Q175 320 192 210"
             fill="none"
-            stroke="url(#trophyGold)"
-            strokeWidth="18"
+            stroke="url(#handleGoldOuter)"
+            strokeWidth="19"
             strokeLinecap="round"
-            opacity="0.97"
-            filter="url(#shadow1)"
+            filter="blur(0.2px)"
+            opacity="0.99"
           />
+          {/* RIGHT Handle (mirror, detailed pathway for realism) */}
           <path
-            d="M263 97 Q330 174 230 263 Q194 299 161 214"
+            d="M245 135 Q320 210 219 275 Q165 317 148 208"
             fill="none"
-            stroke="url(#trophyGold)"
-            strokeWidth="18"
+            stroke="url(#handleGoldOuter)"
+            strokeWidth="19"
             strokeLinecap="round"
-            opacity="0.97"
-            filter="url(#shadow2)"
+            filter="blur(0.2px)"
+            opacity="0.99"
           />
-          {/* Rim: chrome edge w/ highlight */}
+          {/* Main Cup Ellipse (dimensional shading) */}
           <ellipse
-            cx="170"
-            cy="79"
-            rx="109"
-            ry="32"
-            fill="url(#goldRimFlat)"
-            stroke="#fff8e2"
-            strokeWidth="5"
-            opacity="0.76"
+            cx="171.5"
+            cy="127.5"
+            rx="98"
+            ry="86"
+            fill="url(#trophyBodyGold)"
+            opacity="1.0"
+            filter="drop-shadow(0 5px 15px #9b7e2e78)"
+            style={{
+              stroke: "#e5c338",
+              strokeWidth: 7.5,
+              filter: "none"
+            }}
           />
-          {/* Cup body: deep gold shading with highlights */}
+          {/* Rim - crown, highly reflective + shine */}
           <ellipse
-            cx="170"
-            cy="134"
-            rx="94"
-            ry="88"
-            fill="url(#trophyGold)"
-            stroke="url(#goldInner)"
-            strokeWidth="12"
-            opacity="0.97"
+            cx="171.5"
+            cy="53"
+            rx="108.1"
+            ry="28"
+            fill="url(#goldCrown)"
+            stroke="url(#rimSilver)"
+            strokeWidth="7.5"
+            opacity="0.85"
+            style={{
+              filter: "drop-shadow(0 0px 5px #fffacd96)"
+            }}
           />
-          {/* Trophy 3D shine */}
+          {/* Rim/inner rim subtle shadow for 3D */}
           <ellipse
-            cx="154"
-            cy="116"
-            rx="24"
-            ry="10"
-            fill="url(#cupShine3D)"
-            opacity="0.92"
+            cx="171.5"
+            cy="53"
+            rx="100.2"
+            ry="22.8"
+            fill="none"
+            stroke="#e4ba28"
+            strokeWidth="2.7"
+            opacity="0.46"
           />
-          {/* Trophy base with strong metallic foot */}
+          {/* Inner shading/gold depth */}
+          <ellipse
+            cx="171.5"
+            cy="127.5"
+            rx="87"
+            ry="75"
+            fill="url(#trophyInnerShadow)"
+            opacity="0.88"
+          />
+          {/* Reflections/Highlights */}
+          <ellipse
+            cx="132"
+            cy="99"
+            rx="35"
+            ry="17"
+            fill="url(#cupReflect)"
+            opacity="0.7"
+            style={{filter: "blur(1.2px)"}}
+          />
+          <ellipse
+            cx="192"
+            cy="70"
+            rx="15"
+            ry="7"
+            fill="#fffae0"
+            opacity="0.38"
+            style={{filter: "blur(1.8px)"}}
+          />
+          {/* Base: 3D foot, metallic */}
           <rect
-            x="110"
-            y="228"
-            width="120"
-            height="44"
-            rx="22"
-            fill="url(#goldBase)"
-            stroke="#856319"
-            strokeWidth="12"
-            opacity="0.94"
+            x="85"
+            y="217"
+            width="173"
+            height="48"
+            rx="31"
+            fill="url(#rimSilver)"
+            stroke="#a18035"
+            strokeWidth="7.3"
+            opacity="0.98"
+            style={{filter:"drop-shadow(0 4px 18px #ba8b2e55)"}}
           />
-          {/* Plinth dimension ellipse */}
+          {/* Plinth foot shadow ellipse */}
           <ellipse
-            cx="170"
-            cy="273"
-            rx="52"
-            ry="19"
-            fill="#fffbe8"
-            opacity="0.18"
-            style={{filter:"blur(0.5px)"}}
+            cx="172"
+            cy="259"
+            rx="54"
+            ry="17"
+            fill="#7e650d"
+            opacity="0.12"
+            style={{filter:"blur(1.9px)"}}
           />
-          {/* Bottom 3D oval shadow */}
-          <ellipse
-            cx="170"
-            cy="284"
-            rx="32"
-            ry="7.5"
-            fill="#a08036"
-            opacity="0.18"
-            style={{filter:"blur(2.2px)"}}
-          />
-          {/* 2. Richly detailed SPORTS SYMBOLS INSIDE CUP */}
-          {/* CRICKET BAT (angled, wooden, textured) */}
+          {/* -- SPORTS GEAR, PROPORTIONED, DETAILED, IN TROPHY CENTER -- */}
+          {/* Cricket Bat (detailed wood: left) */}
           <g>
-            {/* Blade */}
             <rect
-              x="94"
-              y="80"
-              width="22"
-              height="92"
+              x="110"
+              y="85"
+              width="20.5"
+              height="98"
               rx="6.7"
-              fill="url(#batWood)"
-              stroke="#a97c50"
-              strokeWidth="2.6"
-              transform="rotate(-17 106 128)"
-              style={{filter:"drop-shadow(0 4px 7px #c49a3842)"}}
+              fill="url(#cricketBatWood2)"
+              stroke="#b69b6b"
+              strokeWidth="2.4"
+              transform="rotate(-15 120 134)"
+              style={{filter:"drop-shadow(0 2px 6px #be963619)"}}
             />
             {/* Grip */}
             <rect
-              x="105"
-              y="60"
-              width="7.8"
-              height="27"
-              rx="3"
-              fill="url(#batGripNew)"
-              stroke="#fff"
-              strokeWidth="1"
-              transform="rotate(-17 108.9 74)"
+              x="119"
+              y="62"
+              width="7.1"
+              height="26"
+              rx="2.2"
+              fill="url(#batGripGold)"
+              stroke="#fff2e3"
+              strokeWidth="1.2"
+              transform="rotate(-14 123.6 76)"
+              style={{filter:"brightness(1.1)"}}
             />
-            {/* Bat shadow for realism */}
+            {/* Highlight */}
             <rect
-              x="104"
-              y="99"
-              width="10"
-              height="55"
-              rx="2.1"
-              fill="#91682a"
-              opacity="0.22"
-              transform="rotate(-17 109 123)"
+              x="119.5"
+              y="69"
+              width="5.3"
+              height="9"
+              rx="1.1"
+              fill="#fffae2"
+              opacity="0.33"
+              transform="rotate(-14 121 72.4)"
+            />
+            {/* Subtle bat shadow for dimensionality */}
+            <rect
+              x="119"
+              y="128"
+              width="6.5"
+              height="56"
+              rx="2.5"
+              fill="#c09952"
+              opacity="0.18"
+              transform="rotate(-16 121 155)"
             />
           </g>
-          {/* CRICKET BALL (realistic stitched, rich red) */}
+          {/* Cricket Ball - below bat */}
           <g>
             <circle
-              cx="111"
-              cy="192"
-              r="15.4"
-              fill="url(#ballRedReal)"
-              stroke="#833b24"
-              strokeWidth="2.1"
+              cx="120"
+              cy="199"
+              r="14.2"
+              fill="url(#cricketBallRed)"
+              stroke="#702a19"
+              strokeWidth="2.3"
+              opacity="0.97"
+              style={{filter:"drop-shadow(0 2px 4px #e45f5a51)"}}
             />
             {/* Ball shine */}
             <ellipse
-              cx="117.5"
-              cy="185"
-              rx="3"
-              ry="6"
+              cx="124.5"
+              cy="192"
+              rx="3.6"
+              ry="7"
               fill="#fff"
-              opacity="0.13"
-              transform="rotate(-25 117.5 185)"
+              opacity="0.12"
+              transform="rotate(-26 124.5 192)"
             />
-            {/* Stitched seam, realistic arc */}
+            {/* Stitched seam, subtle */}
             <path
-              d="M98.1 198 Q113 182 126 203"
-              stroke="#fff4d4"
-              strokeDasharray="2.4,2.9"
-              strokeWidth="1.7"
+              d="M109 204 Q119 189 132 210"
+              stroke="#fff2d4"
+              strokeDasharray="1.9,2.5"
+              strokeWidth="1.4"
               fill="none"
               opacity="0.76"
             />
-            {/* Subtle ball shadow */}
+            {/* Ball drop-shadow */}
             <ellipse
-              cx="111"
-              cy="201"
-              rx="7.2"
-              ry="3.3"
-              fill="#970b14"
-              opacity="0.12"
+              cx="120"
+              cy="209"
+              rx="7.3"
+              ry="3.1"
+              fill="#730e11"
+              opacity="0.10"
             />
           </g>
-          {/* FOOTBALL (soccer, classic pent/hex pattern with proper patches) */}
+          {/* Football (precise pent/hex, dimensional) */}
           <g>
             <ellipse
-              cx="168"
-              cy="196"
+              cx="170"
+              cy="194"
               rx="22.5"
               ry="22.5"
-              fill="url(#footballPatch)"
-              stroke="#202318"
-              strokeWidth="3.2"
-              opacity="0.94"
+              fill="url(#soccerPatch2)"
+              stroke="#12150f"
+              strokeWidth="3"
+              opacity="0.98"
             />
-            {/* Black pentagon center */}
+            {/* Main black pentagon */}
             <polygon
-              points="168,181 184,191 178,208 168,213 158,208 153,191"
-              fill="#2a2920"
-              stroke="#24241d"
-              strokeWidth="1.4"
+              points="170,181 186,191 180,208 170,213 160,208 155,191"
+              fill="#23221c"
+              stroke="#22221c"
+              strokeWidth="1.3"
             />
-            {/* Small classic hex patches */}
+            {/* White patches/hex */}
             <polygon
-              points="160,192 168,186 175,192 172,202 163,202"
-              fill="#fff"
-              stroke="#c4c5cc"
+              points="163,191 170,185 177,191 174,201 166,201"
+              fill="#fdfdfd"
+              stroke="#868686"
               strokeWidth="1"
-              opacity="0.57"
+              opacity="0.67"
             />
             <polygon
-              points="175,192 184,192 178,208"
-              fill="#adadad"
-              opacity="0.49"
+              points="177,191 186,191 180,208"
+              fill="#b7b7b7"
+              opacity="0.40"
             />
-            {/* Panel seams */}
+            {/* Visible seams */}
             <path
-              d="M158 208 Q168 226 178 208"
-              stroke="#7b7f80"
-              strokeWidth="1.2"
+              d="M160 208 Q170 228 180 208"
+              stroke="#676c6b"
+              strokeWidth="1.17"
               fill="none"
-              opacity="0.6"
+              opacity="0.65"
             />
-            {/* Lower oval shadow */}
+            {/* Drop shadow underneath ball */}
             <ellipse
-              cx="168"
-              cy="213"
-              rx="14"
-              ry="6"
-              fill="#232323"
-              opacity="0.09"
+              cx="170"
+              cy="215"
+              rx="11.7"
+              ry="4.9"
+              fill="#181818"
+              opacity="0.10"
             />
           </g>
-          {/* TENNIS RACQUET, realistic head, string mesh, shaded handle */}
+          {/* TENNIS RACQUET: proportions, glassy rim, vertical orientation rightwise */}
           <g>
             {/* Racquet rim */}
             <ellipse
-              cx="234"
-              cy="122"
-              rx="27"
-              ry="45"
-              fill="url(#racketBlue)"
-              stroke="#283670"
-              strokeWidth="3.5"
-              transform="rotate(13 234 122)"
-              opacity="0.99"
+              cx="235"
+              cy="112"
+              rx="25"
+              ry="40"
+              fill="url(#racquetBlue2)"
+              stroke="#355879"
+              strokeWidth="3.8"
+              transform="rotate(16 235 112)"
+              opacity="0.98"
+              style={{filter:"drop-shadow(0 2px 6px #34c6e776)"}}
             />
-            {/* Strings – vertical */}
-            {Array.from({ length: 7 }).map((_, idx) => (
+            {/* Strings vertical */}
+            {Array.from({ length: 6 }).map((_, idx) => (
               <line
-                key={`racket-vert-${idx}`}
-                x1={234-18+idx*6}
-                y1={77}
-                x2={234-10+idx*4.7}
-                y2={170}
-                stroke="#fff"
+                key={`racquet-vert2-${idx}`}
+                x1={235 - 15 + idx * 6}
+                y1={80}
+                x2={235 - 10 + idx * 3.4}
+                y2={150}
+                stroke="#d6f1ff"
                 strokeWidth="1"
-                opacity="0.73"
-                transform="rotate(13 234 122)"
+                opacity="0.78"
+                transform="rotate(16 235 112)"
               />
             ))}
-            {/* Strings – horizontal */}
+            {/* Strings horizontal */}
             {Array.from({ length: 5 }).map((_, idx) => (
               <line
-                key={`racket-horiz-${idx}`}
-                x1={209}
-                y1={95+idx*13}
-                x2={259}
-                y2={100+idx*10}
+                key={`racquet-horiz2-${idx}`}
+                x1={214}
+                y1={93+idx*11}
+                x2={257}
+                y2={98+idx*8}
                 stroke="#fff"
                 strokeWidth="1"
-                opacity="0.66"
-                transform="rotate(13 234 122)"
+                opacity="0.62"
+                transform="rotate(16 235 112)"
               />
             ))}
             {/* Handle */}
             <rect
-              x="222"
-              y="164"
-              width="19"
+              x="225"
+              y="147"
+              width="14"
               height="38"
-              rx="6"
-              fill="#a17d30"
-              stroke="#684d0a"
+              rx="5.7"
+              fill="#ab9b49"
+              stroke="#85681e"
               strokeWidth="2"
-              transform="rotate(19 231 183)"
-              style={{filter:"brightness(0.92)"}}
+              transform="rotate(21 232 168)"
+              style={{filter:"brightness(1.07)"}}
             />
             {/* Handle stripes */}
             <rect
-              x="226"
-              y="185"
-              width="11"
-              height="3.1"
-              rx="1.2"
-              fill="#603b16"
-              opacity="0.54"
-              transform="rotate(19 231.5 186.9)"
+              x="230"
+              y="170"
+              width="7"
+              height="2.3"
+              rx="1.1"
+              fill="#574928"
+              opacity="0.46"
+              transform="rotate(21 233.5 170.9)"
             />
             <rect
-              x="226"
-              y="192"
-              width="11"
-              height="3.1"
-              rx="1.2"
-              fill="#603b16"
-              opacity="0.48"
-              transform="rotate(19 231.5 193.9)"
+              x="230"
+              y="177"
+              width="7"
+              height="2.3"
+              rx="1.1"
+              fill="#edd277"
+              opacity="0.20"
+              transform="rotate(21 233.5 178.9)"
             />
           </g>
-          {/* Tennis BALL SHADOW */}
-          <ellipse
-            cx="256"
-            cy="204"
-            rx="13"
-            ry="4.7"
-            fill="#f3e334"
-            opacity="0.11"
-            transform="rotate(-12 256 204)"
-          />
-          {/* TENNIS BALL */}
+          {/* TENNIS BALL w/ drop shadow (right side) */}
           <g>
             <circle
-              cx="256"
-              cy="194"
-              r="13"
-              fill="url(#tennisBall)"
-              stroke="#cec94c"
-              strokeWidth="2.1"
+              cx="259"
+              cy="180"
+              r="11.3"
+              fill="url(#tennisYellow2)"
+              stroke="#e2d922"
+              strokeWidth="2"
+              opacity="0.97"
+              style={{filter:"drop-shadow(0 2px 5px #e8df75aa)"}}
             />
-            {/* Tennis ball seam */}
+            {/* Ball seam */}
             <path
-              d="M247 186 Q262 181 260 201"
-              stroke="#fff"
-              strokeWidth="1.5"
+              d="M251 177 Q261 171 259 189"
+              stroke="#fffef4"
+              strokeWidth="1.2"
               fill="none"
               opacity="0.62"
             />
+            {/* Glare */}
             <ellipse
-              cx="260"
-              cy="189"
-              rx="3.1"
-              ry="6"
+              cx="265"
+              cy="178"
+              rx="2.2"
+              ry="4"
               fill="#fff"
-              opacity="0.10"
-              transform="rotate(-18 260 189)"
+              opacity="0.11"
+              transform="rotate(-18 265 178)"
             />
           </g>
-          {/* Trophy highlight overlay for ultra real feel */}
+          {/* Glare highlights for trophy */}
           <ellipse
-            cx="155"
-            cy="110"
-            rx="17"
+            cx="135"
+            cy="107"
+            rx="21"
             ry="8"
             fill="#fff"
-            opacity="0.18"
+            opacity="0.10"
             style={{
-              filter: "blur(1.6px)"
+              filter: "blur(2.36px)"
             }}
           />
         </svg>
