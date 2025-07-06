@@ -118,12 +118,10 @@ function AnimatedBackgroundBlobs() {
 
 // Trivia questions convert to this UX schema
 function parseTrivia(qset) {
-  // Assign tags just for answer color variety
+  // Do not assign persona tags to answers; only provide text for answers.
   return qset.map(q => {
-    const tags = PERSONA_TAGS;
-    const allAnswers = [q.correct_answer, ...q.incorrect_answers].map((a, idx) => ({
-      text: decodeHtml(a),
-      persona: tags[idx % tags.length]
+    const allAnswers = [q.correct_answer, ...q.incorrect_answers].map((a) => ({
+      text: decodeHtml(a)
     }));
     // Shuffle:
     for (let i = allAnswers.length - 1; i > 0; i--) {
@@ -423,11 +421,6 @@ function QuestionScreen({ questionIdx, total, question, onAnswer, selected, floa
             disabled={typeof selected !== "undefined"}
           >
             <b>{a.text}</b>
-            <span className="persona-tag" style={{
-              marginLeft: "10px", fontSize: "0.72em", color: "#fff",
-              background: "#7b04c4", borderRadius: "11px", padding: "2px 10px",
-              opacity: 0.7
-            }}>{a.persona}</span>
           </button>
         ))}
       </div>
