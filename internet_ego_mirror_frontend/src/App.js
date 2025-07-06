@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 /**
- * This is the Internet Ego Mirror Quiz App, now revised for a pure sports-y summary finale!
- * 
- * Result (summary) page now:
- *   - Removes all "internet ego", persona resume, aura, and "social media suggestion" content.
- *   - After showing the score and joke, displays one of several playful sports SVG/animated illustrations chosen at random.
+ * This is the Internet Ego Mirror Quiz App – enhanced with vibrant, animated backgrounds,
+ * playful animated sports icons, and a much broader, more dynamic set of sports-themed result animations!
  */
 
 // Themed color palette (still used in quiz cards)
@@ -15,9 +12,104 @@ const PALETTE = [
 ];
 const BG_GRAD = "linear-gradient(135deg, #fed502 0%, #ff4ecd 40%, #6c63ff 100%)";
 const CARD_GRAD = "linear-gradient(135deg, #fff1de 10%, #dfebff 60%, #f4e0fa 100%)";
-
-// No personas needed for result page, but keep tags for answer/card color
 const PERSONA_TAGS = ["bookworm", "rebel", "clown", "ghost"];
+
+// Animated sports icons – randomized coordinates, shapes, and speeds
+const SPORTS_ICON_VARIANTS = [
+  // SVG icon, label for debugging (not rendered), default style overrides
+  {
+    icon: (
+      <svg width="48" height="48" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="21" fill="#ffbf00" stroke="#ff4ecd" strokeWidth="3"/>
+        <ellipse cx="30" cy="18" rx="8" ry="5" fill="#fff" opacity="0.18"/>
+        <ellipse cx="20" cy="28" rx="6" ry="2.5" fill="#fff" opacity="0.13"/>
+      </svg>
+    ),
+    name: "ball"
+  },
+  {
+    icon: (
+      <svg width="48" height="48" viewBox="0 0 48 48">
+        <rect x="14" y="8" width="20" height="32" rx="10" fill="#23ce6b"/>
+        <rect x="21" y="13" width="6" height="22" rx="5" fill="#36c6e7"/>
+      </svg>
+    ),
+    name: "bat"
+  },
+  {
+    icon: (
+      <svg width="48" height="48" viewBox="0 0 48 48">
+        <ellipse cx="24" cy="36" rx="9" ry="6" fill="#ff654f"/>
+        <rect x="22" y="7" width="4" height="21" fill="#bca657"/>
+        <ellipse cx="24" cy="7" rx="4" ry="2" fill="#ffe37a"/>
+      </svg>
+    ),
+    name: "shuttlecock"
+  },
+  {
+    icon: (
+      <svg width="46" height="46" viewBox="0 0 46 46">
+        <circle cx="23" cy="23" r="19" fill="#36c6e7"/>
+        <rect x="19" y="15" width="8" height="16" fill="#23ce6b"/>
+        <ellipse cx="23" cy="30" rx="7" ry="2.5" fill="#fff" opacity="0.21"/>
+      </svg>
+    ),
+    name: "sports-disc"
+  },
+  {
+    icon: (
+      <svg width="52" height="52" viewBox="0 0 52 52">
+        <rect x="17" y="8" width="18" height="36" rx="9" fill="#6C63FF"/>
+        <ellipse cx="26" cy="11" rx="7" ry="2.2" fill="#fff" opacity="0.19"/>
+      </svg>
+    ),
+    name: "racquet"
+  }
+];
+
+function FloatingSportsIcons() {
+  // Choose a random set of icons & coords per app mount for vibrancy
+  // Each gets its own animation duration and delay
+  const icons = [];
+  for (let i = 0; i < 7; ++i) {
+    const varIdx = Math.floor(Math.random() * SPORTS_ICON_VARIANTS.length);
+    icons.push({
+      ...SPORTS_ICON_VARIANTS[varIdx],
+      style: {
+        left: `${Math.random()*85+5}%`,
+        top: `${Math.random()*55+10}%`,
+        animationDuration: `${8 + Math.random()*7.5}s`,
+        animationDelay: `${Math.random()*9-4.6}s`
+      },
+      key: `float-${i}-${varIdx}-${Math.random()}`
+    });
+  }
+  return icons.map(({icon, style, key}) => (
+    <div
+      className="sports-float-icon"
+      style={{
+        ...style,
+        width: 48,
+        height: 48
+      }}
+      key={key}
+      aria-hidden="true"
+    >{icon}</div>
+  ));
+}
+
+// Animated color blobs for background
+function AnimatedBackgroundBlobs() {
+  return (
+    <div className="iemo-bg-animated">
+      <div className="iemo-blob iemo-blob1"></div>
+      <div className="iemo-blob iemo-blob2"></div>
+      <div className="iemo-blob iemo-blob3"></div>
+      <div className="iemo-blob iemo-blob4"></div>
+      <FloatingSportsIcons />
+    </div>
+  );
+}
 
 // Trivia questions convert to this UX schema
 function parseTrivia(qset) {
@@ -51,9 +143,9 @@ function decodeHtml(input) {
   try {
     decoded = decodeURIComponent(input);
   } catch (e) {
-    decoded = input; // Fallback
+    decoded = input;
   }
-  // Now handle HTML entities
+  // HTML entities
   const temp = document.createElement("textarea");
   temp.innerHTML = decoded;
   return temp.value;
@@ -61,20 +153,19 @@ function decodeHtml(input) {
 
 // PUBLIC_INTERFACE
 function App() {
-  const [step, setStep] = useState(0); // 0: Welcome, 1...N: quiz, N+1: Results
+  const [step, setStep] = useState(0); // 0: Welcome, ...N: quiz, N+1: Results
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
 
-  // Fetch new questions on start (sports-themed, always playful!)
+  // Fetch new questions on start (sports-themed)
   async function fetchQuestions() {
     setLoading(true);
     setFetchError("");
     setQuestions([]);
     setAnswers([]);
-
     // Open Trivia DB: Sports
     const DIFFICULTY = ["easy", "medium", "hard"][Math.floor(Math.random() * 3)];
     const urlBase = "https://opentdb.com/api.php?amount=8&type=multiple&category=21&encode=url3986";
@@ -131,17 +222,17 @@ function App() {
     setTimeout(() => setCopied(false), 1700);
   }
 
-  // Gradient bg per step
+  // Gradient bg per step still (for edge cases), but most color is from animated blobs
   useEffect(() => {
     document.body.style.background =
-      step === 0 ? BG_GRAD :
-        step > (questions.length || 0) ? CARD_GRAD : BG_GRAD;
-    document.body.style.transition = "background .4s";
+      "radial-gradient(circle at 55vw 29vh,#fffad0 0%,#e0ffef 45%,#d5fcf6 90%)";
+    document.body.style.transition = "background .5s";
   }, [step, questions.length]);
 
   return (
     <div className="iemo-app">
-      <div className="iemo-card blitz-card">
+      <AnimatedBackgroundBlobs />
+      <div className="iemo-card blitz-card" style={{zIndex:20, position:"relative"}}>
         {step === 0 && <WelcomeScreen onStart={handleStart} />}
         {loading && (
           <div style={{
@@ -310,12 +401,12 @@ function computeScore(answers, questions) {
 }
 
 // --- SPORTS ANIMATION ---
-// (SVG or animated React snippet, random pick among these components)
+// (SVG or animated React snippets, random pick among these components)
 const SPORTS_ANIMATIONS = [
+  // Confetti
   function Confetti() {
-    // Simple confetti SVG
     return (
-      <svg width="180" height="55" viewBox="0 0 180 55" fill="none" style={{marginBottom: 10}}>
+      <svg width="170" height="55" viewBox="0 0 170 55" fill="none" style={{marginBottom: 10}}>
         <g>
           <circle cx="15" cy="25" r="5" fill="#ff4ecd"><animate attributeName="cy" values="15;35;15" dur="1.4s" repeatCount="indefinite"/></circle>
           <circle cx="45" cy="30" r="3.3" fill="#6c63ff"><animate attributeName="cy" values="30;50;22;30" dur="1.18s" repeatCount="indefinite"/></circle>
@@ -327,8 +418,8 @@ const SPORTS_ANIMATIONS = [
       </svg>
     );
   },
+  // Trophy
   function Trophy() {
-    // Trophy SVG
     return (
       <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style={{marginBottom: 10}}>
         <g>
@@ -344,33 +435,95 @@ const SPORTS_ANIMATIONS = [
       </svg>
     );
   },
-  function BouncingBall() {
-    // Bouncing ball SVG, animated via CSS (see inline below)
+  // Animated Soccer Ball moving and rolling
+  function SoccerBall() {
     return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
-        <svg className="bouncing-ball" width="40" height="40" viewBox="0 0 40 40" style={{marginBottom:6}}>
-          <circle cx="20" cy="20" r="17" fill="#36c6e7" stroke="#23ce6b" strokeWidth="3" />
-          <ellipse cx="17" cy="18" rx="4" ry="2.2" fill="#fff" opacity="0.7"/>
-          <ellipse cx="28" cy="26" rx="3.3" ry="1.2" fill="#fff" opacity="0.3"/>
-        </svg>
+      <svg width="58" height="58" viewBox="0 0 58 58" fill="none" style={{marginBottom: 10, animation: "soccer-bounce 1.3s infinite cubic-bezier(.53,.43,.73,.92)"}}>
+        <circle cx="29" cy="29" r="28" fill="#fff" stroke="#222" strokeWidth="2"/>
+        <polygon points="29,18 34,23 29,29 24,23" fill="#222" />
+        <polygon points="29,29 34,35 29,40 24,35" fill="#222" />
+        <circle cx="29" cy="29" r="8" fill="#222"/>
         <style>
           {`
-            .bouncing-ball {
-              animation: ballbounce 1.1s infinite cubic-bezier(.74,.07,.53,.99);
-            }
-            @keyframes ballbounce {
-              0% { transform: translateY(0); }
-              40% { transform: translateY(20px);}
-              60% { transform: translateY(12px);}
-              100%{ transform: translateY(0);}
+            @keyframes soccer-bounce {
+              0% { transform: translateY(0) rotate(0deg);}
+              35% {transform: translateY(-18px) rotate(-23deg);}
+              75% {transform: translateY(8px) rotate(13deg);}
+              100% { transform: translateY(0) rotate(0);}
             }
           `}
         </style>
-      </div>
+      </svg>
     );
   },
+  // Bouncing Basketball
+  function Basketball() {
+    return (
+      <svg width="54" height="54" viewBox="0 0 54 54" fill="none" style={{marginBottom:10, animation: "basketball-bounce 1.0s infinite cubic-bezier(.49,.21,.59,.91)"}}>
+        <circle cx="27" cy="27" r="24" fill="#FF654F" stroke="#fe7b24" strokeWidth="2.5"/>
+        <path d="M3 27h48M27 3v48M9 9c11 11 25 25 36 36M45 9C34 20 20 34 9 45" stroke="#fff2e6" strokeWidth="2"/>
+        <style>
+          {`
+            @keyframes basketball-bounce {
+              0% { transform: translateY(0);}
+              45% {transform: translateY(-14px);}
+              75% {transform: translateY(4px);}
+              100% { transform: translateY(0);}
+            }
+          `}
+        </style>
+      </svg>
+    );
+  },
+  // Cricket bat and ball: ball rolls and bat swings
+  function CricketBatBall() {
+    return (
+      <svg width="80" height="45" viewBox="0 0 80 45" fill="none" style={{marginBottom:6}}>
+        <g>
+          <rect x="45" y="17" width="20" height="9" rx="4" fill="#bca657" transform="rotate(-24 45 17)" style={{transformOrigin: '55px 21.5px', animation: "swingBat 1.25s infinite alternate"}} />
+          <ellipse cx="27" cy="36" rx="9" ry="9" fill="#ff4ecd">
+              <animate attributeName="cx" values="27;52;27" dur="1.35s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+        <style>
+          {`
+            @keyframes swingBat {
+              0% { transform: rotate(-20deg);}
+              50% { transform: rotate(30deg);}
+              100%{ transform: rotate(-20deg);}
+            }
+          `}
+        </style>
+      </svg>
+    );
+  },
+  // Tennis racket swiping at a floating yellow ball
+  function TennisRacket() {
+    return (
+      <svg width="90" height="42" viewBox="0 0 90 42" fill="none" style={{marginBottom:9}}>
+        <ellipse cx="27" cy="21" rx="14" ry="18" fill="#23ce6b" stroke="#222" strokeWidth="2.2"
+          style={{transformOrigin: "27px 21px", animation: "tennis-racket 1.2s infinite alternate"}}
+        />
+        <rect x="36" y="20" width="14" height="4.8" rx="1.8" fill="#bca657"
+          style={{transformOrigin: "36px 22px", animation: "tennis-racket 1.2s infinite alternate"}}
+        />
+        <ellipse cx="65" cy="24" rx="5.2" ry="5.2" fill="#FED502">
+          <animate attributeName="cy" values="19;34;24;19" dur="1.15s" repeatCount="indefinite"/>
+        </ellipse>
+        <style>
+          {`
+            @keyframes tennis-racket {
+              0% { transform: rotate(6deg);}
+              50% { transform: rotate(-22deg);}
+              100%{ transform: rotate(6deg);}
+            }
+          `}
+        </style>
+      </svg>
+    );
+  },
+  // Medal (original)
   function Medal() {
-    // Medal SVG
     return (
       <svg width="55" height="68" viewBox="0 0 55 68" fill="none" style={{marginBottom:10}}>
         <circle cx="27.5" cy="44" r="20" fill="#FFF176" stroke="#FBC02D" strokeWidth="3"/>
@@ -379,6 +532,45 @@ const SPORTS_ANIMATIONS = [
         <rect x="32" y="5" width="8" height="30" rx="4" fill="#23ce6b"/>
         <ellipse cx="23" cy="30" rx="6" ry="4" fill="#ff4ecd" opacity="0.7"/>
         <ellipse cx="34" cy="32" rx="5" ry="2" fill="#fff" opacity="0.7"/>
+      </svg>
+    );
+  },
+  // Volleyball (volley movement)
+  function Volleyball() {
+    return (
+      <svg width="54" height="54" viewBox="0 0 54 54" fill="none" style={{marginBottom:8, animation: "volleymove 1.3s infinite"}}>
+        <circle cx="27" cy="27" r="23" fill="#36c6e7" stroke="#23ce6b" strokeWidth="2"/>
+        <path d="M7 40Q27 7 47 40" stroke="#fff" strokeWidth="2"/>
+        <path d="M6 23Q27 46 48 23" stroke="#fff" strokeWidth="2"/>
+        <style>
+          {`
+            @keyframes volleymove {
+              0% { transform: translateY(0);}
+              45% {transform: translateY(-14px);}
+              75% {transform: translateY(5px);}
+              100% { transform: translateY(0);}
+            }
+          `}
+        </style>
+      </svg>
+    );
+  },
+  // Football helmet (shake effect)
+  function FootballHelmet() {
+    return (
+      <svg width="62" height="45" viewBox="0 0 62 45" fill="none" style={{marginBottom:10, animation: "helmet-shake 0.95s infinite alternate"}}>
+        <ellipse cx="31" cy="27" rx="25" ry="16" fill="#6C63FF"/>
+        <path d="M10 35q10-16 42 0" stroke="#fff" strokeWidth="3"/>
+        <rect x="47" y="21" width="11" height="9" rx="3.5" fill="#FED502"/>
+        <style>
+          {`
+            @keyframes helmet-shake {
+              0% { transform: rotate(-3deg);}
+              60% { transform: rotate(6deg);}
+              100% { transform: rotate(-3deg);}
+            }
+          `}
+        </style>
       </svg>
     );
   }

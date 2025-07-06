@@ -13,6 +13,73 @@
   --iemo-rainbow: linear-gradient(90deg, #ff4ecd, #6C63FF, #23ce6b, #FF6584 85%);
 }
 
+/* == ANIMATED BACKGROUND EFFECTS == */
+.iemo-bg-animated {
+  position: fixed;
+  z-index: 0;
+  width: 100vw; height: 100vh;
+  left: 0; top: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.iemo-blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.45;
+  filter: blur(12px);
+  animation: blobMove 20s linear infinite alternate;
+}
+.iemo-blob1 {
+  width: 480px; height: 390px;
+  background: radial-gradient(circle, #ff4ecd, #ffbf00 60%, #ffffea 100%);
+  left: -90px; top: -90px;
+  animation-duration: 24s;
+}
+.iemo-blob2 {
+  width: 340px; height: 300px;
+  background: radial-gradient(circle at 40% 38%, #36c6e7, #6C63FF 70%, #ffeaef 100%);
+  right: -100px; top: 30vh;
+  animation-duration: 22s;
+  animation-delay: 4s;
+}
+.iemo-blob3 {
+  width: 350px; height: 240px;
+  background: radial-gradient(circle at 60% 60%, #23ce6b 40%, #c8fffd 100%);
+  left: 5vw; bottom: 2vh;
+  animation-duration: 33s;
+  animation-delay: 2s;
+}
+.iemo-blob4 {
+  width: 220px; height: 200px;
+  background: radial-gradient(circle, #ffeaff 20%, #ffc8ed 90%);
+  right: 8vw; bottom: 7vh;
+  animation-duration: 30s;
+  animation-delay: 7s;
+}
+@keyframes blobMove {
+  0%   { transform: scale(1) translateY(0px);}
+  40%  { transform: scale(1.17) translateY(36px);}
+  69%  { transform: scale(0.84) translateY(-73px);}
+  100% { transform: scale(1.03) translateY(0px);}
+}
+
+/* Animated floating sports icons */
+.sports-float-icon {
+  position: absolute;
+  z-index: 10;
+  opacity: 0.88;
+  pointer-events: none;
+  animation: floatMove 9s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes floatMove {
+  0%   { transform: translateY(0) rotate(0deg);}
+  40%  { transform: translateY(-30px) rotate(20deg);}
+  56%  { transform: translateY(-70px) rotate(-18deg);}
+  92%  { transform: translateY(6px) rotate(25deg);}
+  100% { transform: translateY(0) rotate(0deg);}
+}
+
 /* == RAINBOW & VIBRANT EFFECTS == */
 .rainbow-header {
   background: linear-gradient(90deg,#ff4ecd,#6C63FF 33%, #23ce6b 75%, #f7f700 100%);
@@ -49,16 +116,15 @@
   box-shadow: 0 16px 56px #ff54ed37,0 1px 24px #23ce6b29 !important;
   border: 2.6px solid #e0c0f9;
 }
-
-/* == LAYOUT == */
 .iemo-app {
-  background: var(--iemo-bg);
   min-height: 100vh;
   font-family: 'Segoe UI', 'Roboto', 'Arial', 'Comic Sans MS', fantasy, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  position: relative;
+  z-index: 1;
 }
 .iemo-card {
   margin-top: 5vh;
