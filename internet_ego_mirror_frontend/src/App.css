@@ -14,6 +14,7 @@
 }
 
 /* == ANIMATED BACKGROUND EFFECTS == */
+/* Animated, lively floating sports SVG background */
 .iemo-bg-animated {
   position: fixed;
   z-index: 0;
@@ -21,63 +22,43 @@
   left: 0; top: 0;
   pointer-events: none;
   overflow: hidden;
-}
-.iemo-blob {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.45;
-  filter: blur(12px);
-  animation: blobMove 20s linear infinite alternate;
-}
-.iemo-blob1 {
-  width: 480px; height: 390px;
-  background: radial-gradient(circle, #ff4ecd, #ffbf00 60%, #ffffea 100%);
-  left: -90px; top: -90px;
-  animation-duration: 24s;
-}
-.iemo-blob2 {
-  width: 340px; height: 300px;
-  background: radial-gradient(circle at 40% 38%, #36c6e7, #6C63FF 70%, #ffeaef 100%);
-  right: -100px; top: 30vh;
-  animation-duration: 22s;
-  animation-delay: 4s;
-}
-.iemo-blob3 {
-  width: 350px; height: 240px;
-  background: radial-gradient(circle at 60% 60%, #23ce6b 40%, #c8fffd 100%);
-  left: 5vw; bottom: 2vh;
-  animation-duration: 33s;
-  animation-delay: 2s;
-}
-.iemo-blob4 {
-  width: 220px; height: 200px;
-  background: radial-gradient(circle, #ffeaff 20%, #ffc8ed 90%);
-  right: 8vw; bottom: 7vh;
-  animation-duration: 30s;
-  animation-delay: 7s;
-}
-@keyframes blobMove {
-  0%   { transform: scale(1) translateY(0px);}
-  40%  { transform: scale(1.17) translateY(36px);}
-  69%  { transform: scale(0.84) translateY(-73px);}
-  100% { transform: scale(1.03) translateY(0px);}
+  background: none !important;
 }
 
-/* Animated floating sports icons */
 .sports-float-icon {
   position: absolute;
-  z-index: 10;
-  opacity: 0.88;
+  z-index: 2;
+  opacity: 0.92;
   pointer-events: none;
-  animation: floatMove 9s ease-in-out infinite;
   will-change: transform;
+  /* Use animation below */
+  animation-name: floatSportsMove;
+  animation-timing-function: cubic-bezier(.45,.34,.61,1.15);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
-@keyframes floatMove {
-  0%   { transform: translateY(0) rotate(0deg);}
-  40%  { transform: translateY(-30px) rotate(20deg);}
-  56%  { transform: translateY(-70px) rotate(-18deg);}
-  92%  { transform: translateY(6px) rotate(25deg);}
-  100% { transform: translateY(0) rotate(0deg);}
+
+@keyframes floatSportsMove {
+  0% {
+    transform: translateY(0px) scale(1) rotate(-2deg);
+    filter: brightness(1) drop-shadow(0 3px 15px #ffbf0059);
+  }
+  30% {
+    transform: translateY(-33px) scale(1.036) rotate(14deg);
+    filter: brightness(1.13) drop-shadow(0 8px 18px #36c6e76e);
+  }
+  60% {
+    transform: translateY(-70px) scale(0.97) rotate(-12deg);
+    filter: brightness(1.08) drop-shadow(0 16px 33px #fed50269);
+  }
+  90% {
+    transform: translateY(8px) scale(1.03) rotate(18deg);
+    filter: brightness(1.09) drop-shadow(0 3px 32px #ff4ecd53);
+  }
+  100% {
+    transform: translateY(0px) scale(1) rotate(-2deg);
+    filter: brightness(1) drop-shadow(0 3px 15px #ffbf0059);
+  }
 }
 
 /* == RAINBOW & VIBRANT EFFECTS == */
