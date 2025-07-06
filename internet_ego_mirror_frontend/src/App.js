@@ -447,6 +447,212 @@ function ResultScreen({ answers, questions, onRestart, onShare, copied, shareTex
   );
 }
 
+// --- WELCOME SCREEN ---
+// PUBLIC_INTERFACE
+function WelcomeScreen({ onStart }) {
+  return (
+    <div
+      className="iemo-float-welcome"
+      style={{
+        zIndex: 210,
+        position: "relative",
+        minHeight: "73vh",
+        textAlign: "center",
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "none",
+        boxShadow: "none",
+      }}
+    >
+      {/* Site Sports Logo/Icon */}
+      <div style={{ margin: "2.7em 0 1.1em 0", filter: "drop-shadow(0 6px 32px #23ce6bbb) drop-shadow(0 0 14px #ff4ecd78)" }}>
+        <svg
+          width="108"
+          height="108"
+          viewBox="0 0 108 108"
+          aria-label="Sports Logo"
+          style={{
+            display: "inline-block",
+            verticalAlign: "middle",
+          }}
+        >
+          <ellipse
+            cx="54"
+            cy="54"
+            rx="45"
+            ry="45"
+            fill="#fff"
+            stroke="#6C63FF"
+            strokeWidth="7"
+            opacity="0.96"
+          />
+          <ellipse
+            cx="54"
+            cy="54"
+            rx="37"
+            ry="37"
+            fill="#36c6e7"
+            stroke="#23ce6b"
+            strokeWidth="4.5"
+            opacity="0.92"
+          />
+          <circle cx="54" cy="42.5" r="13.5" fill="#FF6584" stroke="#fff" strokeWidth="5" />
+          <rect x="47" y="67" rx="7.8" width="14" height="22.5" fill="#FED502" stroke="#fff" strokeWidth="3.2" />
+        </svg>
+      </div>
+      {/* App/Site Name */}
+      <div
+        style={{
+          fontWeight: 900,
+          fontSize: "clamp(2.1em,4.4vw,3.3em)",
+          letterSpacing: "0.019em",
+          background: "var(--iemo-rainbow)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          marginBottom: ".33em",
+          textShadow: "0 3.4px 13px #23ce6baa,0 2.7px 17px #ff4ecdbe,0 0px 28px #fffcd7b8"
+        }}
+      >
+        Internet Ego Mirror
+      </div>
+      {/* Tagline */}
+      <div
+        style={{
+          fontWeight: 800,
+          fontSize: "clamp(1.05em,2vw,1.5em)",
+          color: "#2e195c",
+          margin: "0 0 1.7em 0",
+          textShadow: "0 1px 7px #36c6e721, 0 0px 18px #23ce6b31"
+        }}
+      >
+        Discover your digital alter ego through quirky sports & web trivia!
+      </div>
+      {/* Animated Start Button */}
+      <button
+        className="iemo-btn iemo-btn-accent"
+        style={{
+          fontWeight: 900,
+          fontSize: "clamp(1.23em,2.4vw,1.67em)",
+          padding: "0.89em 3.3em",
+          marginBottom: "2.1em",
+          boxShadow: "0 4px 17px #23ce6b47, 0 1px 13px #ff4ecd57",
+          border: "none",
+          outline: "none",
+        }}
+        onClick={onStart}
+        aria-label="Begin the Quiz"
+      >
+        <span style={{
+          animation: "pulse-in-quiz-btn 1.5s infinite alternate"
+        }}>
+          🚀 Start Quiz
+        </span>
+      </button>
+      {/* Motivational/fun quote box as widget */}
+      <QuoteBox prominent />
+      {/* Additional fun widgets shown below the main start call to action */}
+      <div style={{
+        marginTop: "1.7em",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1.4em",
+        maxWidth: 750,
+        width: "100%",
+      }}>
+        <WordOfTheMatch />
+        <JokeWidget />
+      </div>
+      <div style={{
+        fontSize: "1em",
+        marginTop: "2.7em",
+        color: "#6C63FF",
+        fontWeight: 700,
+        opacity: .74,
+        letterSpacing: "0.018em"
+      }}>
+        Playful quiz fun powered by public trivia & knowledge APIs
+      </div>
+    </div>
+  );
+}
+
+// --- QUESTION SCREEN ---
+// PUBLIC_INTERFACE
+function QuestionScreen({ questions, step, onAnswer, loading, fetchError }) {
+  if (loading) return (
+    <div className="iemo-float-qa-wrap" style={{
+      textAlign: "center", fontWeight: 900, fontSize: "1.28em",
+      color: "#23ce6b", margin: "7vh auto"
+    }}>
+      Loading questions...
+    </div>
+  );
+  if (fetchError) return (
+    <div className="iemo-float-qa-wrap" style={{
+      color: "#FF6584", fontWeight: 900, background: "rgba(255,234,255,0.22)", borderRadius: "19px", margin: "4vw", padding: "2em 3em"
+    }}>{fetchError}</div>
+  );
+  // Guard
+  if (!questions || !questions[step - 1]) return null;
+  const q = questions[step - 1];
+
+  return (
+    <div className="iemo-float-qa-wrap" style={{
+      textAlign: "center",
+      margin: "5.3vh auto 5.7vh auto",
+      zIndex: 212,
+      position: "relative"
+    }}>
+      <div className="iemo-float-question-glow" style={{
+        fontWeight: 900,
+        fontSize: "clamp(1.19em,2.8vw,2em)",
+        color: "#fff",
+        margin: "0 0 1.9em 0",
+        textShadow: "0 4px 27px #36c6e7, 0 1.7px 18px #ff4ecd77"
+      }}>
+        Question {step} of {questions.length}
+      </div>
+      <div className="iemo-float-header-glow" style={{
+        fontWeight: 900,
+        fontSize: "clamp(1.24em,3vw,2.19em)",
+        color: "#fafafa",
+        marginBottom: "1em",
+        textShadow: "0 6px 28px #6c63ff63, 0 0px 19px #fed5027f"
+      }}>
+        {q.question}
+      </div>
+      <div className="iemo-answers iemo-float-answers-flare" style={{
+        display: "flex", flexDirection: "column", gap: "2.1em", width: "100%", maxWidth: "700px", margin: "0 auto"
+      }}>
+        {q.answers.map((a, idx) => (
+          <button
+            key={idx}
+            className="iemo-answer-card iemo-float-answer-btn"
+            style={{
+              background: "none", border: "none", borderRadius: "2em",
+              padding: "0.98em 2.5em", fontSize: "1.13em", fontWeight: 900, color: "#fff",
+              margin: "0.25em 0", textShadow: "0 2px 14px #23ce6b, 0 2px 10px #ff4ecd95, 0 0px 24px #6c63ff72",
+              position: "relative",
+              cursor: "pointer",
+              outline: "none",
+              transition: "filter 0.18s"
+            }}
+            onClick={evt => onAnswer(idx, evt)}
+            aria-label={a.text}
+          >
+            {a.text}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // --- Main App wrapper and all other screens/functions ---
 
 function CrackerBlast({ x, y, onDone }) {
@@ -567,8 +773,6 @@ function CrackerBlast({ x, y, onDone }) {
 
 // PUBLIC_INTERFACE
 function App() {
-  // ... unmodified code, only showing relevant bits
-  // In the code above, the existing main App logic is unchanged.
   const [step, setStep] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -576,18 +780,8 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [copied, setCopied] = useState(false);
 
-  // NewsAPI integration
-  const [newsApiKey, setNewsApiKeyState] = useState(
-    () => window.localStorage.getItem("newsApiKey") || ""
-  );
-  function setNewsApiKey(k) {
-    setNewsApiKeyState(k);
-    window.localStorage.setItem("newsApiKey", k || "");
-  }
-
   const [crackerBlasts, setCrackerBlasts] = useState([]);
 
-  // Trivia questions convert to this UX schema (from earlier in file)
   function parseTrivia(qset) {
     return qset.map(q => {
       const allAnswers = [q.correct_answer, ...q.incorrect_answers].map((a) => ({
@@ -696,17 +890,9 @@ function App() {
     document.body.style.transition = "background .5s";
   }, [step, questions.length]);
 
-  // AnimationWrappers, WelcomeScreen, QuestionScreen, etc., are unchanged and should be present below...
-
-  // [ ... rest of the unmodified App.js code ]
-
-  // The key change is that computeScore is now in the correct position for its use, and export is correct.
-
-  // Replace export default at the end (if not already present):
+  // MAIN RENDER LOGIC RESTORED: show WelcomeScreen, per-question screen, result screen.
   return (
-    // ... rest of App.js as normal (render logic unchanged) ...
     <div className="iemo-app float-ui-app">
-      {/* ... original app render structure ... */}
       <SportsBackground />
       {/* Firework cracker effect overlay - appears above everything else */}
       <div className="cracker-blast-container" aria-hidden="true" style={{ pointerEvents: "none" }}>
@@ -714,16 +900,34 @@ function App() {
           <CrackerBlast key={id} x={x} y={y} onDone={() => handleCrackerBlastDone(id)} />
         )}
       </div>
-      {step === 0 &&
-        <div>
-          <QuoteBox prominent />
-          {/* Weather and News if you want to keep them */}
-          {/* ... */}
-          {/* You may want to restore OpenWeatherMapWeather, NewsAPISportsHeadlines, WelcomeScreen as originally present */}
-          {/* Only show core logic relevant for the context of this fix */}
-        </div>
-      }
-      {(step > (questions.length || 0) && (questions.length > 0) && !loading && !fetchError) &&
+
+      {/* WELCOME SCREEN */}
+      {step === 0 && (
+        <WelcomeScreen onStart={handleStart} />
+      )}
+
+      {/* QUIZ FLOW: Question screens */}
+      {(step > 0 && step <= (questions.length || 0)) && (
+        <>
+          <QuestionScreen
+            questions={questions}
+            step={step}
+            onAnswer={handleAnswer}
+            loading={loading}
+            fetchError={fetchError}
+          />
+          {/* Place supportive widgets beneath the quiz Q&A - don't block/interfere */}
+          <div style={{
+            margin: "1.7em auto 0 auto", maxWidth: 760, display: "flex", flexDirection: "column", gap: "1.21em"
+          }}>
+            <QuoteBox />
+            <NumberFact number={step - 1} forScore={false} />
+          </div>
+        </>
+      )}
+
+      {/* RESULT SCREEN */}
+      {(step > (questions.length || 0) && (questions.length > 0) && !loading && !fetchError) && (
         <ResultScreen
           answers={answers}
           questions={questions}
@@ -733,8 +937,18 @@ function App() {
           shareText={getShareText()}
           floatUI
         />
-      }
-      {/* ... */}
+      )}
+
+      {/* Footer branding/support statement */}
+      <div className="iemo-footer" style={{
+        margin: "2.7em auto 2em auto",
+        color: "#7c6ead", fontWeight: 700, textAlign: "center", fontSize: "1em",
+        textShadow: "0 1.3px 7px #36c6e71a"
+      }}>
+        <span className="iemo-footer-brand">
+          &copy; {new Date().getFullYear()} Internet Ego Mirror &mdash; Playful sports persona quizzes
+        </span>
+      </div>
     </div>
   );
 }
