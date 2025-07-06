@@ -375,236 +375,236 @@ function WelcomeScreen({ onStart }) {
         alignItems: "center"
       }}
     >
-      {/* Trophy cup badge with sports icons tucked inside */}
+      {/* Trophy cup badge with clear, stylized sports gear packed inside */}
       <div
         style={{
           display: "block",
           margin: "0 auto 2em auto",
-          width: "clamp(220px,32vw,330px)", // moderately sized
-          height: "clamp(220px,32vw,330px)",
+          width: "clamp(222px,33vw,340px)",
+          height: "clamp(222px,33vw,340px)",
           position: "relative",
-          filter: "drop-shadow(0 9px 38px #23ce6bae) drop-shadow(0 1px 21px #fed50288)",
+          filter: "drop-shadow(0 9px 44px #ff4ecdba) drop-shadow(0 3px 41px #36c6e7b0)",
         }}
         aria-hidden="true"
       >
         <svg
           width="100%"
           height="100%"
-          viewBox="0 0 330 330"
+          viewBox="0 0 340 340"
           style={{ maxWidth: "99vw", display: "block" }}
-          aria-label="Trophy Cup with Sports Icons"
+          aria-label="Trophy Cup with Detailed Sports Gear"
         >
-          {/* Trophy outline with gold gradients, rim, handles */}
           <defs>
-            <linearGradient id="trophyGoldA" x1="0%" y1="30%" x2="100%" y2="75%">
-              <stop offset="0%" stopColor="#fff45c"/>
-              <stop offset="43%" stopColor="#fed502"/>
-              <stop offset="100%" stopColor="#ffbf00"/>
+            <linearGradient id="cupGoldA" x1="7%" y1="35%" x2="93%" y2="84%">
+              <stop offset="0%" stopColor="#fff4a3"/>
+              <stop offset="43%" stopColor="#ffd902"/>
+              <stop offset="100%" stopColor="#ff8536"/>
             </linearGradient>
-            <radialGradient id="trophyShine" cx="50%" cy="18%" r="98%">
-              <stop offset="16%" stopColor="#ffe"/>
+            <radialGradient id="cupShine" cx="52%" cy="19%" r="98%">
+              <stop offset="18%" stopColor="#fff"/>
+              <stop offset="92%" stopColor="#ffe68c90"/>
               <stop offset="100%" stopColor="#fffde780"/>
             </radialGradient>
-            <radialGradient id="cupBody" cx="55%" cy="44%" r="60%">
+            <radialGradient id="cupBodyFill" cx="47%" cy="44%" r="80%">
               <stop offset="0%" stopColor="#fffbe0"/>
-              <stop offset="64%" stopColor="#fed502"/>
-              <stop offset="98%" stopColor="#ffdb4e" />
-              <stop offset="100%" stopColor="#ffbf007a"/>
+              <stop offset="72%" stopColor="#ffd502"/>
+              <stop offset="100%" stopColor="#ffe36b" />
+            </radialGradient>
+            <linearGradient id="batBody" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0.23" stopColor="#ffeab2"/>
+              <stop offset="0.68" stopColor="#f7cc82"/>
+              <stop offset="1" stopColor="#c18240"/>
+            </linearGradient>
+            <linearGradient id="batGrip" x1="10%" y1="15%" x2="85%" y2="78%">
+              <stop offset="0.02" stopColor="#eb3451"/>
+              <stop offset="0.96" stopColor="#ab0435"/>
+            </linearGradient>
+            <radialGradient id="ballRed" cx="51%" cy="51%" r="75%">
+              <stop offset="0%" stopColor="#ff5f42"/>
+              <stop offset="74%" stopColor="#bc130c"/>
+              <stop offset="100%" stopColor="#8e121b"/>
             </radialGradient>
           </defs>
-          {/* Handles */}
+          {/* Trophy handles: extra bold */}
           <path
-            d="M56,98 Q6,130 50,180 Q78,215 115,187"
+            d="M57,87 Q-12,141 62,222 Q121,278 160,192"
             fill="none"
-            stroke="url(#trophyGoldA)"
-            strokeWidth="12"
+            stroke="url(#cupGoldA)"
+            strokeWidth="15"
             strokeLinecap="round"
             opacity="0.93"
           />
           <path
-            d="M274,98 Q324,130 280,180 Q252,215 215,187"
+            d="M283,87 Q352,141 278,222 Q219,278 180,192"
             fill="none"
-            stroke="url(#trophyGoldA)"
-            strokeWidth="12"
+            stroke="url(#cupGoldA)"
+            strokeWidth="15"
             strokeLinecap="round"
             opacity="0.93"
           />
-          {/* Cup body */}
+          {/* Cup body (large, stylized) */}
           <ellipse
-            cx="165"
-            cy="130"
-            rx="85"
-            ry="70"
-            fill="url(#cupBody)"
-            stroke="url(#trophyGoldA)"
-            strokeWidth="9"
+            cx="170"
+            cy="133"
+            rx="93"
+            ry="82"
+            fill="url(#cupBodyFill)"
+            stroke="url(#cupGoldA)"
+            strokeWidth="11"
             opacity="0.99"
           />
-          {/* Cup rim */}
+          {/* Cup rim: strong */}
           <ellipse
-            cx="165"
-            cy="91"
-            rx="98"
-            ry="27"
-            fill="url(#trophyShine)"
-            stroke="url(#trophyGoldA)"
-            strokeWidth="11"
-            opacity="0.75"
+            cx="170"
+            cy="81"
+            rx="112"
+            ry="32"
+            fill="url(#cupShine)"
+            stroke="url(#cupGoldA)"
+            strokeWidth="14"
+            opacity="0.77"
           />
-          {/* Trophy base */}
+          {/* Base */}
           <rect
-            x="118"
-            y="192"
-            width="94"
-            height="36"
-            rx="15"
-            fill="url(#trophyGoldA)"
-            stroke="#9c8318"
-            strokeWidth="7"
-            opacity="0.87"
+            x="115"
+            y="222"
+            width="110"
+            height="43"
+            rx="20"
+            fill="url(#cupGoldA)"
+            stroke="#856319"
+            strokeWidth="10"
+            opacity="0.92"
           />
           {/* Plinth oval */}
           <ellipse
-            cx="165"
-            cy="237"
-            rx="35"
-            ry="15"
+            cx="170"
+            cy="272"
+            rx="46"
+            ry="18"
             fill="#fffbe8"
-            opacity="0.28"
+            opacity="0.26"
           />
-          {/* Cup body center shine */}
+          {/* Shine center */}
           <ellipse
-            cx="155"
-            cy="120"
-            rx="27"
-            ry="12"
+            cx="170"
+            cy="130"
+            rx="36"
+            ry="14"
             fill="#fff9be"
-            opacity="0.23"
+            opacity="0.19"
           />
-
-          {/* --- SPORTS ICONS INSIDE THE TROPHY -- */}
-          {/* Cricket bat (upper left, angled) */}
+          {/* --- INSIDE: STYLIZED SPORTS GEAR --- */}
+          {/* Cricket bat – wider and angled for visibility */}
           <g>
             <rect
-              x="69"
-              y="90"
-              width="16"
-              height="63"
-              rx="6.8"
-              fill="url(#trophyBatBody)"
-              stroke="#b58f3a"
+              x="84"
+              y="64"
+              width="21"
+              height="90"
+              rx="7"
+              fill="url(#batBody)"
+              stroke="#bc9454"
               strokeWidth="2"
-              transform="rotate(-27 77 120)"
+              transform="rotate(-21 94 112)"
             />
-            <defs>
-              <linearGradient id="trophyBatBody" x1="70" y1="109" x2="78" y2="157" gradientUnits="userSpaceOnUse">
-                <stop offset="0.1" stopColor="#ffe0ab"/>
-                <stop offset="0.5" stopColor="#e8b566"/>
-                <stop offset="1" stopColor="#c28132"/>
-              </linearGradient>
-            </defs>
             {/* Bat grip */}
             <rect
-              x="73"
-              y="78"
-              width="8"
-              height="17"
-              rx="3"
-              fill="url(#trophyBatGrip)"
+              x="93"
+              y="44"
+              width="10"
+              height="22"
+              rx="3.1"
+              fill="url(#batGrip)"
               stroke="#fff"
               strokeWidth="1"
-              transform="rotate(-25 77 89)"
+              transform="rotate(-21 98 54)"
             />
-            <defs>
-              <linearGradient id="trophyBatGrip" x1="75" y1="78" x2="79" y2="93" gradientUnits="userSpaceOnUse">
-                <stop offset="0.08" stopColor="#e22e9c"/>
-                <stop offset="0.78" stopColor="#a71a5e"/>
-              </linearGradient>
-            </defs>
           </g>
-          {/* Football (overlaps bat, left) */}
+          {/* Red cricket ball prominently on the left */}
           <g>
-            <circle cx="97" cy="142" r="25" fill="#fff" stroke="#383838" strokeWidth="3"/>
-            {/* Black patch */}
-            <polygon points="97,130 108,137 105,149 97,153 89,149 86,137" fill="#2c2c2c"/>
-            {/* seams */}
-            <path d="M88 153 Q97 158 106 153" stroke="#222" strokeWidth="1.3" fill="none"/>
+            <circle cx="81" cy="177" r="15.5" fill="url(#ballRed)" stroke="#7e070f" strokeWidth="2.2"/>
+            <ellipse cx="81" cy="173" rx="3.2" ry="8.3" fill="#fff" opacity="0.07"/>
+            <path d="M67 177 Q81 158 95 177" stroke="#fff" strokeDasharray="2.4,5.2" strokeWidth="1.32" fill="none" />
+            <ellipse cx="81" cy="177" rx="11" ry="6.5" fill="#ffe36b" opacity="0.045"/>
           </g>
-          {/* Cricket ball (red, bottom left) */}
+          {/* Football (soccer) at bottom inside, overlapping bat */}
           <g>
-            <circle cx="82" cy="173" r="12" fill="#e02b39" stroke="#b3142a" strokeWidth="2.1"/>
-            <ellipse cx="83" cy="170" rx="2.3" ry="7.0" fill="#fff" opacity="0.10"/>
-            <path d="M72 172 Q83 162 93 174" stroke="#fff" strokeDasharray="2,4" strokeWidth="1.05" fill="none"/>
+            <circle cx="116" cy="186" r="22" fill="#fff" stroke="#222" strokeWidth="3"/>
+            {/* Black pentagon patch */}
+            <polygon points="116,170 130,179 125,195 116,199 107,195 102,179" fill="#222"/>
+            {/* Football seams */}
+            <path d="M104 195 Q116 204 128 195" stroke="#444" strokeWidth="1.4" fill="none"/>
+            <ellipse cx="116" cy="186" rx="18" ry="10" fill="#ddd" opacity="0.13"/>
           </g>
-          {/* Tennis racquet (upper right, angled) */}
+          {/* Tennis racquet (right upper, clearly visible string detail) */}
           <g>
             {/* Head */}
-            <ellipse cx="223" cy="105" rx="25" ry="39" fill="#23ce6b" stroke="#25b981" strokeWidth="3.1" transform="rotate(18 223 105)" />
-            {/* Strings (vertical) */}
+            <ellipse cx="230" cy="109" rx="26" ry="44" fill="#36c6e7" stroke="#23ce6b" strokeWidth="4" transform="rotate(17 230 109)" />
+            {/* Strings – 5 vertical */}
             {
-              Array.from({ length: 4 }).map((_, idx) => (
+              Array.from({ length: 5 }).map((_, idx) => (
                 <line
                   key={`tenstrv2-${idx}`}
-                  x1={223-14+idx*9} y1={73} x2={223-5+idx*7} y2={135}
-                  stroke="#ffe"
-                  strokeWidth="0.8"
-                  opacity="0.62"
-                  transform="rotate(18 223 105)"
+                  x1={230-17.5+idx*8.8} y1={70} x2={230-8+idx*7} y2={152}
+                  stroke="#fffbee"
+                  strokeWidth="1.1"
+                  opacity="0.74"
+                  transform="rotate(17 230 109)"
                 />
               ))
             }
-            {/* Strings (horizontal) */}
-            <line x1={203} y1={108} x2={243} y2={110} stroke="#ffe" strokeWidth="0.8" opacity="0.55" transform="rotate(18 223 105)" />
-            <line x1={206} y1={95} x2={239} y2={99} stroke="#ffe" strokeWidth="0.8" opacity="0.4" transform="rotate(18 223 105)" />
+            {/* Strings – 2 horizontal */}
+            <line x1={209} y1={114} x2={251} y2={116} stroke="#fffbee" strokeWidth="1.1" opacity="0.56" transform="rotate(17 230 109)" />
+            <line x1={213} y1={101} x2={247} y2={105} stroke="#fffbee" strokeWidth="1.1" opacity="0.35" transform="rotate(17 230 109)" />
             {/* Handle */}
-            <rect x="214" y="135" width="11" height="28" rx="4" fill="#fed502" stroke="#bba101" strokeWidth="1.15" transform="rotate(15 220 146)" />
+            <rect x="221" y="154" width="16" height="34" rx="5.6" fill="#1ccda6" stroke="#25b981" strokeWidth="2.1" transform="rotate(24 229 171)" />
           </g>
-          {/* Tennis ball (mid right) */}
+          {/* Tennis ball (right lower) */}
           <g>
-            <circle cx="249" cy="151" r="13" fill="#fdf743" stroke="#b7ae22" strokeWidth="2"/>
-            <path d="M240 144 Q257 142 257 156" stroke="#fff" strokeWidth="1.1" fill="none" opacity="0.46"/>
+            <circle cx="259" cy="164" r="15.5" fill="#fefd55" stroke="#b7ae22" strokeWidth="2"/>
+            <path d="M248 156 Q269 153 267 172" stroke="#fff" strokeWidth="1.5" fill="none" opacity="0.45"/>
           </g>
         </svg>
       </div>
-      {/* Animated, ultra-visible site name */}
+      {/* Extra-bold, animated site title in RED */}
       <div
         style={{
           margin: "0 0 0.6em 0",
           fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
-          fontWeight: 980,
-          fontSize: "clamp(2.95em, 8vw, 5.3em)",
-          letterSpacing: "-0.026em",
-          background: "linear-gradient(95deg,#fed502 0,#ff4ecd 38%,#36c6e7 70%,#23ce6b 90%,#ffbf00 99%)",
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          color: "transparent",
+          fontWeight: 990,
+          fontSize: "clamp(2.95em, 8vw, 5.4em)",
+          letterSpacing: "-0.024em",
+          color: "#ff2222",
           lineHeight: 1.04,
-          textShadow: "0 9.5px 46px #fff, 0 2.8px 31px #fed502fa, 0 0px 26px #23ce6bcc, 0 1.6px 15px #ff4ecdca",
-          filter: "brightness(1.32) drop-shadow(0 5px 22px #fed502c4)",
-          animation: "pop-welcome-title 1.1s cubic-bezier(.62,-0.23,.54,1.38) both, neon-glow-title 1.6s ease-in-out infinite alternate"
+          textShadow:
+            "0 9.5px 42px #fff, 0 2.8px 31px #ff3a69e6, 0 0px 26px #ff5959d9, 0 3.8px 31px #6d0000b2",
+          filter: "brightness(1.47) drop-shadow(0 5px 30px #ff5555c4)",
+          animation: "pop-red-title 1.17s cubic-bezier(.62,-0.23,.54,1.38) both, neon-glow-title-red 1.47s ease-in-out infinite alternate"
         }}
       >
         The Clueless Cup
       </div>
-      {/* Extra-bold/bright animated tagline */}
+      {/* Extra-bold animated tagline in BLUE */}
       <div
         style={{
-          fontWeight: 900,
+          fontWeight: 950,
           fontFamily: "'Fredoka', 'Segoe UI', sans-serif",
-          fontSize: "clamp(1.39em,2.8vw,2.17em)",
-          background: "linear-gradient(90deg,#fed502 30%,#36c6e7 65%,#ff4ecd 100%)",
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          color: "transparent",
+          fontSize: "clamp(1.48em,3vw,2.29em)",
+          color: "#0d4fff",
           margin: "0 0 2.15em 0",
-          textShadow: "0 7px 24px #36c6e9a0, 0 3.5px 16px #ff4ecd, 0 0px 25px #fed502d3, 0 2px 11px #fff",
-          letterSpacing: "0.016em",
-          filter: "brightness(1.41) drop-shadow(0 5px 19px #fed502a9)",
-          animation: "float-tagline 1.05s cubic-bezier(.63,-0.07,.57,1.18) both, neon-glow-tagline 1.6s ease-in-out infinite alternate"
+          textShadow:
+            "0 4.8px 24px #36c6e9b0, 0 3.5px 22px #127effc4, 0 0px 25px #2d71fdc2, 0 2px 11px #fff",
+          letterSpacing: "0.012em",
+          filter: "brightness(1.43) drop-shadow(0 4px 17px #1eafffaf)",
+          animation: "float-blue-tagline 1.13s cubic-bezier(.63,-0.07,.57,1.18) both, neon-glow-tagline-blue 1.77s ease-in-out infinite alternate"
         }}
       >
         For those who bench press trivia, not weights.
       </div>
+      {/* 
+        -- Add keyframes for new title/tagline animation colors (much brighter/cheerful, bounce & pulsate shadow/neon!)
+      */}
       <div>
         <button
           className="iemo-btn iemo-btn-accent iemo-floating-btn-bounce"
@@ -634,6 +634,31 @@ function WelcomeScreen({ onStart }) {
       {/* Keyframes for welcome screen (overrides if needed) */}
       <style>
         {`
+          /* Animated pop for red site title */
+          @keyframes pop-red-title {
+            0%   {opacity:0;transform:scale(0.7) translateY(60px);filter:brightness(2.8) blur(10px);}
+            73%  {opacity:1;transform:scale(1.22) translateY(-12px);filter:brightness(1.7) blur(1.3px);}
+            81%  {opacity:1;transform:scale(0.95) translateY(5px);filter:brightness(1.4);}
+            100% {opacity:1;transform:scale(1.09) translateY(0);filter:brightness(1.63) blur(0);}
+          }
+          @keyframes neon-glow-title-red {
+            0% { filter: drop-shadow(0 0 28px #ff525785) drop-shadow(0 0 25px #fff5eece);}
+            53% { filter: drop-shadow(0 0 63px #ff3434d2) drop-shadow(0 0 31px #fffbeaed);}
+            100% { filter: drop-shadow(0 0 53px #ff4ecd) drop-shadow(0 0 44px #ffeede);}
+          }
+          /* Animated blue tagline - float w/ glow */
+          @keyframes float-blue-tagline {
+            0%   {opacity:0;transform:translateY(59px) scale(0.89) skewX(-8deg);filter:blur(3.6px) brightness(2.41);}
+            63%  {opacity:1;transform:translateY(-11px) scale(1.17) skewX(7deg);filter:blur(0.8px) brightness(1.49);}
+            81%  {transform:translateY(7px) scale(0.98);filter:blur(0.4px) brightness(1.23);}
+            100% {opacity:1;transform:translateY(0) scale(1.08);filter:blur(0) brightness(1.33);}
+          }
+          @keyframes neon-glow-tagline-blue {
+            0%   { filter: drop-shadow(0 0 17px #338affc6) brightness(1.17);}
+            51%  { filter: drop-shadow(0 0 31px #53ccff) brightness(1.31);}
+            100% { filter: drop-shadow(0 0 23px #87f2ffd3) brightness(1.19);}
+          }
+          /* Previous styles (welcome yellow/pink) for backward compat: */
           @keyframes pop-welcome-title {
             0%   {opacity:0;transform:scale(0.7) translateY(60px);filter:brightness(2.0) blur(6px);}
             83%  {opacity:1;transform:scale(1.19) translateY(-10px);filter:brightness(1.21) blur(0.5px);}
